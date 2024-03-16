@@ -15,10 +15,16 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["prettier", "react", "react-hooks"],
+  "plugins": ["prettier", "react", "react-hooks", "import"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "import/order": ["error", {
+      "alphabetize": {
+        "order": "asc",
+        "caseInsensitive": true
+      }
+    }]
   },
   "settings": {
     "react": {
