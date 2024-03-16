@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "lint": "cd frontend && npm run lint && cd ../backend && npm run lint"
+  }
+}
