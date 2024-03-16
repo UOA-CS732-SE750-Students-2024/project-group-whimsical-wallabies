@@ -6,6 +6,8 @@ services:
       - "3001:3001"
     volumes:
       - ./backend:/app
+    depends_on:
+      - mongo
 
   frontend:
     build:
@@ -21,3 +23,10 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-data:/data/db
