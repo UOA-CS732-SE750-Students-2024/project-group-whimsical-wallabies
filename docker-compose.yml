@@ -2,27 +2,31 @@ version: '3.8'
 services:
   backend:
     build: ./backend
+    command: npx nodemon -L src/server.js
     ports:
       - "3001:3001"
     volumes:
       - ./backend:/app
     depends_on:
       - mongo
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+
+  #  frontend:
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./frontend:/app
+#      - /app/node_modules
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - backend
+#    environment:
+#      - NODE_ENV=development
+#      - CHOKIDAR_USEPOLLING=true
 
   mongo:
     image: mongo
