@@ -1,25 +1,26 @@
 import PropTypes from 'prop-types';
 import React, { createContext, useContext, useState } from 'react';
+import { tokenStorage, userDataStorage } from '../utils/localStorageNames';
 import { useLogin } from './AuthContext.queries';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
+  const [isAuthenticated, setIsAuthenticated] = useState(!!tokenStorage.get());
   const {
     mutate: login,
     error: loginErrors,
     isLoading: isLoadingLogin
   } = useLogin({
     onSuccess: ({ data: { user, token } }) => {
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('userData', JSON.stringify(user));
+      tokenStorage.save(token);
+      userDataStorage.save(user);
       setIsAuthenticated(true);
     }
   });
   const logout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
+    tokenStorage.remove();
+    userDataStorage.remove();
     setIsAuthenticated(false);
   };
 

@@ -13,6 +13,7 @@ This repository contains the code for a full-stack application, including a Reac
 - **Backend**: Node.js with Express
 - **Frontend**: React
 - **Containerization**: Docker and Docker Compose
+- **Data**: MongoDB
 
 ## Getting Started
 
@@ -75,6 +76,18 @@ Install the dependencies:
 - **prettier:** Code formatter.
 - **nodemon:** Automatically restarts the node application when file changes are detected.
 
+#### Environment Setup:
+
+Create a `.env` file in the root of the backend directory and add the following lines:
+   ```sh
+   PORT=3001
+   MONGO_URI=mongodb://mongo:27017/732-project
+   JWT_SECRET=your_jwt_secret
+   OPEN_WEATHER_API_KEY=your_open_weather_api_key
+   OPEN_WEATHER_URL=http://api.openweathermap.org/data/2.5/weather
+   OPENAI_API_KEY=your_openai_api_key
+   ```
+
 ### Frontend
 
 - **react, react-dom:** Core React libraries.
@@ -95,6 +108,14 @@ Install the dependencies:
 
 - **eslint:** Lints JS and JSX files.
 - **prettier:** Code formatter.
+
+#### Environment Setup:
+
+Create a `.env` file in the root of the frontend directory and add the following line:
+```sh
+REACT_APP_API_URL=http://localhost:3001
+```
+This variable points to the URL of the backend server.
 
 ## Code Style
 

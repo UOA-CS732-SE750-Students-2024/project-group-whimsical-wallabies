@@ -4,6 +4,7 @@ import Header from './components/layout/Header';
 import Login from './components/login/Login';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
+import { APPLICATION_PATH } from './utils/urlRoutes';
 
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -26,7 +27,7 @@ const App = () => {
           <>
             <Header />
             <Routes>
-              <Route path="/login" element={<Login />} />
+              <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
               <Route
                 path="/welcome"
                 element={
