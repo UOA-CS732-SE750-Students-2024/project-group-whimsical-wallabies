@@ -11,3 +11,9 @@ export const AUTH_PATHS = {
   register: '/register',
   login: '/login'
 };
+
+export const THIRD_PARTY_APIS = {
+  base: '/api/external',
+  getWeather: '/get-weather',
+  promptQuestion: '/ask-chat-gpt'
+};
