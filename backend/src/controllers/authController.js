@@ -15,7 +15,7 @@ export const login = async ({ body }, res) => {
   try {
     const user = await loginService(body);
     const token = generateToken(user._id);
-    res.status(200).json({ user, token });
+    res.status(200).json({ user: { username: user.username, email: user.email }, token });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

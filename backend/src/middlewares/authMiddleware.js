@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export const authenticate = (req, res, next) => {
-  const excludedPaths = ['/api/auth/login', '/api/auth/register'];
+  const excludedPaths = ['/api/login/login', '/api/login/register'];
   if (excludedPaths.includes(req.path)) {
     return next(); // Skip middleware for paths in the excludedPaths array
   }
