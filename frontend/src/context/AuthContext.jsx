@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { createContext, useContext, useState } from 'react';
+import { LoadingWrapper } from '../components/common/LoadingWrapper';
 import { tokenStorage, userDataStorage } from '../utils/localStorageNames';
 import { useLogin } from './AuthContext.queries';
 
@@ -10,13 +11,11 @@ export const AuthProvider = ({ children }) => {
   const {
     mutate: login,
     error: loginErrors,
-    isLoading: isLoadingLogin
-  } = useLogin({
-    onSuccess: ({ data: { user, token } }) => {
-      tokenStorage.save(token);
-      userDataStorage.save(user);
-      setIsAuthenticated(true);
-    }
+    isPending: isPendingLogin
+  } = useLogin(({ data: { user, token } }) => {
+    tokenStorage.save(token);
+    userDataStorage.save(user);
+    setIsAuthenticated(true);
   });
   const logout = () => {
     tokenStorage.remove();
@@ -24,13 +23,13 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
-  if (isLoadingLogin) return <div>Authenticating...</div>;
-
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, isLoadingLogin, setIsAuthenticated, login, loginErrors, logout }}
+      value={{ isAuthenticated, isPendingLogin, setIsAuthenticated, login, loginErrors, logout }}
     >
-      {children}
+      <LoadingWrapper isLoading={isPendingLogin} customMessage="Authenticating...">
+        {children}
+      </LoadingWrapper>
     </AuthContext.Provider>
   );
 };

@@ -3,3 +3,4 @@
 .idea
 mongo-data/
 backend/app/
+.vscode/
