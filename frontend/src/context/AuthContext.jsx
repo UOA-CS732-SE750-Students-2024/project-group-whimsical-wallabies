@@ -25,7 +25,14 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, isPendingLogin, setIsAuthenticated, login, loginErrors, logout }}
+      value={{
+        isAuthenticated,
+        isPendingLogin,
+        setIsAuthenticated,
+        login,
+        loginErrors,
+        logout
+      }}
     >
       <LoadingWrapper isLoading={isPendingLogin} customMessage="Authenticating...">
         {children}

@@ -1,5 +1,11 @@
 version: '3.8'
 services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-data:/data/db
   backend:
     build: ./backend
     command: npx nodemon -L src/server.js
@@ -12,7 +18,6 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
-
   frontend:
     build:
       context: ./frontend
@@ -28,9 +33,3 @@ services:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
 
-  mongo:
-    image: mongo
-    ports:
-      - "27017:27017"
-    volumes:
-      - ./mongo-data:/data/db
