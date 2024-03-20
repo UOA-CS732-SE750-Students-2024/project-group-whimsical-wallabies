@@ -1,12 +1,16 @@
-# Full-Stack Application Monorepo
+# PawMate Monorepo
 
 This repository contains the code for a full-stack application, including a React-based frontend and an Express-based backend. Docker Compose is used to containerize and run both parts of the application together, ensuring a seamless development environment.
 
-## Project Structure
+## Project Folder Structure
 
 - `/backend`: Contains the Express application.
 - `/frontend`: Contains the React application.
 - `docker-compose.yml`: Docker Compose configuration file to build and run the backend and frontend services.
+
+## Project Infrastructure
+
+![Shows the infrastructure used in the application](documentation/InfraDiagram.png "Infrastructure Diagram")
 
 ## Technologies
 
