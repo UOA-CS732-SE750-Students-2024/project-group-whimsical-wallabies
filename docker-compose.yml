@@ -12,7 +12,12 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
-
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-data:/data/db
   frontend:
     build:
       context: ./frontend
@@ -28,9 +33,3 @@ services:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
 
-  mongo:
-    image: mongo
-    ports:
-      - "27017:27017"
-    volumes:
-      - ./mongo-data:/data/db

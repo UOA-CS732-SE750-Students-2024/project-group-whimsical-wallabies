@@ -1,7 +1,7 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; // If you want to redirect after logout
-import { useAuth } from '../../context/AuthContext';
-import { APPLICATION_PATH } from '../../utils/urlRoutes';
+import React from "react";
+import { useNavigate } from "react-router-dom"; // If you want to redirect after logout
+import { useAuth } from "../../context/AuthContext";
+import { APPLICATION_PATH } from "../../utils/urlRoutes";
 
 const LogoutButton = () => {
   const { isAuthenticated, logout } = useAuth();

@@ -1,6 +1,6 @@
-import { useIsFetching } from '@tanstack/react-query';
-import PropTypes from 'prop-types';
-import React from 'react';
+import { useIsFetching } from "@tanstack/react-query";
+import PropTypes from "prop-types";
+import React from "react";
 
 export const QueryLoadingWrapper = ({ children }) => {
   const isFetching = useIsFetching();
@@ -13,7 +13,7 @@ export const QueryLoadingWrapper = ({ children }) => {
 };
 
 QueryLoadingWrapper.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 // // Usage

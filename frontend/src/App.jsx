@@ -1,12 +1,17 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Header from './components/layout/Header';
-import Login from './components/login/Login';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import './App.css';
-import { APPLICATION_PATH } from './utils/urlRoutes';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import PropTypes from "prop-types";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Header from "./components/layout/Header";
+import Login from "./components/login/Login";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import "./App.css";
+import { APPLICATION_PATH } from "./utils/urlRoutes";
 
 const queryClient = new QueryClient();
 
@@ -16,7 +21,7 @@ const PrivateRoute = ({ children }) => {
 };
 
 PrivateRoute.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 const WelcomePage = () => {
