@@ -1,10 +1,9 @@
 const getFromLocalStorage = (itemName) => localStorage.getItem(itemName);
-const saveInLocalStorage = (itemName, value) =>
-  localStorage.setItem(itemName, value);
+const saveInLocalStorage = (itemName, value) => localStorage.setItem(itemName, value);
 const removeFromLocalStorage = (itemName) => localStorage.removeItem(itemName);
 
-const TOKEN = "authToken";
-const USER_DATA = "userData";
+const TOKEN = 'authToken';
+const USER_DATA = 'userData';
 
 // Functions to handle complex data types like objects
 const getJSONFromLocalStorage = (itemName) => {
@@ -18,11 +17,11 @@ const saveJSONInLocalStorage = (itemName, value) =>
 export const tokenStorage = {
   get: () => getFromLocalStorage(TOKEN),
   save: (value) => saveInLocalStorage(TOKEN, value),
-  remove: () => removeFromLocalStorage(TOKEN),
+  remove: () => removeFromLocalStorage(TOKEN)
 };
 
 export const userDataStorage = {
   get: () => getJSONFromLocalStorage(USER_DATA),
   save: (value) => saveJSONInLocalStorage(USER_DATA, value),
-  remove: () => removeFromLocalStorage(USER_DATA),
+  remove: () => removeFromLocalStorage(USER_DATA)
 };

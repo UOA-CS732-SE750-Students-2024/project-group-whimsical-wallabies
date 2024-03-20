@@ -1,9 +1,9 @@
-import axios from "axios";
-import { tokenStorage, userDataStorage } from "./localStorageNames";
+import axios from 'axios';
+import { tokenStorage, userDataStorage } from './localStorageNames';
 
 const axiosApiInstance = axios.create({
   // eslint-disable-next-line no-undef
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.REACT_APP_API_URL
 });
 
 // Request interceptor
@@ -17,7 +17,7 @@ axiosApiInstance.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  },
+  }
 );
 
 axiosApiInstance.interceptors.response.use(
@@ -30,7 +30,7 @@ axiosApiInstance.interceptors.response.use(
       userDataStorage.remove();
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 export default axiosApiInstance;

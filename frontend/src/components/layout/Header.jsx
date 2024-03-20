@@ -1,5 +1,5 @@
-import React from "react";
-import LogoutButton from "../logout/LogoutButton";
+import React from 'react';
+import LogoutButton from '../logout/LogoutButton';
 
 const Header = () => {
   return (

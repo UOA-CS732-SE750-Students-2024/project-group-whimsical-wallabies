@@ -1,13 +1,9 @@
-import PropTypes from "prop-types";
-import React from "react";
+import PropTypes from 'prop-types';
+import React from 'react';
 
-export const LoadingWrapper = ({
-  isLoading,
-  children,
-  customMessage = undefined,
-}) => {
+export const LoadingWrapper = ({ isLoading, children, customMessage = undefined }) => {
   if (isLoading) {
-    return <div>{customMessage || "Loading..."}</div>;
+    return <div>{customMessage || 'Loading...'}</div>;
   }
 
   return <>{children}</>;
@@ -16,5 +12,5 @@ export const LoadingWrapper = ({
 LoadingWrapper.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   children: PropTypes.node,
-  customMessage: PropTypes.string,
+  customMessage: PropTypes.string
 };

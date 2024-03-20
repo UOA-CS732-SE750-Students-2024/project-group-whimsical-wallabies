@@ -1,8 +1,8 @@
-import PropTypes from "prop-types";
-import React, { createContext, useContext, useState } from "react";
-import { LoadingWrapper } from "../components/common/LoadingWrapper";
-import { tokenStorage, userDataStorage } from "../utils/localStorageNames";
-import { useLogin } from "./AuthContext.queries";
+import PropTypes from 'prop-types';
+import React, { createContext, useContext, useState } from 'react';
+import { LoadingWrapper } from '../components/common/LoadingWrapper';
+import { tokenStorage, userDataStorage } from '../utils/localStorageNames';
+import { useLogin } from './AuthContext.queries';
 
 const AuthContext = createContext();
 
@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const {
     mutate: login,
     error: loginErrors,
-    isPending: isPendingLogin,
+    isPending: isPendingLogin
   } = useLogin(({ data: { user, token } }) => {
     tokenStorage.save(token);
     userDataStorage.save(user);
@@ -31,13 +31,10 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated,
         login,
         loginErrors,
-        logout,
+        logout
       }}
     >
-      <LoadingWrapper
-        isLoading={isPendingLogin}
-        customMessage="Authenticating..."
-      >
+      <LoadingWrapper isLoading={isPendingLogin} customMessage="Authenticating...">
         {children}
       </LoadingWrapper>
     </AuthContext.Provider>
@@ -45,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 };
 
 AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 export function useAuth() {
