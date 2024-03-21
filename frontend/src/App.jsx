@@ -1,3 +1,5 @@
+import Box from '@mui/material/Box';
+import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import PropTypes from 'prop-types';
@@ -6,6 +8,8 @@ import Header from './components/layout/Header';
 import Login from './components/login/Login';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
+import theme from './theme';
+
 import { APPLICATION_PATH } from './utils/urlRoutes';
 
 const queryClient = new QueryClient();
@@ -26,28 +30,30 @@ const WelcomePage = () => {
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="App">
-        <AuthProvider>
-          <Router>
-            <>
-              <Header />
-              <Routes>
-                <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
-                <Route
-                  path="/welcome"
-                  element={
-                    <PrivateRoute>
-                      <WelcomePage />
-                    </PrivateRoute>
-                  }
-                />
-                <Route path="*" element={<Navigate to="/welcome" />} />
-              </Routes>
-            </>
-          </Router>
-        </AuthProvider>
-      </div>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ThemeProvider theme={theme}>
+        <Box className="App" sx={{ p: 3 }}>
+          <AuthProvider>
+            <Router>
+              <>
+                <Header />
+                <Routes>
+                  <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
+                  <Route
+                    path="/welcome"
+                    element={
+                      <PrivateRoute>
+                        <WelcomePage />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route path="*" element={<Navigate to="/welcome" />} />
+                </Routes>
+              </>
+            </Router>
+          </AuthProvider>
+        </Box>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

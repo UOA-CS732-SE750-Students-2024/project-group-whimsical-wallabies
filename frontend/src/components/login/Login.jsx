@@ -1,4 +1,5 @@
 import { joiResolver } from '@hookform/resolvers/joi';
+import { Alert, CircularProgress, Box, Button, TextField, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 import { loginSchema } from './Login.validation';
 
 const Login = () => {
-  const { login, loginErrors, isAuthenticated } = useAuth();
+  const { login, loginErrors, isAuthenticated, isPendingLogin } = useAuth();
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -18,34 +19,84 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm({
     resolver: joiResolver(loginSchema)
   });
 
-  const onSubmit = (data) => {
-    login(data);
-    navigate('/');
-  };
+  useEffect(() => {
+    const serverErrors = loginErrors?.response?.data?.fields;
+    if (serverErrors) {
+      Object.keys(serverErrors).forEach((fieldName) => {
+        setError(fieldName, {
+          type: 'server',
+          message: serverErrors[fieldName]
+        });
+      });
+    }
+  }, [loginErrors, setError]);
 
   return (
-    <>
-      <h2>Login</h2>
-      {loginErrors && <p style={{ color: 'red' }}>Failed to login</p>}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <>
-          <label htmlFor="username">Username</label>
-          <input id="username" type="text" {...register('username')} />
-          {errors.username && <p>{errors.username.message}</p>}
-        </>
-        <>
-          <label htmlFor="password">Password</label>
-          <input id="password" type="password" {...register('password')} />
-          {errors.password && <p>{errors.password.message}</p>}
-        </>
-        <button type="submit">Login</button>
-      </form>
-    </>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh' // Use 100% of the viewport height
+      }}
+    >
+      <Typography variant="h2" gutterBottom>
+        PawMate
+      </Typography>
+      <Box component="form" onSubmit={handleSubmit(login)} noValidate sx={{ mt: 1 }}>
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="username"
+          label="Username"
+          name="username"
+          autoComplete="username"
+          autoFocus
+          {...register('username')}
+          error={Boolean(errors.username)}
+          helperText={errors.username ? errors.username.message : ''}
+          disabled={isPendingLogin}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          id="password"
+          autoComplete="current-password"
+          {...register('password')}
+          error={Boolean(errors.password)}
+          helperText={errors.password ? errors.password.message : ''}
+          disabled={isPendingLogin}
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          disabled={isPendingLogin}
+        >
+          Login
+        </Button>
+        {isPendingLogin && <CircularProgress size={24} />}
+      </Box>
+      {loginErrors && (
+        <Alert severity="error">
+          Failed to login:{' '}
+          {loginErrors?.response?.data?.error || loginErrors.response.data?.message}
+        </Alert>
+      )}
+    </Box>
   );
 };
 
