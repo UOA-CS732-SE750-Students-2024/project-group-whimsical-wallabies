@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { createContext, useContext, useState } from 'react';
-import { LoadingWrapper } from '../components/common/LoadingWrapper';
 import { tokenStorage, userDataStorage } from '../utils/localStorageNames';
 import { useLogin } from './AuthContext.queries';
 
@@ -34,9 +33,7 @@ export const AuthProvider = ({ children }) => {
         logout
       }}
     >
-      <LoadingWrapper isLoading={isPendingLogin} customMessage="Authenticating...">
-        {children}
-      </LoadingWrapper>
+      {children}
     </AuthContext.Provider>
   );
 };
