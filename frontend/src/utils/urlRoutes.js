@@ -9,6 +9,7 @@ export const API_PATH = {
 
 export const APPLICATION_PATH = {
   auth: {
-    login: '/login'
+    login: '/login',
+    signup: '/signup'
   }
 };

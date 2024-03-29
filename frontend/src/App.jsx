@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Login from './components/login/Login';
+import SignUp from './components/signup/SignUp';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 import theme from './theme';
@@ -38,6 +39,7 @@ const App = () => {
                 <Header />
                 <Routes>
                   <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
+                  <Route path={APPLICATION_PATH.auth.signup} element={<SignUp />} />
                   <Route
                     path="/welcome"
                     element={
