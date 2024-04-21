@@ -59,6 +59,10 @@ function Header() {
     navigate(APPLICATION_PATH.auth.login);
   };
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
