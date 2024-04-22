@@ -5,11 +5,8 @@ const thridPartyPathBase = buildPathWithBase(THIRD_PARTY_APIS);
 
 const registerSchema = Joi.object({
   username: Joi.string().alphanum().min(3).max(30).required(),
-  password: Joi.string().min(6).required(),
-  confirmpassword: Joi.any().valid(Joi.ref('password')).required(),
   email: Joi.string().email().required(),
-  address: Joi.string().required(),
-  phone: Joi.string().allow('', null).optional()
+  password: Joi.string().min(6).required()
 });
 
 const loginSchema = Joi.object({
