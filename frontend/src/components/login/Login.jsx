@@ -60,11 +60,11 @@ const Login = () => {
       component="form"
       onSubmit={handleSubmit(login)}
       noValidate
-      sx={{ ...commonStyles.formContainer, ...commonStyles.loginformContainer }}
+      sx={{ ...commonStyles.formContainer, ...commonStyles.loginFormContainer }}
     >
-      <Box sx={commonStyles.headerContainer}>
-        <Box component="img" src="/logo.png" sx={commonStyles.loginheaderImage} />
-        <Typography variant="h4" gutterBottom sx={commonStyles.loginheaderText}>
+      <Box sx={commonStyles.loginHeaderContainer}>
+        <Box component="img" src="/logo.png" sx={commonStyles.loginHeaderImage} />
+        <Typography variant="h4" gutterBottom sx={commonStyles.loginHeaderText}>
           PawMate
         </Typography>
       </Box>

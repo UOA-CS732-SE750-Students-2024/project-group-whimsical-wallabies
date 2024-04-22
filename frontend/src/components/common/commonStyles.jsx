@@ -1,22 +1,22 @@
 export const commonStyles = {
-  loginheaderContainer: {
+  loginHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     mb: 2
   },
-  loginheaderImage: {
+  loginHeaderImage: {
     width: 60,
     height: 60,
     mr: 1
   },
-  loginheaderText: {
+  loginHeaderText: {
     fontWeight: 'bold',
     color: '#333',
     mt: 2
   },
-  loginformContainer: {
+  loginFormContainer: {
     maxWidth: '600px',
     my: 10
   },
@@ -50,7 +50,8 @@ export const commonStyles = {
     justifyContent: 'space-between',
     width: '80%',
     px: 2,
-    mt: 2
+    mt: 2,
+    mb: 3
   },
   actionButton: {
     flexGrow: 1,
