@@ -9,6 +9,7 @@ const router = express.Router();
 const authPathBase = buildPathWithBase(AUTH_PATHS);
 
 router.post(AUTH_PATHS.register, schemaValidator(authPathBase.register), register);
+
 router.post(AUTH_PATHS.login, schemaValidator(authPathBase.login), login);
 
 router.get('/', (req, res) => res.send('Hello Wallabies 8!'));
