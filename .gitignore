@@ -4,3 +4,5 @@
 mongo-data/
 backend/app/
 .vscode/
+
+.DS_Store
