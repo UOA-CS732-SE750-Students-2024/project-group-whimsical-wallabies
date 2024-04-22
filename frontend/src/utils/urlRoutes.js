@@ -3,7 +3,8 @@ const buildApiPath = (path) => `${process.env.REACT_APP_API_URL}${path}`;
 
 export const API_PATH = {
   auth: {
-    login: buildApiPath('/api/auth/login')
+    login: buildApiPath('/api/auth/login'),
+    signup: buildApiPath('/api/auth/register')
   }
 };
 
