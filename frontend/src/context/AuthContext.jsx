@@ -1,20 +1,29 @@
 import PropTypes from 'prop-types';
 import React, { createContext, useContext, useState } from 'react';
 import { tokenStorage, userDataStorage } from '../utils/localStorageNames';
-import { useLogin } from './AuthContext.queries';
+import { useLoginMutation, useSignupMutation } from './AuthContext.queries';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!tokenStorage.get());
+  const [isSignup, setIsSignup] = useState(false);
+
   const {
     mutate: login,
     error: loginErrors,
     isPending: isPendingLogin
-  } = useLogin(({ data: { user, token } }) => {
+  } = useLoginMutation(({ data: { user, token } }) => {
     tokenStorage.save(token);
     userDataStorage.save(user);
     setIsAuthenticated(true);
+  });
+  const {
+    mutate: signup,
+    error: signupErrors,
+    isPending: isPendingSignup
+  } = useSignupMutation(() => {
+    setIsSignup(true);
   });
   const logout = () => {
     tokenStorage.remove();
@@ -30,7 +39,12 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated,
         login,
         loginErrors,
-        logout
+        logout,
+        signup,
+        signupErrors,
+        isSignup,
+        isPendingSignup,
+        setIsSignup
       }}
     >
       {children}
