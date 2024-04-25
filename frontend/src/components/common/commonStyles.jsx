@@ -85,5 +85,34 @@ export const commonStyles = {
     ':hover': {
       backgroundColor: 'primary.dark' // Darker color on hover
     }
+  },
+  homeContainerStyles: {
+    backgroundColor: '#aad5dc',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    position: 'relative',
+    overflow: 'hidden'
+  },
+  homeBoxStyles: {
+    position: 'absolute',
+    top: 100,
+    left: 20,
+    textAlign: 'center',
+    zIndex: 2
+  },
+  homeTypographyStyles: {
+    color: '#1a4c88',
+    fontWeight: 'bold'
+  },
+  homeSubtitleStyles: {
+    m: 1,
+    color: '#1a4c88'
+  },
+  homeButtonStyles: {
+    m: 2,
+    backgroundColor: '#1a4c88'
   }
 };
