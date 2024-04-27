@@ -21,17 +21,31 @@ import {
   DialogContentText,
   DialogTitle
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { commonStyles } from '../common/commonStyles';
 import { signupSchema } from './SignUp.validation';
 
+const libraries = ['places'];
+
+const debounce = (func, wait) => {
+  let timeout;
+  return function executedFunction(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func.apply(this, args);
+    }, wait);
+  };
+};
+
 const SignUp = () => {
   const { signup, signupErrors, isPendingSignup, isSignup, setIsSignup } = useAuth();
-
   let navigate = useNavigate();
+
+  const [address, setAddress] = useState('');
 
   const {
     register,
@@ -42,6 +56,17 @@ const SignUp = () => {
   } = useForm({
     resolver: joiResolver(signupSchema)
   });
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries
+  });
+
+  const autocompleteRef = useRef(null);
+
+  useEffect(() => {
+    register('address');
+  }, [register]);
 
   useEffect(() => {
     const serverErrors = signupErrors?.response?.data?.fields;
@@ -54,6 +79,36 @@ const SignUp = () => {
       });
     }
   }, [signupErrors, setError]);
+
+  const onLoad = (autocomplete) => {
+    autocompleteRef.current = autocomplete;
+  };
+
+  const onPlaceChanged = () => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace();
+      if (place && place.formatted_address) {
+        setAddress(place.formatted_address);
+      }
+    }
+  };
+
+  const handleAddressChange = (event) => {
+    const newAddress = event.target.value;
+    setAddress(newAddress);
+    if (newAddress.length >= 3) {
+      debouncedSearch(newAddress);
+    }
+  };
+
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      if (autocompleteRef.current) {
+        autocompleteRef.current.set('input', value);
+      }
+    }, 500),
+    []
+  );
 
   const handleLoginClick = () => {
     navigate('/login');
@@ -171,27 +226,35 @@ const SignUp = () => {
           helperText={errors.email ? errors.email.message : ''}
           disabled={isPendingSignup}
         />
-        <TextField
-          id="address"
-          name="address"
-          label="Address"
-          type="text"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <HomeIcon />
-              </InputAdornment>
-            )
-          }}
-          placeholder="Enter your address"
-          margin="normal"
-          fullWidth
-          required
-          {...register('address')}
-          error={Boolean(errors.address)}
-          helperText={errors.address ? errors.address.message : ''}
-          disabled={isPendingSignup}
-        />
+        {isLoaded ? (
+          <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+            <TextField
+              id="address"
+              name="address"
+              label="Address"
+              type="text"
+              placeholder="Enter your address"
+              fullWidth
+              required
+              {...register('address')}
+              value={address}
+              onChange={handleAddressChange}
+              error={Boolean(errors.address)}
+              helperText={errors.address ? errors.address.message : ''}
+              disabled={isPendingSignup}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <HomeIcon />
+                  </InputAdornment>
+                )
+              }}
+              sx={commonStyles.autoCompleteBox}
+            />
+          </Autocomplete>
+        ) : (
+          <CircularProgress />
+        )}
         <TextField
           id="phone"
           name="phone"
