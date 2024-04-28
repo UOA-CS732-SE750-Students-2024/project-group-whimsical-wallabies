@@ -12,7 +12,7 @@ router.post(AUTH_PATHS.register, schemaValidator(authPathBase.register), registe
 
 router.post(AUTH_PATHS.login, schemaValidator(authPathBase.login), login);
 
-router.get('/', (req, res) => res.send('Hello Wallabies 8!'));
+router.get('/', (req, res) => res.send('Hello Wallabies!'));
 
 // Example of a protected route, look that 'authenticate' is set in each route we want to protect
 router.get('/protected', authenticate, (req, res) => {

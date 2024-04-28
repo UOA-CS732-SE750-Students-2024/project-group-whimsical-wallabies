@@ -8,11 +8,12 @@ services:
       - ./mongo-data:/data/db
   backend:
     build: ./backend
-    command: npx nodemon -L src/server.js
+    command: npm run dev
     ports:
       - "3001:3001"
     volumes:
-      - ./backend:/app
+      - ./backend:/usr/src/app
+      - ignore:/usr/src/app/node_modules/
     depends_on:
       - mongo
     environment:
@@ -32,4 +33,5 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
-
+volumes:
+  ignore:
