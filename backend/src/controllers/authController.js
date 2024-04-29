@@ -23,7 +23,7 @@ export const login = async ({ body }, res) => {
 
 // Utility function to generate JWT
 const generateToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+  return jwt.sign({ user: { _id: userId } }, process.env.JWT_SECRET, {
     expiresIn: '30d' // token expires in 30 days
   });
 };
