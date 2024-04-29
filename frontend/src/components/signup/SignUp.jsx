@@ -232,7 +232,6 @@ const SignUp = () => {
               id="address"
               name="address"
               label="Address"
-              data-testid="address-input"
               type="text"
               placeholder="Enter your address"
               fullWidth
