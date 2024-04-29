@@ -127,7 +127,6 @@ const SignUp = () => {
   return (
     <Box
       component="form"
-      data-testid="signup-form"
       onSubmit={handleSubmit(signup)}
       noValidate
       autoComplete="off"
@@ -281,7 +280,6 @@ const SignUp = () => {
       <CardActions disableSpacing sx={commonStyles.cardActions}>
         <Button
           type="submit"
-          data-testid="register-button"
           variant="contained"
           color="primary"
           startIcon={<PersonAddIcon />}
@@ -291,7 +289,6 @@ const SignUp = () => {
         </Button>
         <Button
           type="button"
-          data-testid="login-button"
           variant="outlined"
           color="primary"
           startIcon={<VpnKeyIcon />}
