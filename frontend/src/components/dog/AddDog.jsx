@@ -1,11 +1,9 @@
 import React from 'react';
 
-const AddDog = () => {
+export default function AddDog() {
   return (
     <div>
       <h1>Add Dog</h1>
     </div>
   );
-};
-
-export default AddDog;
+}

@@ -8,8 +8,8 @@ export const API_PATH = {
   },
   dog: {
     add: buildApiPath('/api/dog/add'),
-    cards: buildApiPath('/api/dog/cards'),
-    profile: buildApiPath('/api/dog/profile')
+    profile: buildApiPath('/api/dog/profile'),
+    dogs: buildApiPath('/api/dog/dogs')
   }
 };
 
@@ -20,7 +20,7 @@ export const APPLICATION_PATH = {
   },
   dog: {
     add: '/add',
-    cards: '/cards',
-    profile: '/dogprofile'
+    profile: '/dogprofile',
+    dogs: '/dogs'
   }
 };
