@@ -1,11 +1,8 @@
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import { Box, Button, Container, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import petImage from '../../images/homeDogImage.png';
 import { commonStyles } from '../common/commonStyles';
-import petImage from './dog_cat.png';
 
 const HomePage = () => {
   useEffect(() => {
@@ -28,7 +25,7 @@ const HomePage = () => {
           Discover personalized playdates for your pet&apos;s size, energy, and personality.
         </Typography>
 
-        <div>
+        <Box>
           <Link to="/login" style={{ textDecoration: 'none' }}>
             <Button variant="contained" color="primary" sx={commonStyles.homeButtonStyles}>
               Log in
@@ -39,9 +36,9 @@ const HomePage = () => {
               Sign Up
             </Button>
           </Link>
-        </div>
+        </Box>
       </Box>
-      <div
+      <Box
         style={{
           height: '130px',
           width: '100%',
@@ -50,8 +47,8 @@ const HomePage = () => {
           bottom: 0,
           zIndex: 1
         }}
-      ></div>
-      <div
+      ></Box>
+      <Box
         style={{
           position: 'absolute',
           left: '50%',
@@ -61,7 +58,7 @@ const HomePage = () => {
         }}
       >
         <img src={petImage} alt="Your Image" style={{ maxWidth: '120%', maxHeight: '1000px' }} />
-      </div>
+      </Box>
     </Container>
   );
 };
