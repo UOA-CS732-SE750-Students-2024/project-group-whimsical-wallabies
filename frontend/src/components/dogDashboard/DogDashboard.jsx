@@ -1,7 +1,7 @@
 import React from 'react';
 import DogCards from './DogCards';
 
-export default function Dogs() {
+export default function DogDashboard() {
   const dogs = [
     {
       id: 1,
@@ -49,7 +49,7 @@ export default function Dogs() {
 
   return (
     <div>
-      <h1>Dogs</h1>
+      <h1>Dog Dashboard</h1>
       <DogCards items={dogs} />
     </div>
   );

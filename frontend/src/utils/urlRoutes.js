@@ -20,7 +20,7 @@ export const APPLICATION_PATH = {
   },
   dog: {
     add: '/add',
-    profile: '/dogprofile',
-    dogs: '/dogs'
+    profile: '/dog/:id',
+    dogDashboard: '/dogs'
   }
 };

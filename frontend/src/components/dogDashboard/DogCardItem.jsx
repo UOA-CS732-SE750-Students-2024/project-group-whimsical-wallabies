@@ -11,14 +11,24 @@ import React from 'react';
 
 export default function DogCardItem({ id, image, name, gender, owner, about_me }) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: 500, height: 'auto' }}>
       <CardActionArea>
-        <CardMedia component="img" height="140" image={image} alt={id} />
+        <CardMedia
+          component="img"
+          height={300}
+          image={image}
+          alt={id}
+          sx={{ objectFit: 'cover' }}
+        />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {name}
           </Typography>
-          {gender === 'Male' ? <MaleIcon /> : <FemaleIcon />}
+          {gender === 'Male' ? (
+            <MaleIcon fontSize="small" style={{ color: '#6699ff' }} />
+          ) : (
+            <FemaleIcon fontSize="small" style={{ color: '#ff99cc' }} />
+          )}
           <Typography variant="body2" color="text.secondary">
             {about_me}
           </Typography>
