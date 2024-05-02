@@ -10,6 +10,8 @@ const registerSchema = Joi.object({
   confirmpassword: Joi.any().valid(Joi.ref('password')).required(),
   email: Joi.string().email().required(),
   address: Joi.string().required(),
+  latitude: Joi.number().precision(8).required(),
+  longitude: Joi.number().precision(8).required(),
   phone: Joi.string().allow('', null).optional()
 });
 

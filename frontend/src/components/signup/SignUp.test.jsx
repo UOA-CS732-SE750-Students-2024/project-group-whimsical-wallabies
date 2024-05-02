@@ -39,6 +39,8 @@ describe('SignUp Component', () => {
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/phone/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/address/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/latitude/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/longitude/i)).toBeInTheDocument();
   });
 
   it('should allow entering text in the input fields', () => {
