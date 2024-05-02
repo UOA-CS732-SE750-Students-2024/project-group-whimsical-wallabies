@@ -7,7 +7,9 @@ const UserSchema = new mongoose.Schema({
   address: { type: String, required: true },
   latitude: { type: Number, required: true },
   longitude: { type: Number, required: true },
-  phone: { type: String, required: false }
+  phone: { type: String, required: false },
+  dogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dog' }],
+  photoProfile: { type: String, required: false }
 });
 
 const UserModel = mongoose.model('User', UserSchema);
