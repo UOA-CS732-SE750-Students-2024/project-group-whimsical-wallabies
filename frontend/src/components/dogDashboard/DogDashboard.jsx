@@ -74,21 +74,21 @@ export default function DogDashboard() {
       photos: [],
       about_me: 'Friendly and playful, loves to fetch and swim.',
       interested_in: ['Fetching', 'Swimming']
+    },
+    {
+      ownerID: '2',
+      id: 3,
+      name: 'Shadow',
+      breed: 'Siberian Husky',
+      dob: '2019-03-15',
+      gender: 'Male',
+      weight: 25,
+      neutered: true,
+      image: 'https://images.dog.ceo/breeds/husky/n02110185_388.jpg',
+      photos: [],
+      about_me: 'Energetic and adventurous, enjoys running and exploring.',
+      interested_in: ['Running', 'Exploring']
     }
-    // {
-    //   ownerID: '2',
-    //   id: 3,
-    //   name: 'Shadow',
-    //   breed: 'Siberian Husky',
-    //   dob: '2019-03-15',
-    //   gender: 'Male',
-    //   weight: 25,
-    //   neutered: true,
-    //   image: 'https://images.dog.ceo/breeds/husky/n02110185_388.jpg',
-    //   photos: [],
-    //   about_me: 'Energetic and adventurous, enjoys running and exploring.',
-    //   interested_in: ['Running', 'Exploring']
-    // }
   ];
 
   return (
