@@ -14,7 +14,6 @@ router.post(AUTH_PATHS.login, schemaValidator(authPathBase.login), login);
 
 router.get('/', (req, res) => res.send('Hello Wallabies!'));
 
-// Example of a protected route, look that 'authenticate' is set in each route we want to protect
 router.get('/protected', authenticate, (req, res) => {
   res.json({ message: 'Access to protected data' });
 });
