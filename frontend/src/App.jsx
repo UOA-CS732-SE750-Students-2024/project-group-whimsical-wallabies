@@ -9,6 +9,7 @@ import Login from './components/login/Login';
 import SignUp from './components/signup/SignUp';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
+import QueryCallExamples from './QueryCallExamples';
 import theme from './theme';
 
 import { APPLICATION_PATH } from './utils/urlRoutes';
@@ -25,7 +26,7 @@ PrivateRoute.propTypes = {
 };
 
 const WelcomePage = () => {
-  return <div>Welcome to the app!</div>;
+  return <QueryCallExamples />;
 };
 
 const App = () => {
