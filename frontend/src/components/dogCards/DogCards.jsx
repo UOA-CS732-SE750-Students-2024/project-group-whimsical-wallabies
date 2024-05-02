@@ -3,7 +3,8 @@ import Grid from '@mui/material/Grid';
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import DogCardItem from './DogCardItem';
+import { Link } from 'react-router-dom';
+import DogCardItem from '../dogCardItem/DogCardItem';
 
 export default function DogCards({ items }) {
   if (items && items.length > 0) {
@@ -19,14 +20,15 @@ export default function DogCards({ items }) {
               key={dog.id}
               style={{ display: 'flex', justifyContent: 'center' }}
             >
-              <DogCardItem
-                id={dog.id}
-                image={dog.image}
-                name={dog.name}
-                gender={dog.gender}
-                owner={dog.owner}
-                about_me={dog.about_me}
-              />
+              <Link to={`/dog/${dog.id}`}>
+                <DogCardItem
+                  id={dog.id}
+                  image={dog.image}
+                  name={dog.name}
+                  gender={dog.gender}
+                  about_me={dog.about_me}
+                />
+              </Link>
             </Grid>
           ))}
         </Grid>
@@ -48,7 +50,6 @@ DogCards.propTypes = {
       image: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       gender: PropTypes.string.isRequired,
-      owner: PropTypes.string.isRequired,
       about_me: PropTypes.string.isRequired
     })
   ).isRequired

@@ -5,8 +5,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AddDog from './components/dogAdd/dogAdd';
-// import DogProfile from './components/dogProfile/DogProfile';
 import DogDashboard from './components/dogDashboard/DogDashboard';
+// import DogProfile from './components/dogProfile/DogProfile';
 import Header from './components/layout/Header';
 import Login from './components/login/Login';
 import SignUp from './components/signup/SignUp';
@@ -46,7 +46,7 @@ const App = () => {
                   <Route path={APPLICATION_PATH.auth.signup} element={<SignUp />} />
                   <Route path={APPLICATION_PATH.dog.dogDashboard} element={<DogDashboard />} />
                   <Route path={APPLICATION_PATH.dog.add} element={<AddDog />} />
-                  {/* <Route path={APPLICATION_PATH.dog.profile>} element={<DogProfile />} /> */}
+                  {/* <Route path={APPLICATION_PATH.dog.profile} element={<DogProfile dogs={dogs} />} /> */}
                   <Route
                     path="/welcome"
                     element={

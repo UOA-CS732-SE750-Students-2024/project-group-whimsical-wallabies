@@ -9,9 +9,9 @@ import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export default function DogCardItem({ id, image, name, gender, owner, about_me }) {
+export default function DogCardItem({ id, image, name, gender, about_me }) {
   return (
-    <Card sx={{ width: 500, height: 'auto' }}>
+    <Card sx={{ width: 350, height: 500 }}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -32,12 +32,14 @@ export default function DogCardItem({ id, image, name, gender, owner, about_me }
           <Typography variant="body2" color="text.secondary">
             {about_me}
           </Typography>
-          <Typography variant="body1">Owner: {owner}</Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
-          More
+          Edit
+        </Button>
+        <Button size="small" color="primary">
+          Delete
         </Button>
       </CardActions>
     </Card>

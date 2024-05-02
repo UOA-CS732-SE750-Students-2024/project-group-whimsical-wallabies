@@ -8,7 +8,7 @@ export const API_PATH = {
   },
   dog: {
     add: buildApiPath('/api/dog/add'),
-    profile: buildApiPath('/api/dog/profile'),
+    profile: buildApiPath('/api/dog/profile'), //not sure if this is correct
     dogs: buildApiPath('/api/dog/dogs')
   }
 };
