@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   mongo:
     image: mongo
@@ -19,19 +19,19 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    volumes:
-      - ./frontend:/app
-      - /frontend/node_modules
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
+#  frontend:
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./frontend:/app
+#      - /frontend/node_modules
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - backend
+#    environment:
+#      - NODE_ENV=development
+#      - CHOKIDAR_USEPOLLING=true
 volumes:
   ignore:
