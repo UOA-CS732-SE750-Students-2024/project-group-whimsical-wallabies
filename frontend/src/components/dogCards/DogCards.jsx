@@ -20,7 +20,7 @@ export default function DogCards({ items }) {
               key={dog.id}
               style={{ display: 'flex', justifyContent: 'center' }}
             >
-              <Link to={`/dog/${dog.id}`}>
+              <Link to={`/${dog.ownerId}/${dog.id}`}>
                 <DogCardItem
                   id={dog.id}
                   image={dog.image}
