@@ -3,32 +3,23 @@ import Grid from '@mui/material/Grid';
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import DogCardItem from '../dogCardItem/DogCardItem';
 
 export default function DogCards({ items }) {
   if (items && items.length > 0) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center">
-        <Grid container spacing={3}>
+        <Grid container spacing={5}>
           {items.map((dog) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              key={dog.id}
-              style={{ display: 'flex', justifyContent: 'center' }}
-            >
-              <Link to={`/${dog.ownerId}/${dog.id}`}>
-                <DogCardItem
-                  id={dog.id}
-                  image={dog.image}
-                  name={dog.name}
-                  gender={dog.gender}
-                  about_me={dog.about_me}
-                />
-              </Link>
+            <Grid item key={dog.id} style={{ display: 'flex', justifyContent: 'center' }}>
+              <DogCardItem
+                ownerId={dog.ownerId}
+                id={dog.id}
+                image={dog.image}
+                name={dog.name}
+                gender={dog.gender}
+                about_me={dog.about_me}
+              />
             </Grid>
           ))}
         </Grid>
@@ -46,6 +37,7 @@ export default function DogCards({ items }) {
 DogCards.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
+      ownerId: PropTypes.number.isRequired,
       id: PropTypes.number.isRequired,
       image: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,

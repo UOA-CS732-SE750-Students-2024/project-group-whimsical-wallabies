@@ -1,14 +1,17 @@
 import Box from '@mui/material/Box';
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
 import DogCards from '../dogCards/DogCards';
 import dogDummyData from './dogDummyData.json';
 
 export default function DogDashboard() {
   const ownerId = parseInt(useParams().ownerId);
-  const dogs = dogDummyData.filter((dog) => dog.ownerId === ownerId);
+  const [dogs, setDogs] = useState([]);
+
+  useEffect(() => {
+    const filteredDogs = dogDummyData.filter((dog) => dog.ownerId === ownerId);
+    setDogs(filteredDogs);
+  }, [ownerId]);
 
   return (
     <div>

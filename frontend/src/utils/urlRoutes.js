@@ -7,7 +7,6 @@ export const API_PATH = {
     signup: buildApiPath('/api/auth/register')
   },
   dog: {
-    add: buildApiPath('/api/dog/add'),
     profile: buildApiPath('/api/dog/profile'), //not sure if this is correct
     dogs: buildApiPath('/api/dog/dogs') //not sure if this is correct
   }
@@ -19,8 +18,7 @@ export const APPLICATION_PATH = {
     signup: '/signup'
   },
   dog: {
-    add: '/add',
-    profile: '/:ownerID/dog/:id',
-    dogDashboard: '/:ownerId/dog'
+    dogDashboard: '/:ownerId/dog',
+    profile: '/:ownerId/dog/:id'
   }
 };

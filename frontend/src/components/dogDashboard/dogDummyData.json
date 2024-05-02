@@ -9,7 +9,12 @@
     "weight": 5,
     "neutered": true,
     "image": "https://images.dog.ceo/breeds/terrier-norwich/n02094258_1003.jpg",
-    "photos": [],
+    "photos": [
+      "https://images.dog.ceo/breeds/terrier-norwich/n02094258_2047.jpg",
+      "https://images.dog.ceo/breeds/terrier-norwich/n02094258_2048.jpg",
+      "https://images.dog.ceo/breeds/terrier-norwich/n02094258_2049.jpg",
+      "https://images.dog.ceo/breeds/terrier-norwich/n02094258_2050.jpg"
+    ],
     "about_me": "Energetic and affectionate companion.",
     "interested_in": ["Playing fetch", "Cuddles"]
   },
