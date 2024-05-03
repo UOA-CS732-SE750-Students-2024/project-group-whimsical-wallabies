@@ -1,4 +1,4 @@
-export const commonStyles = {
+export const CommonStyles = {
   loginHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',

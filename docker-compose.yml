@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   mongo:
     image: mongo
@@ -8,28 +8,30 @@ services:
       - ./mongo-data:/data/db
   backend:
     build: ./backend
-    command: npx nodemon -L src/server.js
+    command: npm run dev
     ports:
       - "3001:3001"
     volumes:
-      - ./backend:/app
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules/
     depends_on:
       - mongo
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    volumes:
-      - ./frontend:/app
-      - /frontend/node_modules
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-
+#  frontend:
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./frontend:/app
+#      - /frontend/node_modules
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - backend
+#    environment:
+#      - NODE_ENV=development
+#      - CHOKIDAR_USEPOLLING=true
+volumes:
+  ignore:

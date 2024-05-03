@@ -8,5 +8,7 @@ export const signupSchema = Joi.object({
   }),
   email: Joi.string().email({ tlds: false }).required(),
   address: Joi.string().required(),
+  latitude: Joi.number().precision(8).required(),
+  longitude: Joi.number().precision(8).required(),
   phone: Joi.string().allow('', null).optional()
 });
