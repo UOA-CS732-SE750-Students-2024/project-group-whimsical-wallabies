@@ -2,7 +2,7 @@ import { Box, Button, Container, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import petImage from '../../images/homeDogImage.png';
-import { commonStyles } from '../common/commonStyles';
+import { CommonStyles } from '../common/CommonStyles';
 
 const HomePage = () => {
   useEffect(() => {
@@ -15,24 +15,24 @@ const HomePage = () => {
   }, []);
 
   return (
-    <Container sx={commonStyles.homeContainerStyles} maxWidth="xl">
-      <Box sx={commonStyles.homeBoxStyles}>
-        <Typography variant="h1" sx={commonStyles.homeTypographyStyles}>
+    <Container sx={CommonStyles.homeContainerStyles} maxWidth="xl">
+      <Box sx={CommonStyles.homeBoxStyles}>
+        <Typography variant="h1" sx={CommonStyles.homeTypographyStyles}>
           Paw Mate
         </Typography>
-        <Typography variant="subtitle1" sx={commonStyles.homeSubtitleStyles}>
+        <Typography variant="subtitle1" sx={CommonStyles.homeSubtitleStyles}>
           Find your pet&apos;s <strong>perfect playdate</strong>.<br />
           Discover personalized playdates for your pet&apos;s size, energy, and personality.
         </Typography>
 
         <Box>
           <Link to="/login" style={{ textDecoration: 'none' }}>
-            <Button variant="contained" color="primary" sx={commonStyles.homeButtonStyles}>
+            <Button variant="contained" color="primary" sx={CommonStyles.homeButtonStyles}>
               Log in
             </Button>
           </Link>
           <Link to="/signup" style={{ textDecoration: 'none' }}>
-            <Button variant="contained" color="primary" sx={commonStyles.homeButtonStyles}>
+            <Button variant="contained" color="primary" sx={CommonStyles.homeButtonStyles}>
               Sign Up
             </Button>
           </Link>

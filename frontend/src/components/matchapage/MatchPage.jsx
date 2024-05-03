@@ -5,9 +5,9 @@ import MaleIcon from '@mui/icons-material/Male';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Box, Button, Typography } from '@mui/material';
 import Hammer from 'hammerjs';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import TinderCard from 'react-tinder-card';
-import { commonStyles } from '../common/commonStyles';
+import { CommonStyles } from '../common/CommonStyles';
 
 const MatchPage = () => {
   const db = [
@@ -56,16 +56,19 @@ const MatchPage = () => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const tinderCardRef = useRef(null);
 
-  const handleSwipe = (direction) => {
-    const cardElement = document.getElementById(`card-${currentCardIndex}`);
-    if (cardElement) {
-      cardElement.classList.add(`swipe-${direction}`);
-      setTimeout(() => {
-        cardElement.classList.remove(`swipe-${direction}`);
-        setCurrentCardIndex((prevIndex) => prevIndex + 1);
-      }, 300);
-    }
-  };
+  const handleSwipe = useCallback(
+    (direction) => {
+      const cardElement = document.getElementById(`card-${currentCardIndex}`);
+      if (cardElement) {
+        cardElement.classList.add(`swipe-${direction}`);
+        setTimeout(() => {
+          cardElement.classList.remove(`swipe-${direction}`);
+          setCurrentCardIndex((prevIndex) => prevIndex + 1);
+        }, 300);
+      }
+    },
+    [currentCardIndex]
+  );
 
   useEffect(() => {
     const cardElement = document.getElementById(`card-${currentCardIndex}`);
@@ -88,7 +91,7 @@ const MatchPage = () => {
         }
       });
     }
-  }, [currentCardIndex]);
+  }, [currentCardIndex, handleSwipe]);
 
   const handleSwipeLeft = () => {
     const cardElement = document.getElementById(`card-${currentCardIndex}`);
@@ -136,8 +139,8 @@ const MatchPage = () => {
   };
 
   return (
-    <Box className="dashboard" sx={commonStyles.matchDashboard}>
-      <Box className="swipe-container" sx={commonStyles.matchSwipeContainer}>
+    <Box className="dashboard" sx={CommonStyles.matchDashboard}>
+      <Box className="swipe-container" sx={CommonStyles.matchSwipeContainer}>
         {currentCardIndex < db.length ? (
           <TinderCard
             ref={tinderCardRef}
@@ -150,20 +153,20 @@ const MatchPage = () => {
               id={`card-${currentCardIndex}`}
               className="card"
               sx={{
-                ...commonStyles.matchCard,
+                ...CommonStyles.matchCard,
                 backgroundImage: `url(${db[currentCardIndex].url})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center'
               }}
             >
-              <Typography variant="h5" sx={commonStyles.matchName}>
+              <Typography variant="h5" sx={CommonStyles.matchName}>
                 {db[currentCardIndex].name}
                 {renderGenderIcon(db[currentCardIndex].gender)}
               </Typography>
-              <Typography variant="h5" sx={commonStyles.matchBreed}>
+              <Typography variant="h5" sx={CommonStyles.matchBreed}>
                 {db[currentCardIndex].breed}
               </Typography>
-              <Typography variant="h5" sx={commonStyles.matchInfo}>
+              <Typography variant="h5" sx={CommonStyles.matchInfo}>
                 {db[currentCardIndex].weight}kg / {calculateAge(db[currentCardIndex].dob)}
               </Typography>
             </Box>
@@ -184,10 +187,10 @@ const MatchPage = () => {
         )}
       </Box>
       <Box sx={{ marginTop: '5px', display: 'flex', gap: '20px' }}>
-        <Button variant="contained" onClick={handleSwipeLeft} sx={commonStyles.matchLeftButton}>
+        <Button variant="contained" onClick={handleSwipeLeft} sx={CommonStyles.matchLeftButton}>
           <CloseIcon fontSize="large" />
         </Button>
-        <Button variant="contained" onClick={handleSwipeRight} sx={commonStyles.matchRightButton}>
+        <Button variant="contained" onClick={handleSwipeRight} sx={CommonStyles.matchRightButton}>
           <FavoriteIcon fontSize="large" />
         </Button>
       </Box>

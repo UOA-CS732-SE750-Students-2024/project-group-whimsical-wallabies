@@ -13,9 +13,6 @@
     "@react-google-maps/api": "^2.19.3",
     "@tanstack/react-query": "^5.28.4",
     "@tanstack/react-query-devtools": "^5.28.4",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.8",
     "hammerjs": "^2.0.8",
     "joi": "^17.12.2",
@@ -85,6 +82,9 @@
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "3.2.5"
+    "prettier": "3.2.5",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0"
   }
 }
