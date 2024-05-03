@@ -5,10 +5,6 @@ export const API_PATH = {
   auth: {
     login: buildApiPath('/api/auth/login'),
     signup: buildApiPath('/api/auth/register')
-  },
-  dog: {
-    profile: buildApiPath('/api/dog/profile'), //not sure if this is correct
-    dogs: buildApiPath('/api/dog/dogs') //not sure if this is correct
   }
 };
 
