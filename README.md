@@ -34,27 +34,27 @@ This repository contains the code for a full-stack application, including a Reac
    git clone UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies.git
    cd project-group-whimsical-wallabies
    ```
-2. **Install the Dependencies for Backend and Frontend**
-Please reference the following sections:
-   1. [Backend](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#install-dependencies)
-   2. [Frontend](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#install-dependencies-1)
+2. **Install the Dependencies**
 
-2. **Environment Setup for Backend and Frontend**
-Please reference the following sections:
-   1. [Backend](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#environment-setup)
-   2. [Frontend](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#environment-setup-1)
+   - **Frontend:** [Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#install-dependencies-1)
+   - **Backend:** [Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#install-dependencies)
 
-4. **Clone the Repository**
+4. **Environment Setup**
+
+   - **Frontend:** [Environment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#environment-setup-1)
+   - **Backend:** [Environment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#environment-setup)
+
+5. **Clone the Repository**
 From the root of the project, run:
    ```sh
    docker-compose up --build
    ```
 This command builds the images for the backend and frontend services and starts the containers. The --build flag ensures that Docker Compose rebuilds the images if there have been changes since the last build.
 
-4. **Access the Application**
+5. **Access the Application**
 
-- **Frontend:** [http://localhost:3000](http://localhost:3000)
-- **Backend:** [http://localhost:3001](http://localhost:3001)
+   - **Frontend:** [http://localhost:3000](http://localhost:3000)
+   - **Backend:** [http://localhost:3001](http://localhost:3001)
 
 ## Development Environment
 
