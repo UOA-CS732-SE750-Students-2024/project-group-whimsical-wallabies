@@ -17,7 +17,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { commonStyles } from '../common/commonStyles';
+import { CommonStyles } from '../common/CommonStyles';
 import { loginSchema } from './Login.validation';
 
 const Login = () => {
@@ -26,7 +26,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+      navigate('/welcome');
     }
   }, [isAuthenticated, navigate]);
 
@@ -60,11 +60,11 @@ const Login = () => {
       component="form"
       onSubmit={handleSubmit(login)}
       noValidate
-      sx={{ ...commonStyles.formContainer, ...commonStyles.loginFormContainer }}
+      sx={{ ...CommonStyles.formContainer, ...CommonStyles.loginFormContainer }}
     >
-      <Box sx={commonStyles.loginHeaderContainer}>
-        <Box component="img" src="/logo.png" sx={commonStyles.loginHeaderImage} />
-        <Typography variant="h4" gutterBottom sx={commonStyles.loginHeaderText}>
+      <Box sx={CommonStyles.loginHeaderContainer}>
+        <Box component="img" src="/logo.png" sx={CommonStyles.loginHeaderImage} />
+        <Typography variant="h4" gutterBottom sx={CommonStyles.loginHeaderText}>
           PawMate
         </Typography>
       </Box>
@@ -115,13 +115,13 @@ const Login = () => {
           disabled={isPendingLogin}
         />
       </Box>
-      <CardActions disableSpacing sx={commonStyles.cardActions}>
+      <CardActions disableSpacing sx={CommonStyles.cardActions}>
         <Button
           type="submit"
           variant="contained"
           color="primary"
           startIcon={<VpnKeyIcon />}
-          sx={commonStyles.actionButton}
+          sx={CommonStyles.actionButton}
         >
           Login
         </Button>
@@ -131,16 +131,16 @@ const Login = () => {
           color="primary"
           startIcon={<PersonAddIcon />}
           onClick={handleSignUpClick}
-          sx={commonStyles.actionButton}
+          sx={CommonStyles.actionButton}
         >
           Register
         </Button>
       </CardActions>
 
       {/* Progress Indicator and Alert */}
-      {isPendingLogin && <CircularProgress size={24} sx={commonStyles.progressIndicator} />}
+      {isPendingLogin && <CircularProgress size={24} sx={CommonStyles.progressIndicator} />}
       {loginErrors && (
-        <Alert severity="error" sx={commonStyles.alert}>
+        <Alert severity="error" sx={CommonStyles.alert}>
           Failed to login:{' '}
           {loginErrors?.response?.data?.error || loginErrors.response.data?.message}
         </Alert>

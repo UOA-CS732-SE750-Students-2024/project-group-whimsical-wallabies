@@ -17,3 +17,19 @@ export const THIRD_PARTY_APIS = {
   getWeather: '/get-weather',
   promptQuestion: '/ask-chat-gpt'
 };
+
+export const DOG_PATHS = {
+  base: '/api/dog',
+  create: '/',
+  getAll: '/',
+  getOne: '/:id',
+  update: '/:id',
+  remove: '/:id'
+};
+
+export const PHOTO_PATHS = {
+  base: '/',
+  create: '/',
+  getAll: '/',
+  remove: ':photoId'
+};

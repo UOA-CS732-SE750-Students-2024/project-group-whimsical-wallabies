@@ -34,18 +34,27 @@ This repository contains the code for a full-stack application, including a Reac
    git clone UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies.git
    cd project-group-whimsical-wallabies
    ```
-   
-2. **Clone the Repository**
+2. **Install the Dependencies**
+
+   - **Frontend:** [Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#install-dependencies-1)
+   - **Backend:** [Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#install-dependencies)
+
+4. **Environment Setup**
+
+   - **Frontend:** [Environment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#environment-setup-1)
+   - **Backend:** [Environment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#environment-setup)
+
+5. **Clone the Repository**
 From the root of the project, run:
    ```sh
    docker-compose up --build
    ```
 This command builds the images for the backend and frontend services and starts the containers. The --build flag ensures that Docker Compose rebuilds the images if there have been changes since the last build.
 
-3. **Access the Application**
+5. **Access the Application**
 
-- **Frontend:** [http://localhost:3000](http://localhost:3000)
-- **Backend:** [http://localhost:3001](http://localhost:3001)
+   - **Frontend:** [http://localhost:3000](http://localhost:3000)
+   - **Backend:** [http://localhost:3001](http://localhost:3001)
 
 ## Development Environment
 
@@ -118,6 +127,7 @@ Install the dependencies:
 Create a `.env` file in the root of the frontend directory and add the following line:
 ```sh
 REACT_APP_API_URL=http://localhost:3001
+REACT_APP_GOOGLE_MAPS_API_KEY='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 ```
 This variable points to the URL of the backend server.
 

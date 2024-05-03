@@ -3,6 +3,7 @@
 .idea
 mongo-data/
 backend/app/
+backend/media/
 .vscode/
 
 .DS_Store

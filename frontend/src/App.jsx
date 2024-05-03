@@ -6,12 +6,15 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import DogDashboard from './components/dogDashboard/DogDashboard';
 import DogProfile from './components/dogProfile/DogProfile';
+import HomePage from './components/homepage/HomePage';
 import Header from './components/layout/Header';
 import Login from './components/login/Login';
+// import MatchPage from './components/matchapage/MatchPage';
 import SignUp from './components/signup/SignUp';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
+import QueryCallExamples from './QueryCallExamples';
 import theme from './theme';
 
 import { APPLICATION_PATH } from './utils/urlRoutes';
@@ -28,7 +31,7 @@ PrivateRoute.propTypes = {
 };
 
 const WelcomePage = () => {
-  return <div>Welcome to the app!</div>;
+  return <QueryCallExamples />;
 };
 
 const App = () => {
@@ -41,8 +44,11 @@ const App = () => {
               <>
                 <Header />
                 <Routes>
+                  <Route path="/" element={<HomePage />} />
                   <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
                   <Route path={APPLICATION_PATH.auth.signup} element={<SignUp />} />
+
+                  {/*<Route path="/match" element={<MatchPage />} />*/}
 
                   <Route
                     path="/welcome"

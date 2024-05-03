@@ -3,6 +3,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import HomeIcon from '@mui/icons-material/Home';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 import PasswordIcon from '@mui/icons-material/Password';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
@@ -15,6 +16,7 @@ import {
   CardActions,
   Typography,
   Box,
+  Grid,
   Dialog,
   DialogActions,
   DialogContent,
@@ -26,7 +28,7 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { commonStyles } from '../common/commonStyles';
+import { CommonStyles } from '../common/CommonStyles';
 import { signupSchema } from './SignUp.validation';
 
 const libraries = ['places'];
@@ -46,6 +48,9 @@ const SignUp = () => {
   let navigate = useNavigate();
 
   const [address, setAddress] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [isAddressValid, setIsAddressValid] = useState(false);
 
   const {
     register,
@@ -58,6 +63,7 @@ const SignUp = () => {
   });
 
   const { isLoaded } = useJsApiLoader({
+    // eslint-disable-next-line no-undef
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries
   });
@@ -84,32 +90,57 @@ const SignUp = () => {
     autocompleteRef.current = autocomplete;
   };
 
+  const [addressError, setAddressError] = useState('');
+
   const onPlaceChanged = () => {
     if (autocompleteRef.current) {
       const place = autocompleteRef.current.getPlace();
-      if (place && place.formatted_address) {
+      if (place && place.formatted_address && place.geometry) {
+        // Valid address
         setAddress(place.formatted_address);
+        setLatitude(place.geometry.location.lat().toString());
+        setLongitude(place.geometry.location.lng().toString());
+        setAddressError(''); // Clear any existing error message
+        setIsAddressValid(true); // Set isAddressValid to true indicating a valid address has been selected
+      } else {
+        setAddressError('Please select a valid street address from the dropdown.');
+        setIsAddressValid(false);
       }
+    }
+
+    console.log(isAddressValid);
+  };
+
+  const handleAddressBlur = () => {
+    if (!isAddressValid) {
+      setAddressError('Please select a valid address from the dropdown.');
+      setLatitude('');
+      setLongitude('');
     }
   };
 
   const handleAddressChange = (event) => {
     const newAddress = event.target.value;
     setAddress(newAddress);
-    if (newAddress.length >= 3) {
+    setIsAddressValid(false);
+
+    if (!newAddress || newAddress.length < 3) {
+      setLatitude('');
+      setLongitude('');
+      setAddressError('Address is too short.');
+    } else {
       debouncedSearch(newAddress);
     }
   };
 
-  const debouncedSearch = useCallback(
-    debounce((value) => {
+  const debouncedSearch = useCallback((value) => {
+    const debounced = debounce((value) => {
       if (autocompleteRef.current) {
         autocompleteRef.current.set('input', value);
       }
-    }, 500),
-    []
-  );
-
+    }, 500);
+    debounced(value);
+  }, []);
   const handleLoginClick = () => {
     navigate('/login');
   };
@@ -130,9 +161,9 @@ const SignUp = () => {
       onSubmit={handleSubmit(signup)}
       noValidate
       autoComplete="off"
-      sx={commonStyles.formContainer}
+      sx={CommonStyles.formContainer}
     >
-      <Box sx={commonStyles.formHeader}>
+      <Box sx={CommonStyles.formHeader}>
         <Typography variant="h4" component="h1" gutterBottom>
           Signup Form
         </Typography>
@@ -239,8 +270,9 @@ const SignUp = () => {
               {...register('address')}
               value={address}
               onChange={handleAddressChange}
-              error={Boolean(errors.address)}
-              helperText={errors.address ? errors.address.message : ''}
+              onBlur={handleAddressBlur} // Add onBlur event handler here
+              error={Boolean(errors.address) || addressError !== ''}
+              helperText={errors.address ? errors.address.message : addressError}
               disabled={isPendingSignup}
               InputProps={{
                 startAdornment: (
@@ -249,12 +281,64 @@ const SignUp = () => {
                   </InputAdornment>
                 )
               }}
-              sx={commonStyles.autoCompleteBox}
+              sx={CommonStyles.autoCompleteBox}
             />
           </Autocomplete>
         ) : (
           <CircularProgress />
         )}
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              id="latitude"
+              name="latitude"
+              label="Latitude"
+              type="text"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <MyLocationIcon />
+                  </InputAdornment>
+                )
+              }}
+              inputProps={{
+                readOnly: true
+              }}
+              margin="normal"
+              fullWidth
+              {...register('latitude')}
+              value={latitude}
+              error={Boolean(errors.latitude)}
+              helperText={errors.latitude ? errors.latitude.message : ''}
+              disabled={isPendingSignup}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              id="longitude"
+              name="longitude"
+              label="Longitude"
+              type="text"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <MyLocationIcon />
+                  </InputAdornment>
+                )
+              }}
+              inputProps={{
+                readOnly: true
+              }}
+              margin="normal"
+              fullWidth
+              {...register('longitude')}
+              value={longitude}
+              error={Boolean(errors.longitude)}
+              helperText={errors.longitude ? errors.longitude.message : ''}
+              disabled={isPendingSignup}
+            />
+          </Grid>
+        </Grid>
         <TextField
           id="phone"
           name="phone"
@@ -276,13 +360,14 @@ const SignUp = () => {
           disabled={isPendingSignup}
         />
       </Box>
-      <CardActions disableSpacing sx={commonStyles.cardActions}>
+      <CardActions disableSpacing sx={CommonStyles.cardActions}>
         <Button
           type="submit"
           variant="contained"
           color="primary"
           startIcon={<PersonAddIcon />}
-          sx={commonStyles.actionButton}
+          disabled={!isAddressValid || isPendingSignup}
+          sx={CommonStyles.actionButton}
         >
           Register
         </Button>
@@ -292,16 +377,16 @@ const SignUp = () => {
           color="primary"
           startIcon={<VpnKeyIcon />}
           onClick={handleLoginClick}
-          sx={commonStyles.actionButton}
+          sx={CommonStyles.actionButton}
         >
           Login
         </Button>
       </CardActions>
 
       {/* Progress Indicator and Alert */}
-      {isPendingSignup && <CircularProgress size={24} sx={commonStyles.progressIndicator} />}
+      {isPendingSignup && <CircularProgress size={24} sx={CommonStyles.progressIndicator} />}
       {signupErrors && (
-        <Alert severity="error" sx={commonStyles.alert}>
+        <Alert severity="error" sx={CommonStyles.alert}>
           Failed to register:{' '}
           {signupErrors?.response?.data?.error || signupErrors.response.data?.message}
         </Alert>
@@ -314,20 +399,20 @@ const SignUp = () => {
         aria-labelledby="success-dialog-title"
         aria-describedby="success-dialog-description"
       >
-        <DialogTitle id="success-dialog-title" sx={commonStyles.dialogTitle}>
+        <DialogTitle id="success-dialog-title" sx={CommonStyles.dialogTitle}>
           Registration is Successful!
         </DialogTitle>
-        <DialogContent sx={commonStyles.dialogContent}>
-          <DialogContentText id="success-dialog-description" sx={commonStyles.dialogContentText}>
+        <DialogContent sx={CommonStyles.dialogContent}>
+          <DialogContentText id="success-dialog-description" sx={CommonStyles.dialogContentText}>
             Your account has been successfully created.
           </DialogContentText>
         </DialogContent>
-        <DialogActions sx={commonStyles.dialogAction}>
+        <DialogActions sx={CommonStyles.dialogAction}>
           <Button
             onClick={() => handleDialogButtonClick()}
             variant="contained"
             color="primary"
-            sx={commonStyles.dialogButton}
+            sx={CommonStyles.dialogButton}
           >
             Go to Login
           </Button>
