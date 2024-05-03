@@ -43,28 +43,18 @@ export default function DogProfile() {
   };
 
   const handleDelete = () => {
-    // Find the index of the dog profile to be deleted
     const dogIndex = dogDummyData.findIndex(
       (dog) => dog.ownerId === parseInt(ownerId, 10) && dog.id === parseInt(id, 10)
     );
 
     if (dogIndex !== -1) {
-      // Remove the dog profile from the dogDummyData array
       dogDummyData.splice(dogIndex, 1);
-
-      // Update the state to reflect the changes
       setDog(null);
-
-      // Close the delete dialog
       handleDeleteClose();
-
-      // Navigate to the dog list page
       navigate(`/${ownerId}/dog`);
 
-      // Display a success message or perform any additional actions
       console.log('Dog profile deleted successfully');
     } else {
-      // Handle the case where the dog profile is not found
       console.error('Dog profile not found');
     }
   };
