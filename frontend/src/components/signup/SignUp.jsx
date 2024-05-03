@@ -63,6 +63,7 @@ const SignUp = () => {
   });
 
   const { isLoaded } = useJsApiLoader({
+    // eslint-disable-next-line no-undef
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries
   });
@@ -132,15 +133,14 @@ const SignUp = () => {
     }
   };
 
-  const debouncedSearch = useCallback(
-    debounce((value) => {
+  const debouncedSearch = useCallback((value) => {
+    const debounced = debounce((value) => {
       if (autocompleteRef.current) {
         autocompleteRef.current.set('input', value);
       }
-    }, 500),
-    []
-  );
-
+    }, 500);
+    debounced(value);
+  }, []);
   const handleLoginClick = () => {
     navigate('/login');
   };
