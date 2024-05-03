@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import DogCreate from './components/dogcreate/DogCreate';
+import DogUpdate from './components/dogupdate/DogUpdate';
 import Header from './components/layout/Header';
 import Login from './components/login/Login';
 import SignUp from './components/signup/SignUp';
@@ -46,6 +48,22 @@ const App = () => {
                     element={
                       <PrivateRoute>
                         <WelcomePage />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path={APPLICATION_PATH.dog.create}
+                    element={
+                      <PrivateRoute>
+                        <DogCreate />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path={APPLICATION_PATH.dog.update}
+                    element={
+                      <PrivateRoute>
+                        <DogUpdate />
                       </PrivateRoute>
                     }
                   />

@@ -12,5 +12,9 @@ export const APPLICATION_PATH = {
   auth: {
     login: '/login',
     signup: '/signup'
+  },
+  dog: {
+    create: '/dogcreate',
+    update: '/dogupdate/:dogId'
   }
 };

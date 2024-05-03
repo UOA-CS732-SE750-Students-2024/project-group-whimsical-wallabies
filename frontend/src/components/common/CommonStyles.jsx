@@ -63,6 +63,9 @@ export const CommonStyles = {
     display: 'block',
     margin: '10px auto'
   },
+  selectDropdown: {
+    textAlign: 'left'
+  },
   alert: {
     mt: 2,
     width: '100%'
