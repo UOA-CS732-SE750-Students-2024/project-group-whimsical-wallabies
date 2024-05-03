@@ -1,6 +1,6 @@
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Chip, CardActionArea, CardActions } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -42,10 +42,19 @@ export default function DogCardItem({ ownerId, id, image, name, gender, about_me
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary" onClick={handleViewClick}>
-          View Profile
-        </Button>
+      <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Chip
+          label="Vew Profile"
+          onClick={handleViewClick}
+          sx={{
+            mr: 1,
+            backgroundColor: '#f5f5f5',
+            color: '#4da6ff',
+            '&:hover': {
+              backgroundColor: '#e0e0e0'
+            }
+          }}
+        />
       </CardActions>
     </Card>
   );

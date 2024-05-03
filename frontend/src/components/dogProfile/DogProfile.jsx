@@ -1,10 +1,23 @@
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FemaleIcon from '@mui/icons-material/Female';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import MaleIcon from '@mui/icons-material/Male';
 import PetsIcon from '@mui/icons-material/Pets';
-import { Box, Card, CardContent, CardMedia, Chip, Typography, Grid, Button } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Chip,
+  Typography,
+  Grid,
+  Button,
+  IconButton,
+  Tooltip
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -64,6 +77,18 @@ export default function DogProfile() {
     console.log('Edit dog profile');
   };
 
+  const getAge = (dob) => {
+    const today = new Date();
+    const birthDate = new Date(dob);
+    let ageInYears = today.getFullYear() - birthDate.getFullYear();
+    let ageInMonths = today.getMonth() - birthDate.getMonth();
+    if (ageInMonths < 0 || (ageInMonths === 0 && today.getDate() < birthDate.getDate())) {
+      ageInYears--;
+      ageInMonths += 12;
+    }
+    return `${ageInYears} years ${ageInMonths} months`;
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
       {dog ? (
@@ -71,12 +96,27 @@ export default function DogProfile() {
           <Card sx={{ maxWidth: 600 }}>
             <CardMedia component="img" height="300" image={dog.image} alt={dog.name} />
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{
+                  fontWeight: 'bold'
+                }}
+              >
                 {dog.name}
                 {dog.gender === 'Male' ? (
-                  <MaleIcon fontSize="small" sx={{ verticalAlign: 'middle', ml: 1 }} />
+                  <MaleIcon
+                    fontSize="small"
+                    sx={{ verticalAlign: 'middle', ml: 1 }}
+                    style={{ color: '#6699ff' }}
+                  />
                 ) : (
-                  <FemaleIcon fontSize="small" sx={{ verticalAlign: 'middle', ml: 1 }} />
+                  <FemaleIcon
+                    fontSize="small"
+                    sx={{ verticalAlign: 'middle', ml: 1 }}
+                    style={{ color: '#ff99cc' }}
+                  />
                 )}
               </Typography>
               <Grid container spacing={2}>
@@ -89,7 +129,7 @@ export default function DogProfile() {
                 <Grid item xs={6}>
                   <EmojiEventsIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
                   <Typography variant="body2" color="text.secondary" display="inline">
-                    {new Date(dog.dob).toLocaleDateString()}
+                    {getAge(dog.dob)}
                   </Typography>
                 </Grid>
               </Grid>
@@ -118,16 +158,30 @@ export default function DogProfile() {
                   Interested In:
                 </Typography>
                 {dog.interested_in.map((interest, index) => (
-                  <Chip key={index} label={interest} variant="outlined" sx={{ mr: 1, mb: 1 }} />
+                  <Chip
+                    key={index}
+                    label={interest}
+                    variant="outlined"
+                    sx={{
+                      mr: 1,
+                      mb: 1,
+                      backgroundColor: '#fffee0',
+                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)'
+                    }}
+                  />
                 ))}
               </Box>
               <Box mt={2} display="flex" justifyContent="flex-end">
-                <Button variant="outlined" color="primary" onClick={handleEdit} sx={{ mr: 1 }}>
-                  Edit
-                </Button>
-                <Button variant="outlined" color="error" onClick={handleDeleteOpen}>
-                  Delete
-                </Button>
+                <Tooltip title="Edit">
+                  <IconButton onClick={handleEdit} sx={{ mr: 1 }}>
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <IconButton onClick={handleDeleteOpen}>
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
               </Box>
             </CardContent>
           </Card>
