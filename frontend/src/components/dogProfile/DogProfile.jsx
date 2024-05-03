@@ -13,7 +13,6 @@ import {
   CardMedia,
   Chip,
   Typography,
-  Grid,
   Button,
   IconButton,
   Tooltip
@@ -119,32 +118,35 @@ export default function DogProfile() {
                   />
                 )}
               </Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <PetsIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
-                  <Typography variant="body2" color="text.secondary" display="inline">
-                    {dog.breed}
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <EmojiEventsIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
-                  <Typography variant="body2" color="text.secondary" display="inline">
-                    {getAge(dog.dob)}
-                  </Typography>
-                </Grid>
-              </Grid>
+
+              <Box mt={2}>
+                <PetsIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
+                <Typography variant="body2" color="text.secondary" display="inline">
+                  {dog.breed}
+                </Typography>
+              </Box>
+
+              <Box mt={2}>
+                <EmojiEventsIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
+                <Typography variant="body2" color="text.secondary" display="inline">
+                  {getAge(dog.dob)}
+                </Typography>
+              </Box>
+
               <Box mt={2}>
                 <FitnessCenterIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
                 <Typography variant="body2" color="text.secondary" display="inline">
                   Weight: {dog.weight} kg
                 </Typography>
               </Box>
+
               <Box mt={2}>
                 <FavoriteBorderIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
                 <Typography variant="body2" color="text.secondary" display="inline">
                   Neutered: {dog.neutered ? 'Yes' : 'No'}
                 </Typography>
               </Box>
+
               <Box mt={2}>
                 <Typography variant="body1" gutterBottom>
                   About Me:
@@ -153,6 +155,7 @@ export default function DogProfile() {
                   {dog.about_me}
                 </Typography>
               </Box>
+
               <Box mt={2}>
                 <Typography variant="body1" gutterBottom>
                   Interested In:
@@ -161,7 +164,6 @@ export default function DogProfile() {
                   <Chip
                     key={index}
                     label={interest}
-                    variant="outlined"
                     sx={{
                       mr: 1,
                       mb: 1,
@@ -171,6 +173,7 @@ export default function DogProfile() {
                   />
                 ))}
               </Box>
+
               <Box mt={2} display="flex" justifyContent="flex-end">
                 <Tooltip title="Edit">
                   <IconButton onClick={handleEdit} sx={{ mr: 1 }}>
@@ -185,6 +188,7 @@ export default function DogProfile() {
               </Box>
             </CardContent>
           </Card>
+
           <Box mt={4}>
             <DogPhotoGallery photos={dog.photos} />
           </Box>

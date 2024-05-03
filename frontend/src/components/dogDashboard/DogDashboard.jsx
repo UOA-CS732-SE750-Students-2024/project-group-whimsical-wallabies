@@ -1,6 +1,7 @@
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
+import Tooltip from '@mui/material/Tooltip';
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -26,22 +27,24 @@ export default function DogDashboard() {
       <h1>My Dog Dashboard</h1>
       <Box display="flex" justifyContent="center" alignItems="center" position="relative">
         <DogCards items={dogs} />
-        <Fab
-          color="primary"
-          aria-label="add"
-          sx={{
-            position: 'absolute',
-            bottom: 16,
-            right: 16,
-            backgroundColor: '#ffc2cd',
-            '&:hover': {
-              backgroundColor: '#ff93ac'
-            }
-          }}
-          onClick={handleAddDog}
-        >
-          <AddIcon />
-        </Fab>
+        <Tooltip title="Add a new dog" arrow>
+          <Fab
+            color="primary"
+            aria-label="add"
+            sx={{
+              position: 'absolute',
+              bottom: 16,
+              right: 16,
+              backgroundColor: '#ffc2cd',
+              '&:hover': {
+                backgroundColor: '#ff93ac'
+              }
+            }}
+            onClick={handleAddDog}
+          >
+            <AddIcon />
+          </Fab>
+        </Tooltip>
       </Box>
     </div>
   );
