@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon -L src/server.js",
+    "dev": "nodemon --legacy-watch src/server.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
@@ -21,6 +21,7 @@
     "joi": "^17.12.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.2",
+    "multer": "^1.4.5-lts.1",
     "openai": "^4.29.1",
     "request-promise": "^4.2.6"
   },
