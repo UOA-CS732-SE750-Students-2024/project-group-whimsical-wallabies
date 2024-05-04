@@ -171,6 +171,7 @@ const DogFormBase = ({ control, isLoading, handleImageChange }) => {
           <Grid item xs={12}>
             <TextField
               type="file"
+              accept="image/*"
               name="profilePicture"
               label="Upload Dog Photo"
               onChange={handleImageChange}

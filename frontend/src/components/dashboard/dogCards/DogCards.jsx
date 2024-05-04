@@ -23,7 +23,7 @@ const DogCards = () => {
             key={_id}
             xs={12}
             sm={4}
-            lg={2}
+            lg={3}
             p={2}
             style={{ display: 'flex', justifyContent: 'center' }}
           >

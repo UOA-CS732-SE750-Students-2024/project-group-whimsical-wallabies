@@ -59,29 +59,29 @@ const DogCreateUpdateDialog = ({ dogId }) => {
   });
   const [open, setOpen] = useState(false);
 
-  const toggleOpen = () => {
-    setOpen(!open);
-  };
-
   const toggleAndInvalidate = () => {
-    toggleOpen();
+    setOpen(false);
     queryClient.invalidateQueries(['me', 'dogs']);
+    if (dogId) queryClient.invalidateQueries(['dogs', dogId]);
   };
 
   const { data: dog, isLoading } = useGetDogById(dogId, { enabled: !!dogId });
   const { mutate: mutateUploadDogProfilePicture } = useUploadDogProfilePictureMutation({
-    onSuccess: toggleAndInvalidate
+    onSuccess: () => {
+      toggleAndInvalidate();
+      setProfilePicture(null);
+    }
   });
   const { mutate: mutateUpdateDog, error: mutateUpdateDogError } = useUpdateDogMutation(dogId, {
     onSuccess: () => {
-      if (!profilePicture) toggleAndInvalidate();
+      if (!profilePicture) return toggleAndInvalidate();
       return mutateUploadDogProfilePicture({ dogId, profilePicture });
     }
   });
 
   const { mutate: mutateCreateDog, error: mutateCreateDogError } = useCreateDogMutation({
     onSuccess: (newDog) => {
-      if (!profilePicture) toggleAndInvalidate();
+      if (!profilePicture) return toggleAndInvalidate();
       return mutateUploadDogProfilePicture({ dogId: newDog._id, profilePicture });
     }
   });
@@ -107,14 +107,14 @@ const DogCreateUpdateDialog = ({ dogId }) => {
 
   if (!open) {
     return (
-      <Button variant="contained" color="primary" onClick={toggleOpen}>
+      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
         {dogId ? 'Update Dog' : 'Create Dog'}
       </Button>
     );
   }
 
   return (
-    <Dialog open={open} onClose={toggleOpen} fullScreen>
+    <Dialog open={open} onClose={() => setOpen(false)} fullScreen>
       <Box component="form" onSubmit={handleSubmit(mutationFunction)}>
         <DialogTitle>{dogId ? 'Update Dog' : 'Create Dog'}</DialogTitle>
         <DialogContent>
@@ -163,7 +163,7 @@ const DogCreateUpdateDialog = ({ dogId }) => {
               variant="outlined"
               color="success"
               startIcon={<CancelIcon />}
-              onClick={toggleOpen}
+              onClick={() => setOpen(false)}
               sx={{ width: { xs: '100%', sm: 'auto' }, mt: 1, mx: { sm: 1 } }}
               md={CommonStyles.actionButton}
             >
