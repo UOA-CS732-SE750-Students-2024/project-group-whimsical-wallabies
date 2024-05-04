@@ -1,9 +1,10 @@
 import Joi from 'joi';
 
 export const signupSchema = Joi.object({
+  aboutMe: Joi.string().required(),
   username: Joi.string().alphanum().min(3).max(30).required(),
   password: Joi.string().min(6).required(),
-  confirmpassword: Joi.string().valid(Joi.ref('password')).required().messages({
+  confirmPassword: Joi.string().valid(Joi.ref('password')).required().messages({
     'any.only': 'Passwords must match'
   }),
   email: Joi.string().email({ tlds: false }).required(),

@@ -5,9 +5,10 @@ const thridPartyPathBase = buildPathWithBase(THIRD_PARTY_APIS);
 const dogPathBase = buildPathWithBase(DOG_PATHS);
 
 const registerSchema = Joi.object({
+  aboutMe: Joi.string().required(),
   username: Joi.string().alphanum().min(3).max(30).required(),
   password: Joi.string().min(6).required(),
-  confirmpassword: Joi.any().valid(Joi.ref('password')).required(),
+  confirmPassword: Joi.any().valid(Joi.ref('password')).required(),
   email: Joi.string().email().required(),
   address: Joi.string().required(),
   latitude: Joi.number().precision(8).required(),
