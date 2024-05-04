@@ -5,7 +5,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import DogCards from '../dogCards/DogCards';
+import DogCards from '../dogcards/DogCards';
 import dogDummyData from './dogDummyData.json';
 
 export default function DogDashboard() {

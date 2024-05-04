@@ -25,8 +25,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import dogDummyData from '../dogDashboard/dogDummyData.json';
-import DogPhotoGallery from '../dogPhotoGallery/DogPhotoGallery';
+import dogDummyData from '../dogdashboard/dogDummyData.json';
+import DogPhotoGallery from '../dogphotogallery/DogPhotoGallery';
 
 export default function DogProfile() {
   let navigate = useNavigate();

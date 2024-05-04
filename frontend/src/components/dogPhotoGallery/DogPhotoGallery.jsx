@@ -12,7 +12,8 @@ import {
   DialogTitle,
   ImageList,
   ImageListItem,
-  Tooltip
+  Tooltip,
+  Input
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -21,8 +22,15 @@ import dogPhotos from './dogPhotos.json';
 export default function DogPhotoGallery({ id }) {
   const [allPhotos, setAllPhotos] = useState(dogPhotos);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  //delete
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
+
+  //upload
+  const [file, setFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [uploadError, setUploadError] = useState(null);
 
   const filteredPhotos = allPhotos.filter((photo) => photo.dog === id);
 
@@ -48,13 +56,37 @@ export default function DogPhotoGallery({ id }) {
 
   const handleUploadClose = () => {
     setOpenUploadDialog(false);
+    setFile(null);
+    setPreviewUrl(null);
+    setUploadError(null);
   };
 
-  const handleUpload = (newPhoto) => {
-    // Implement upload logic here
-    const updatedPhotos = [...allPhotos, { dog: id, url: newPhoto }];
-    setAllPhotos(updatedPhotos);
-    handleUploadClose();
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    setPreviewUrl(URL.createObjectURL(selectedFile));
+  };
+
+  const handleUpload = async () => {
+    try {
+      // Implement upload logic here
+      // use an API or Firebase Storage to upload the file
+      // and receive the URL of the uploaded image
+
+      // Simulating a successful upload and getting the URL
+      const uploadedUrl = await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(`https://example.com/uploaded-image-${Date.now()}.jpg`);
+        }, 2000); // Simulating a 2-second delay
+      });
+
+      const updatedPhotos = [...allPhotos, { dog: id, url: uploadedUrl }];
+      setAllPhotos(updatedPhotos);
+      handleUploadClose();
+    } catch (error) {
+      setUploadError('Failed to upload the image. Please try again.');
+      console.error('Upload error:', error);
+    }
   };
 
   if (filteredPhotos.length === 0) {
@@ -135,17 +167,28 @@ export default function DogPhotoGallery({ id }) {
       <Dialog open={openUploadDialog} onClose={handleUploadClose}>
         <DialogTitle>Upload Photo</DialogTitle>
         <DialogContent>
-          {/* Add photo upload component or logic here */}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleUpload(URL.createObjectURL(e.target.files[0]))}
-          />
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Input type="file" accept="image/*" onChange={handleFileChange} />
+            {previewUrl && (
+              <Box mt={2}>
+                <img src={previewUrl} alt="Preview" style={{ maxWidth: '100%' }} />
+              </Box>
+            )}
+            {uploadError && (
+              <Box mt={2}>
+                <Typography color="error">{uploadError}</Typography>
+              </Box>
+            )}
+            <Box mt={2}>
+              <Button variant="contained" onClick={handleUpload} disabled={!file}>
+                Upload
+              </Button>
+              <Button onClick={handleUploadClose} sx={{ ml: 2 }}>
+                Cancel
+              </Button>
+            </Box>
+          </Box>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleUploadClose}>Cancel</Button>
-          <Button onClick={handleUploadClose}>Upload</Button>
-        </DialogActions>
       </Dialog>
     </Box>
   );

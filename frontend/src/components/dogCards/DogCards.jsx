@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import DogCardItem from '../dogCardItem/DogCardItem';
+import DogCardItem from '../dogcarditem/DogCardItem';
 
 export default function DogCards({ items }) {
   if (items && items.length > 0) {
