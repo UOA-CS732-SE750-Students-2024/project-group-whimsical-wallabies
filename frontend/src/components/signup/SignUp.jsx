@@ -3,6 +3,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import PasswordIcon from '@mui/icons-material/Password';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -400,8 +401,6 @@ const SignUp = () => {
             />
           </Grid>
         </Grid>
-      </Box>
-      <Grid container spacing={2}>
         <Controller
           name="aboutMe"
           control={control}
@@ -415,13 +414,20 @@ const SignUp = () => {
                 fullWidth
                 margin="normal"
                 error={!!error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <InfoIcon />
+                    </InputAdornment>
+                  )
+                }}
                 disabled={isPendingSignup}
               />
               {error && <FormHelperText error>{error.message}</FormHelperText>}
             </>
           )}
         />
-      </Grid>
+      </Box>
       <CardActions disableSpacing sx={CommonStyles.cardActions}>
         <Button
           type="submit"
@@ -473,7 +479,7 @@ const SignUp = () => {
           <Button
             onClick={() => handleDialogButtonClick()}
             variant="contained"
-            color="primary"
+            color="success"
             sx={CommonStyles.dialogButton}
           >
             Go to Login

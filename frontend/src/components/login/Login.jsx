@@ -129,7 +129,7 @@ const Login = () => {
         <Button
           type="button"
           variant="outlined"
-          color="primary"
+          color="success"
           startIcon={<PersonAddIcon />}
           onClick={handleSignUpClick}
           sx={CommonStyles.actionButton}

@@ -32,8 +32,7 @@ export const CommonStyles = {
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
     borderRadius: 2,
     background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
-    width: '80%',
-    maxWidth: '780px',
+    width: '75%',
     mx: 'auto',
     my: 1
   },
@@ -47,7 +46,7 @@ export const CommonStyles = {
   },
   cardActions: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     width: '80%',
     px: 2,
     mt: 2,
