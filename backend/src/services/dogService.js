@@ -52,3 +52,7 @@ export const deleteDog = async (id, owner) => {
 
   return dog;
 };
+
+export const getAllDogsExceptUser = async (owner) => {
+  return await Dog.find({ owner: { $ne: owner } });
+};

@@ -9,7 +9,13 @@ export const buildPathWithBase = (authPaths) => {
 export const AUTH_PATHS = {
   base: '/api/auth',
   register: '/register',
-  login: '/login'
+  login: '/login',
+  profile: '/profile'
+};
+
+export const USER_PATHS = {
+  base: '/api/user',
+  profile: '/:id/profile'
 };
 
 export const THIRD_PARTY_APIS = {
@@ -25,6 +31,11 @@ export const DOG_PATHS = {
   getOne: '/:id',
   update: '/:id',
   remove: '/:id'
+};
+
+export const DOG_POTENTIAL_MATES_PATHS = {
+  base: '/api/potential-mates',
+  getAll: '/'
 };
 
 export const PHOTO_PATHS = {
