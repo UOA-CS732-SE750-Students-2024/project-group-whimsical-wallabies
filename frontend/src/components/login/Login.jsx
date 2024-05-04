@@ -17,6 +17,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { APPLICATION_PATH } from '../../utils/urlRoutes';
 import { CommonStyles } from '../common/CommonStyles';
 import { loginSchema } from './Login.validation';
 
@@ -26,7 +27,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/welcome');
+      navigate(APPLICATION_PATH.dashboard);
     }
   }, [isAuthenticated, navigate]);
 
