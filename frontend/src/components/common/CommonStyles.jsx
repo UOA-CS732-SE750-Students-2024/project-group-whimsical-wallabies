@@ -98,7 +98,7 @@ export const CommonStyles = {
   homeBoxStyles: {
     position: 'absolute',
     top: 100,
-    left: 20,
+    left: 50,
     textAlign: 'center',
     zIndex: 2
   },
@@ -107,11 +107,13 @@ export const CommonStyles = {
     fontWeight: 'bold'
   },
   homeSubtitleStyles: {
-    m: 1,
+    m: 2,
+    alignSelf: 'center',
     color: '#1a4c88'
   },
   homeButtonStyles: {
-    m: 2,
+    m: 1,
+    padding: '10px 20px',
     backgroundColor: '#1a4c88'
   },
   matchDashboard: {
