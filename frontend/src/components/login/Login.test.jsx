@@ -1,9 +1,9 @@
-import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Login from './Login';
-import { useAuth } from '../../context/AuthContext';
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import Login from './Login';
 
 jest.mock('../../context/AuthContext', () => ({
   useAuth: jest.fn()
@@ -64,7 +64,7 @@ describe('Login Component', () => {
     }));
 
     render(<Login />, { wrapper: BrowserRouter });
-    expect(mockNavigate).toHaveBeenCalledWith('/');
+    expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
   });
 
   it('displays error message if login fails', () => {
