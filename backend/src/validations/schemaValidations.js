@@ -27,10 +27,10 @@ const promptSchema = Joi.object({
 const createDogSchema = Joi.object({
   name: Joi.string().required(),
   breed: Joi.string().required(),
-  dob: Joi.date().required(),
+  dob: Joi.date().optional(),
   gender: Joi.string().required(),
   weight: Joi.number().required(),
-  bio: Joi.string().optional(),
+  bio: Joi.string().required(),
   neutered: Joi.boolean().required(),
   profilePicture: Joi.string().uri().optional()
 });
