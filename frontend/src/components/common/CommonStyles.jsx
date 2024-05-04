@@ -27,8 +27,6 @@ export const CommonStyles = {
     alignItems: 'center',
     height: 'auto',
     minHeight: '55vh',
-    mt: 1,
-    p: 2,
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
     borderRadius: 2,
     background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
