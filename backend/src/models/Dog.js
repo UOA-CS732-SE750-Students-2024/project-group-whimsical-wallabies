@@ -7,7 +7,7 @@ const DogSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   gender: { type: String, required: true },
   weight: { type: Number, required: true },
-  bio: { type: String, required: false },
+  bio: { type: String, required: true },
   neutered: { type: Boolean, required: true },
   profilePicture: { type: String, required: false },
   photos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Photo' }]

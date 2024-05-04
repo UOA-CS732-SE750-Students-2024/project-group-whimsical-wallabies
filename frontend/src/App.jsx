@@ -4,14 +4,17 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// import dog page
 import DogDashboard from './components/dogdashboard/DogDashboard';
 import DogProfile from './components/dogprofile/DogProfile';
+import DogCreate from './components/dogs/DogCreate';
+import DogUpdate from './components/dogs/DogUpdate';
+
 import HomePage from './components/homepage/HomePage';
 import Header from './components/layout/Header';
 import Login from './components/login/Login';
 // import MatchPage from './components/matchapage/MatchPage';
 import SignUp from './components/signup/SignUp';
-
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 import QueryCallExamples from './QueryCallExamples';
@@ -47,14 +50,20 @@ const App = () => {
                   <Route path="/" element={<HomePage />} />
                   <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
                   <Route path={APPLICATION_PATH.auth.signup} element={<SignUp />} />
-
                   {/*<Route path="/match" element={<MatchPage />} />*/}
-
                   <Route
                     path="/welcome"
                     element={
                       <PrivateRoute>
                         <WelcomePage />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path={APPLICATION_PATH.dog.create}
+                    element={
+                      <PrivateRoute>
+                        <DogCreate />
                       </PrivateRoute>
                     }
                   />
@@ -71,6 +80,14 @@ const App = () => {
                     element={
                       <PrivateRoute>
                         <DogProfile />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path={APPLICATION_PATH.dog.update}
+                    element={
+                      <PrivateRoute>
+                        <DogUpdate />
                       </PrivateRoute>
                     }
                   />

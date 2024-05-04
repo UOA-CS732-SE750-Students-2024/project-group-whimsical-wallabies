@@ -1,11 +1,11 @@
 import Dog from '../models/Dog.js';
 import User from '../models/User.js';
 
-export const createDog = async (owner, { name, breed, dob, gender, weight, neutered }) => {
+export const createDog = async (owner, { name, breed, dob, gender, weight, bio, neutered }) => {
   const user = await User.findById(owner);
   if (!user) throw new Error('User not found');
 
-  const dog = new Dog({ name, breed, dob, owner, gender, weight, neutered });
+  const dog = new Dog({ name, breed, dob, owner, gender, weight, bio, neutered });
   await dog.save();
 
   return dog;
