@@ -244,7 +244,7 @@ const DogFormBase = ({ dogId }) => {
           variant="outlined"
           disabled={isLoading}
         />
-        {mutateUpdateDogError && <p>An error occurred: {mutateUpdateDogError.message}</p>}
+        {mutationError && <p>An error occurred: {mutationError.message}</p>}
         <Button
           type="submit"
           variant="contained"
