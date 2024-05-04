@@ -190,7 +190,7 @@ export default function DogProfile() {
           </Card>
 
           <Box mt={4}>
-            <DogPhotoGallery photos={dog.photos} />
+            <DogPhotoGallery id={dog.id} />
           </Box>
         </>
       ) : (
