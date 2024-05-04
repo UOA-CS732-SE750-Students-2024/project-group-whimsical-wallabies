@@ -22,8 +22,8 @@ const DogCards = () => {
             item
             key={_id}
             xs={12}
-            sm={6}
-            lg={3}
+            sm={4}
+            lg={2}
             p={2}
             style={{ display: 'flex', justifyContent: 'center' }}
           >

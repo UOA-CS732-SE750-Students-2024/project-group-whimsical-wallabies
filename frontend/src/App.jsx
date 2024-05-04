@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import DogDashboard from './components/dashboard/dogDashboard';
 import DogProfile from './components/dogProfile/DogProfile';
-import DogCreate from './components/dogs/DogCreate';
-import DogUpdate from './components/dogs/DogUpdate';
 import HomePage from './components/homepage/HomePage';
 import Header from './components/layout/Header';
 import Login from './components/login/Login';
@@ -50,14 +48,6 @@ const App = () => {
                 <Route path={APPLICATION_PATH.auth.signup} element={<SignUp />} />
                 {/*<Route path="/match" element={<MatchPage />} />*/}
                 <Route
-                  path={APPLICATION_PATH.dog.create}
-                  element={
-                    <PrivateRoute>
-                      <DogCreate />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
                   path={APPLICATION_PATH.dashboard}
                   element={
                     <PrivateRoute>
@@ -70,14 +60,6 @@ const App = () => {
                   element={
                     <PrivateRoute>
                       <DogProfile />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path={APPLICATION_PATH.dog.update}
-                  element={
-                    <PrivateRoute>
-                      <DogUpdate />
                     </PrivateRoute>
                   }
                 />

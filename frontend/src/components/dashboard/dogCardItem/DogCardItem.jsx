@@ -13,6 +13,7 @@ import {
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import DogCreateUpdateDialog from '../../dogs/DogCreateUpdateDialog';
 
 const DogCardItem = ({ id, image, name, gender, aboutMe }) => {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ const DogCardItem = ({ id, image, name, gender, aboutMe }) => {
             }
           }}
         />
+        <DogCreateUpdateDialog dogId={id} />
       </CardActions>
     </Card>
   );
