@@ -11,7 +11,7 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Chip,
+  // Chip,
   Typography,
   Button,
   IconButton,
@@ -22,29 +22,47 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import dogDummyData from '../dogdashboard/dogDummyData.json';
+//mock data
+// import dogDummyData from '../dogdashboard/dogDummyData.json';
+import { useGetDog, useDeleteDogMutation } from '../../queries/dogs';
 import DogPhotoGallery from '../dogphotogallery/DogPhotoGallery';
 
 export default function DogProfile() {
   let navigate = useNavigate();
 
   const { ownerId, id } = useParams();
-  const [dog, setDog] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  useEffect(() => {
-    const filteredDogs = dogDummyData.filter(
-      (dog) => dog.ownerId === parseInt(ownerId, 10) && dog.id === parseInt(id, 10)
-    );
-    if (filteredDogs.length > 0) {
-      setDog(filteredDogs[0]);
-    } else {
-      setDog(null);
-    }
-  }, [ownerId, id]);
+  const { data: dog, isLoading, isError } = useGetDog(id); // Use the useGetDogs query
+  const { mutate: deleteDog } = useDeleteDogMutation(); // Use the useDeleteDogMutation mutation
+
+  // running mock data
+  // useEffect(() => {
+  //   const filteredDogs = dogDummyData.filter(
+  //     (dog) => dog.ownerId === parseInt(ownerId, 10) && dog.id === parseInt(id, 10)
+  //   );
+  //   if (filteredDogs.length > 0) {
+  //     setDog(filteredDogs[0]);
+  //   } else {
+  //     setDog(null);
+  //   }
+  // }, [ownerId, id]);
+
+  // useEffect(() => {
+  //   if (dogs) {
+  //     const filteredDogs = dogs.filter(
+  //       (dog) => dog.ownerId === parseInt(owner, 10) && dog.id === parseInt(_id, 10)
+  //     );
+  //     if (filteredDogs.length > 0) {
+  //       setDog(filteredDogs[0]);
+  //     } else {
+  //       setDog(null);
+  //     }
+  //   }
+  // }, [owner, _id, dogs]);
 
   const handleDeleteOpen = () => {
     setOpenDeleteDialog(true);
@@ -55,21 +73,35 @@ export default function DogProfile() {
   };
 
   const handleDelete = () => {
-    const dogIndex = dogDummyData.findIndex(
-      (dog) => dog.ownerId === parseInt(ownerId, 10) && dog.id === parseInt(id, 10)
-    );
-
-    if (dogIndex !== -1) {
-      dogDummyData.splice(dogIndex, 1);
-      setDog(null);
-      handleDeleteClose();
-      navigate(`/${ownerId}/dog`);
-
-      console.log('Dog profile deleted successfully');
-    } else {
-      console.error('Dog profile not found');
-    }
+    deleteDog(dog.id, {
+      onSuccess: () => {
+        handleDeleteClose();
+        navigate(`/${ownerId}/dog`);
+        console.log('Dog profile deleted successfully');
+      },
+      onError: (error) => {
+        console.error('Error deleting dog profile:', error);
+      }
+    });
   };
+
+  // running mock data
+  // const handleDelete = () => {
+  //   const dogIndex = dogDummyData.findIndex(
+  //     (dog) => dog.ownerId === parseInt(ownerId, 10) && dog.id === parseInt(id, 10)
+  //   );
+
+  //   if (dogIndex !== -1) {
+  //     dogDummyData.splice(dogIndex, 1);
+  //     setDog(null);
+  //     handleDeleteClose();
+  //     navigate(`/${ownerId}/dog`);
+
+  //     console.log('Dog profile deleted successfully');
+  //   } else {
+  //     console.error('Dog profile not found');
+  //   }
+  // };
 
   const handleEdit = () => {
     // Implement edit logic here
@@ -87,6 +119,14 @@ export default function DogProfile() {
     }
     return `${ageInYears} years ${ageInMonths} months`;
   };
+
+  if (isLoading) {
+    return <Typography variant="h6">Loading...</Typography>;
+  }
+
+  if (isError) {
+    return <Typography variant="h6">Error loading dogs.</Typography>;
+  }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
@@ -160,7 +200,7 @@ export default function DogProfile() {
                 <Typography variant="body1" gutterBottom>
                   Interested In:
                 </Typography>
-                {dog.interested_in.map((interest, index) => (
+                {/* {dog.interested_in.map((interest, index) => (
                   <Chip
                     key={index}
                     label={interest}
@@ -171,7 +211,7 @@ export default function DogProfile() {
                       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)'
                     }}
                   />
-                ))}
+                ))} */}
               </Box>
 
               <Box mt={2} display="flex" justifyContent="flex-end">

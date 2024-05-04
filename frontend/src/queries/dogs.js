@@ -22,6 +22,16 @@ export function useGetDogById(dogId, options = {}) {
   });
 }
 
+export function useGetDog(id) {
+  return useQuery({
+    queryKey: ['dog'],
+    queryFn: async () => {
+      const { data } = await axiosApiInstance.get(`/api/dog/${id}`);
+      return data;
+    }
+  });
+}
+
 export function useUpdateDogMutation(dogId, options) {
   return useMutation({
     mutationFn: async (updatedDog) => {
