@@ -19,7 +19,7 @@ import potentialMatesRoutes from './routes/potentialMatesRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = dirname(dirname(__filename));
 
 const app = express();
 app.use(
@@ -30,8 +30,8 @@ app.use(
 
 const dogPathBase = buildPathWithBase(DOG_PATHS);
 
+app.use('/media', express.static(path.join(__dirname, 'media')));
 app.use(express.json());
-app.use('/media/dogs', express.static(path.join(__dirname, 'media/dogs')));
 app.use(authenticate);
 app.use(AUTH_PATHS.base, authRoutes);
 app.use(`${dogPathBase.getOne}/photos`, photoRoutes);

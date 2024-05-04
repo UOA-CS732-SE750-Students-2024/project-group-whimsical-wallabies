@@ -14,9 +14,9 @@ export const APPLICATION_PATH = {
     signup: '/signup'
   },
   dog: {
-    dogDashboard: '/dog',
     profile: '/dog/:id',
     create: '/DogCreate',
     update: '/DogUpdate/:dogId'
-  }
+  },
+  dashboard: '/dashboard'
 };

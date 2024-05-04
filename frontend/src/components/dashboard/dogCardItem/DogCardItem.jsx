@@ -1,21 +1,24 @@
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
-import { Chip, CardActionArea, CardActions } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
+import {
+  Chip,
+  CardActionArea,
+  CardActions,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography
+} from '@mui/material';
 
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function DogCardItem({ ownerId, id, image, name, gender, about_me }) {
-  let navigate = useNavigate();
+const DogCardItem = ({ id, image, name, gender, aboutMe }) => {
+  const navigate = useNavigate();
 
   const handleViewClick = () => {
-    navigate(`/${ownerId}/dog/${id}`); // Navigate to the dog profile
-    console.log('View clicked');
+    navigate(`/dog/${id}`);
   };
 
   return (
@@ -24,7 +27,7 @@ export default function DogCardItem({ ownerId, id, image, name, gender, about_me
         <CardMedia
           component="img"
           height={300}
-          image={image}
+          image={`http://localhost:3001/${image}`}
           alt={id}
           sx={{ objectFit: 'cover' }}
         />
@@ -38,13 +41,13 @@ export default function DogCardItem({ ownerId, id, image, name, gender, about_me
             <FemaleIcon fontSize="small" style={{ color: '#ff99cc' }} />
           )}
           <Typography variant="body2" color="text.secondary">
-            {about_me}
+            {aboutMe}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
         <Chip
-          label="Vew Profile"
+          label="View Profile"
           onClick={handleViewClick}
           sx={{
             mr: 1,
@@ -58,12 +61,13 @@ export default function DogCardItem({ ownerId, id, image, name, gender, about_me
       </CardActions>
     </Card>
   );
-}
+};
 DogCardItem.propTypes = {
-  ownerId: PropTypes.number.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   gender: PropTypes.string.isRequired,
-  about_me: PropTypes.string.isRequired
+  aboutMe: PropTypes.string.isRequired
 };
+
+export default DogCardItem;
