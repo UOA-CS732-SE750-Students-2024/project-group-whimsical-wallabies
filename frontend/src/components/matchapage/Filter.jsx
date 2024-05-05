@@ -1,7 +1,4 @@
 import { Box, Typography, Checkbox, FormControlLabel, Button } from '@mui/material';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
 import React, { useState } from 'react';
 
 const Filter = () => {
@@ -87,29 +84,18 @@ const Filter = () => {
           <Typography variant="h6" gutterBottom>
             Dog Breeds
           </Typography>
-
-          <ImageList>
-            {db.map((dog) => (
-              <ImageListItem key={dog.url}>
-                <img
-                  srcSet={`${dog.url}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                  src={`${dog.url}?w=248&fit=crop&auto=format`}
-                  alt={dog.breed}
-                  loading="lazy"
-                  style={{ width: '100%', height: '100%' }}
+          {db.map((dog, index) => (
+            <FormControlLabel
+              key={index} // Assign a unique key based on the array index
+              control={
+                <Checkbox
+                  onChange={() => handleCheckboxChange('breeds', dog.breed)}
+                  checked={filters.breeds.includes(dog.breed)}
                 />
-                <ImageListItemBar
-                  title={dog.breed}
-                  actionIcon={
-                    <Checkbox
-                      onChange={() => handleCheckboxChange('breeds', dog.breed)}
-                      checked={filters.breeds.includes(dog.breed)}
-                    />
-                  }
-                />
-              </ImageListItem>
-            ))}
-          </ImageList>
+              }
+              label={dog.breed} // Use dog breed as the label
+            />
+          ))}
           <Typography variant="h6" gutterBottom mt={2}>
             Gender
           </Typography>
