@@ -137,8 +137,8 @@ export const CommonStyles = {
     marginTop: '-20vh',
     width: {
       xs: '100%',
-      sm: '600px',
-      md: '650px',
+      sm: '500px',
+      md: '600px',
       lg: '700px'
     },
     height: {
