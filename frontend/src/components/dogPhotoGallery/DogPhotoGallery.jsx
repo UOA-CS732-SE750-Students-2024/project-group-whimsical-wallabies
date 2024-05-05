@@ -198,7 +198,7 @@ export default function DogPhotoGallery({ id }) {
 }
 
 DogPhotoGallery.propTypes = {
-  id: PropTypes.number.isRequired
+  id: PropTypes.string.isRequired
 };
 
 UploadDialog.propTypes = {
