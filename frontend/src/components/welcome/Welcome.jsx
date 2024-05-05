@@ -1,12 +1,30 @@
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PeopleIcon from '@mui/icons-material/People';
 import PetsIcon from '@mui/icons-material/Pets';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, Typography, List, ListItem, ListItemIcon, ListItemText, Grid } from '@mui/material';
+
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Grid,
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText
+} from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/system';
 import React from 'react';
 import backgroundImage from '../../images/homeDogImage.png';
+
+import DogWalkingPlaces from '../utils/DogWalkingPlaces';
 import Weather from '../utils/Weather';
 
 const Welcome = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <Box
       sx={{
@@ -31,7 +49,33 @@ const Welcome = () => {
       >
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
-            <Weather />
+            {isMobile ? (
+              <>
+                <Accordion>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography>Weather</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Weather />
+                  </AccordionDetails>
+                </Accordion>
+                <Accordion>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography>Dog Walking Places</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <DogWalkingPlaces />
+                  </AccordionDetails>
+                </Accordion>
+              </>
+            ) : (
+              <Box>
+                <Weather />
+                <Box mt={2}>
+                  <DogWalkingPlaces />
+                </Box>
+              </Box>
+            )}
           </Grid>
           <Grid item xs={12} sm={8}>
             <Box sx={{ maxWidth: 800, position: 'relative', zIndex: 3 }}>

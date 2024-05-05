@@ -1,9 +1,14 @@
-import { askGpt } from '../services/openAiService.js';
+import { askGptPlacesToWalkADog } from '../services/openAiService.js';
 
-export const promptQuestion = async ({ body }, res) => {
+let cache = {}; // This prevent calling continuesly the API
+
+export const promptQuestion = async ({ query: { lat, lon } }, res) => {
   try {
-    const answer = await askGpt(body);
-    res.json({ answer });
+    const key = `${parseFloat(lat).toFixed(4)},${parseFloat(lon).toFixed(4)}`;
+    if (!cache[key]) {
+      cache[key] = await askGptPlacesToWalkADog({ lat, lon });
+    }
+    res.json({ answer: cache[key] });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

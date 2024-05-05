@@ -1,5 +1,30 @@
 import { fetchWeatherByLocation } from '../services/weatherService.js';
 
+function isGoodDayForDogWalk(weatherData) {
+  const { main, weather, wind } = weatherData;
+
+  // Check temperature range
+  const isTempIdeal = main.temp >= 15 && main.temp <= 24;
+
+  // Check weather conditions: avoid rain, snow, or any extreme weather
+  const weatherIds = weather.map((item) => item.id);
+  const isWeatherGood = !weatherIds.some(
+    (id) =>
+      (id >= 200 && id <= 232) || // Thunderstorm
+      (id >= 300 && id <= 531) || // Drizzle & Rain
+      (id >= 600 && id <= 622) || // Snow
+      id >= 781 // Tornado
+  );
+
+  // Check wind speed (convert m/s to km/h by multiplying by 3.6)
+  const isWindOk = wind.speed * 3.6 < 20;
+
+  // Check humidity - avoid high humidity on hot days
+  const isHumidityOk = !(main.temp > 20 && main.humidity > 80);
+
+  return isTempIdeal && isWeatherGood && isWindOk && isHumidityOk;
+}
+
 export const getWeather = async (req, res) => {
   const { lat, lon } = req.query; // Expect latitude and longitude as query parameters
   if (!lat || !lon) {
@@ -10,14 +35,7 @@ export const getWeather = async (req, res) => {
 
   try {
     const weather = await fetchWeatherByLocation(lat, lon);
-    // Determine if it's a good day for a walk
-    // Criteria: No rain, comfortable temperature (e.g., between 15°C and 25°C), no extreme weather conditions
-    const isGoodDayForWalk =
-      !weather.weather.some((condition) => ['Rain', 'Snow', 'Extreme'].includes(condition.main)) &&
-      weather.main.temp >= 15 && // Assuming temperature is in °C and you're fetching weather with units=metric
-      weather.main.temp <= 25;
-
-    res.json({ ...weather, isGoodDayForWalk });
+    res.json({ ...weather, isGoodDayForWalk: isGoodDayForDogWalk(weather) });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
