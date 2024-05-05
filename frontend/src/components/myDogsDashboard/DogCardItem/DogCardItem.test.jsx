@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import DogCardItem from './DogCardItem';
 
 // Mock the DogCreateUpdateDialog component
-jest.mock('../../dogs/DogCreateUpdateDialog', () => {
+jest.mock('../../myDogsDashboard/DogCreateUpdateDialog', () => {
   const DogCreateUpdateDialog = () => <div>DogCreateUpdateDialogComponent</div>;
   DogCreateUpdateDialog.displayName = 'DogCreateUpdateDialog';
   return DogCreateUpdateDialog;
