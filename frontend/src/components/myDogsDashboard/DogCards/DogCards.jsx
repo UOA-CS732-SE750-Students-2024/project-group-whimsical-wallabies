@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from '@mui/material';
 import React from 'react';
 import { useGetDogs } from '../../../queries/dogs';
-import DogCardItem from '../dogCardItem';
+import DogCardItem from '../DogCardItem';
 import NoDogsFound from './NoDogFound';
 
 const DogCards = () => {

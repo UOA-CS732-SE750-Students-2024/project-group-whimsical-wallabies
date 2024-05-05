@@ -9,7 +9,7 @@ jest.mock('../../../queries/dogs', () => ({
 }));
 
 // Mock components
-jest.mock('../dogCardItem', () => {
+jest.mock('../DogCardItem', () => {
   const DogCardItem = () => <div>DogCardItem</div>;
   DogCardItem.displayName = 'DogCardItem';
   return DogCardItem;

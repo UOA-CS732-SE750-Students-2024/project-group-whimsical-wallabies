@@ -3,7 +3,7 @@ import React from 'react';
 import DogDashboard from './DogDashboard';
 
 // Mock child components
-jest.mock('../dogCards', () => {
+jest.mock('../DogCards', () => {
   const DogCards = () => <div>DogCardsComponent</div>;
   DogCards.displayName = 'DogCards';
   return DogCards;
