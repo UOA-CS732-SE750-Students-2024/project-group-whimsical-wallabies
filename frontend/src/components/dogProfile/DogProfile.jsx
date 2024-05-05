@@ -25,7 +25,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useGetDog, useDeleteDogMutation } from '../../queries/dogs';
-import DogPhotoGallery from '../dogPhotoGallery/DogPhotoGallery';
+import DogPhotoGallery from '../dogphotogallery/DogPhotoGallery';
 
 export default function DogProfile() {
   let navigate = useNavigate();
