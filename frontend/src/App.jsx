@@ -12,6 +12,7 @@ import Header from './components/layout/Header';
 import Login from './components/login/Login';
 import MatchPage from './components/matchapage/MatchPage';
 import SignUp from './components/signup/SignUp';
+import Welcome from './components/welcome/Welcome';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 import theme from './theme';
@@ -56,7 +57,11 @@ const App = () => {
                 />
                 <Route
                   path={APPLICATION_PATH.dashboard}
-                  element={<PrivateRoute>Welcome to the Dashboard</PrivateRoute>}
+                  element={
+                    <PrivateRoute>
+                      <Welcome />
+                    </PrivateRoute>
+                  }
                 />
                 <Route
                   path={APPLICATION_PATH.dog.dashboard}
