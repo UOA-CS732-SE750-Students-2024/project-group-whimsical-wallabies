@@ -48,7 +48,7 @@ export default function DogProfile() {
     deleteDog(dog._id, {
       onSuccess: () => {
         handleDeleteClose();
-        navigate(`/dog`);
+        navigate(`/dashboard`);
         console.log('Dog profile deleted successfully');
       },
       onError: (error) => {
@@ -86,7 +86,7 @@ export default function DogProfile() {
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
       {dog ? (
         <>
-          <Card sx={{ maxWidth: 600 }}>
+          <Card sx={{ maxWidth: 600, width: 600, height: 400 }}>
             <CardMedia component="img" height="300" image={dog.image} alt={dog.name} />
             <CardContent>
               <Typography
