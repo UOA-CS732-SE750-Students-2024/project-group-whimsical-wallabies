@@ -44,3 +44,9 @@ export const PHOTO_PATHS = {
   getAll: '/',
   remove: ':photoId'
 };
+
+export const MATCH_PATHS = {
+  base: '/api/match',
+  match: '/:dogId',
+  friends: '/'
+};

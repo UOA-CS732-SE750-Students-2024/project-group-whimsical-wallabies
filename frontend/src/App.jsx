@@ -4,8 +4,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// import dog page
 import DogDashboard from './components/dashboard/dogDashboard';
-import DogProfile from './components/dogProfile/DogProfile';
+import DogProfile from './components/dogprofile/DogProfile';
+
 import HomePage from './components/homepage/HomePage';
 import Header from './components/layout/Header';
 import Login from './components/login/Login';
@@ -43,7 +45,6 @@ const App = () => {
           <AuthProvider>
             <Router>
               <Routes>
-                <Route path="/" element={<HomePage />} />
                 <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
                 <Route path={APPLICATION_PATH.auth.signup} element={<SignUp />} />
                 <Route
@@ -56,6 +57,10 @@ const App = () => {
                 />
                 <Route
                   path={APPLICATION_PATH.dashboard}
+                  element={<PrivateRoute>Welcome to the Dashboard</PrivateRoute>}
+                />
+                <Route
+                  path={APPLICATION_PATH.dog.dashboard}
                   element={
                     <PrivateRoute>
                       <DogDashboard />
@@ -70,7 +75,7 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
-                <Route path="*" element={<Navigate to="/welcome" />} />
+                <Route path={APPLICATION_PATH.homepage} element={<HomePage />} />
               </Routes>
             </Router>
           </AuthProvider>

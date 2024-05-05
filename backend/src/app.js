@@ -6,12 +6,14 @@ import { authenticate } from './middlewares/authMiddleware.js';
 import authRoutes from './routes/authRoutes.js';
 import dogRoutes from './routes/dogRoutes.js';
 import externalApiRoutes from './routes/externalApiRoutes.js';
+import matchRoutes from './routes/matchRoutes.js';
 import {
   AUTH_PATHS,
   DOG_PATHS,
   DOG_POTENTIAL_MATES_PATHS,
   THIRD_PARTY_APIS,
   USER_PATHS,
+  MATCH_PATHS,
   buildPathWithBase
 } from './routes/paths.js';
 import photoRoutes from './routes/photoRoutes.js';
@@ -39,5 +41,6 @@ app.use(DOG_PATHS.base, dogRoutes);
 app.use(DOG_POTENTIAL_MATES_PATHS.base, potentialMatesRoutes);
 app.use(USER_PATHS.base, userRoutes);
 app.use(THIRD_PARTY_APIS.base, externalApiRoutes);
+app.use(MATCH_PATHS.base, matchRoutes);
 
 export default app;

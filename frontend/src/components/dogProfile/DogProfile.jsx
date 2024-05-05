@@ -11,7 +11,6 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Chip,
   Typography,
   Button,
   IconButton,
@@ -22,29 +21,20 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import dogDummyData from '../dashboard/dogDashboard/dogDummyData.json';
-import DogPhotoGallery from '../dogPhotoGallery/DogPhotoGallery';
+import { useGetDog, useDeleteDogMutation } from '../../queries/dogs';
+import DogPhotoGallery from '../dogphotogallery/DogPhotoGallery';
 
 export default function DogProfile() {
   let navigate = useNavigate();
 
-  const { ownerId, id } = useParams();
-  const [dog, setDog] = useState(null);
+  const { id } = useParams();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  useEffect(() => {
-    const filteredDogs = dogDummyData.filter(
-      (dog) => dog.ownerId === parseInt(ownerId, 10) && dog.id === parseInt(id, 10)
-    );
-    if (filteredDogs.length > 0) {
-      setDog(filteredDogs[0]);
-    } else {
-      setDog(null);
-    }
-  }, [ownerId, id]);
+  const { data: dog, isLoading, isError } = useGetDog(id); // Use the useGetDogs query
+  const { mutate: deleteDog } = useDeleteDogMutation(id); // Use the useDeleteDogMutation mutation
 
   const handleDeleteOpen = () => {
     setOpenDeleteDialog(true);
@@ -55,20 +45,16 @@ export default function DogProfile() {
   };
 
   const handleDelete = () => {
-    const dogIndex = dogDummyData.findIndex(
-      (dog) => dog.ownerId === parseInt(ownerId, 10) && dog.id === parseInt(id, 10)
-    );
-
-    if (dogIndex !== -1) {
-      dogDummyData.splice(dogIndex, 1);
-      setDog(null);
-      handleDeleteClose();
-      navigate(`/${ownerId}/dog`);
-
-      console.log('Dog profile deleted successfully');
-    } else {
-      console.error('Dog profile not found');
-    }
+    deleteDog(dog._id, {
+      onSuccess: () => {
+        handleDeleteClose();
+        navigate(`/dashboard`);
+        console.log('Dog profile deleted successfully');
+      },
+      onError: (error) => {
+        console.error('Error deleting dog profile:', error);
+      }
+    });
   };
 
   const handleEdit = () => {
@@ -88,11 +74,19 @@ export default function DogProfile() {
     return `${ageInYears} years ${ageInMonths} months`;
   };
 
+  if (isLoading) {
+    return <Typography variant="h6">Loading...</Typography>;
+  }
+
+  if (isError) {
+    return <Typography variant="h6">Error loading dogs.</Typography>;
+  }
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
       {dog ? (
         <>
-          <Card sx={{ maxWidth: 600 }}>
+          <Card sx={{ maxWidth: 600, width: 600, height: 400 }}>
             <CardMedia component="img" height="300" image={dog.image} alt={dog.name} />
             <CardContent>
               <Typography
@@ -156,24 +150,6 @@ export default function DogProfile() {
                 </Typography>
               </Box>
 
-              <Box mt={2}>
-                <Typography variant="body1" gutterBottom>
-                  Interested In:
-                </Typography>
-                {dog.interested_in.map((interest, index) => (
-                  <Chip
-                    key={index}
-                    label={interest}
-                    sx={{
-                      mr: 1,
-                      mb: 1,
-                      backgroundColor: '#fffee0',
-                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)'
-                    }}
-                  />
-                ))}
-              </Box>
-
               <Box mt={2} display="flex" justifyContent="flex-end">
                 <Tooltip title="Edit">
                   <IconButton onClick={handleEdit} sx={{ mr: 1 }}>
@@ -190,7 +166,8 @@ export default function DogProfile() {
           </Card>
 
           <Box mt={4}>
-            <DogPhotoGallery photos={dog.photos} />
+            <DogPhotoGallery id={dog._id} />
+            {/* <DogPhotoGallery id={1} /> */}
           </Box>
         </>
       ) : (

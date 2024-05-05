@@ -13,6 +13,7 @@ import {
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CommonStyles } from '../../common/CommonStyles';
 import DogCreateUpdateDialog from '../../dogs/DogCreateUpdateDialog';
 
 const DogCardItem = ({ id, image, name, gender, aboutMe }) => {
@@ -23,8 +24,8 @@ const DogCardItem = ({ id, image, name, gender, aboutMe }) => {
   };
 
   return (
-    <Card sx={{ width: 350, height: 500 }}>
-      <CardActionArea>
+    <Card sx={CommonStyles.dogDashboardCard}>
+      <CardActionArea onClick={handleViewClick}>
         <CardMedia
           component="img"
           height={300}
@@ -46,19 +47,8 @@ const DogCardItem = ({ id, image, name, gender, aboutMe }) => {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Chip
-          label="View Profile"
-          onClick={handleViewClick}
-          sx={{
-            mr: 1,
-            backgroundColor: '#f5f5f5',
-            color: '#4da6ff',
-            '&:hover': {
-              backgroundColor: '#e0e0e0'
-            }
-          }}
-        />
+      <CardActions sx={CommonStyles.cardActions}>
+        <Chip label="View Profile" onClick={handleViewClick} sx={CommonStyles.chipButton} />
         <DogCreateUpdateDialog dogId={id} />
       </CardActions>
     </Card>
