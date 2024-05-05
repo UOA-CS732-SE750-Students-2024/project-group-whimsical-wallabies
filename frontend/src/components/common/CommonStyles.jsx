@@ -45,7 +45,7 @@ export const CommonStyles = {
   cardActions: {
     flexDirection: 'row',
     justifyContent: 'center',
-    width: '80%',
+    width: '90%',
     px: 2,
     mt: 2,
     mb: 3
@@ -180,5 +180,25 @@ export const CommonStyles = {
     backgroundColor: '#aad5dc',
     color: 'white',
     marginLeft: '20px'
-  }
+  },
+  chipButton: {
+    padding: '6px 12px',
+    mr: 1,
+    backgroundColor: '#f5f5f5',
+    color: '#3296fa',
+    height: '36px',
+    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+    borderRadius: '13px',
+    fontWeight: 'normal',
+    '&:hover': {
+      backgroundColor: '#e0e0e0',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+    },
+    '&:focus': {
+      backgroundColor: '#e0e0e0',
+      boxShadow: '0 0 0 2px #4da6ff',
+      transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
+    }
+  },
+  dogDashboardCard: { maxWidth: 330, m: 1, mt: 2, boxShadow: 3, width: 350, height: 500 }
 };

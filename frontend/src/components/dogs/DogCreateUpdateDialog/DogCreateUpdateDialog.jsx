@@ -3,6 +3,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import SaveIcon from '@mui/icons-material/Save';
 import UndoIcon from '@mui/icons-material/Undo';
 import {
+  Chip,
   Button,
   Box,
   Dialog,
@@ -107,9 +108,11 @@ const DogCreateUpdateDialog = ({ dogId }) => {
 
   if (!open) {
     return (
-      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
-        {dogId ? 'Update Dog' : 'Create Dog'}
-      </Button>
+      <Chip
+        label={dogId ? 'Update Dog' : 'Create Dog'}
+        onClick={() => setOpen(true)}
+        sx={CommonStyles.chipButton}
+      />
     );
   }
 
