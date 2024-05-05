@@ -2,59 +2,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
-import ReplayIcon from '@mui/icons-material/Replay';
 import { Box, Button, Typography } from '@mui/material';
 import Hammer from 'hammerjs';
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import TinderCard from 'react-tinder-card';
+import { useGetPotentialMates } from '../../queries/matches';
 import { CommonStyles } from '../common/CommonStyles';
 
 const MatchPage = () => {
-  const db = [
-    {
-      name: 'Cyrus',
-      url: 'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*',
-      breed: 'Golden Retriever',
-      weight: '5',
-      dob: '2023-12-11T00:00:00.000Z',
-      gender: 'female'
-    },
-    {
-      name: 'Maddie',
-      url: 'https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg',
-      breed: 'German Shepherd',
-      weight: '30',
-      dob: '2015-06-15T00:00:00.000Z',
-      gender: 'female'
-    },
-    {
-      name: 'Leo',
-      url: 'https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/advisor/wp-content/uploads/2023/07/top-20-small-dog-breeds.jpeg.jpg',
-      breed: 'Bichon',
-      weight: '15',
-      dob: '2019-03-18T00:00:00.000Z',
-      gender: 'male'
-    },
-    {
-      name: 'Daniel',
-      url: 'https://images.pexels.com/photos/1805164/pexels-photo-1805164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      breed: 'Shiba Inu',
-      weight: '20',
-      dob: '2018-07-20T00:00:00.000Z',
-      gender: 'male'
-    },
-    {
-      name: 'Dobby',
-      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUvo1ANKIUkgA9CBkgsKYAbPaFHfqTIKTtjsZOV0CgwA&s',
-      breed: 'Great Dane',
-      weight: '40',
-      dob: '2015-02-23T00:00:00.000Z',
-      gender: 'male'
-    }
-  ];
-
+  const { data: potentialMates, isLoading, error, refetch } = useGetPotentialMates();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const tinderCardRef = useRef(null);
 
   const handleSwipe = useCallback(
     (direction) => {
@@ -63,12 +20,20 @@ const MatchPage = () => {
         cardElement.classList.add(`swipe-${direction}`);
         setTimeout(() => {
           cardElement.classList.remove(`swipe-${direction}`);
-          setCurrentCardIndex((prevIndex) => prevIndex + 1);
+          setCurrentCardIndex((prevIndex) => {
+            const newIndex = prevIndex + 1;
+            return newIndex < (potentialMates?.length || 0) ? newIndex : prevIndex;
+          });
         }, 300);
       }
     },
-    [currentCardIndex]
+    [currentCardIndex, potentialMates]
   );
+
+  const handleTryAgain = () => {
+    refetch();
+    setCurrentCardIndex(0);
+  };
 
   useEffect(() => {
     const cardElement = document.getElementById(`card-${currentCardIndex}`);
@@ -90,15 +55,22 @@ const MatchPage = () => {
           cardElement.style.transform = '';
         }
       });
+
+      return () => {
+        hammertime.destroy();
+      };
     }
   }, [currentCardIndex, handleSwipe]);
-
   const handleSwipeLeft = () => {
     const cardElement = document.getElementById(`card-${currentCardIndex}`);
     if (cardElement) {
       cardElement.style.transition = 'transform 0.3s ease';
       cardElement.style.transform = 'translate(-100%, 0) rotate(-10deg) scale(0.8)';
       handleSwipe('left');
+
+      setTimeout(() => {
+        cardElement.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
+      }, 300);
     }
   };
 
@@ -108,11 +80,15 @@ const MatchPage = () => {
       cardElement.style.transition = 'transform 0.3s ease';
       cardElement.style.transform = 'translate(100%, 0) rotate(10deg) scale(0.8)';
       handleSwipe('right');
+
+      setTimeout(() => {
+        cardElement.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
+      }, 300);
     }
   };
 
-  const handleTryAgain = () => {
-    window.location.reload();
+  const renderGenderIcon = (gender) => {
+    return gender === 'female' ? <FemaleIcon /> : <MaleIcon />;
   };
 
   const outOfFrame = (name) => {
@@ -128,69 +104,61 @@ const MatchPage = () => {
     const years = Math.floor(monthsDiff / 12);
     const months = monthsDiff % 12;
     if (years === 0) {
-      return `${months} mos`;
+      return `${months} months`;
     } else {
-      return `${years} yrs ${months} mos`;
+      return `${years} years ${months} months`;
     }
-  };
-
-  const renderGenderIcon = (gender) => {
-    return gender === 'female' ? <FemaleIcon /> : <MaleIcon />;
   };
 
   return (
     <Box className="dashboard" sx={CommonStyles.matchDashboard}>
-      <Box className="swipe-container" sx={CommonStyles.matchSwipeContainer}>
-        {currentCardIndex < db.length ? (
-          <TinderCard
-            ref={tinderCardRef}
-            key={db[currentCardIndex].name}
-            onCardLeftScreen={() => outOfFrame(db[currentCardIndex].name)}
-            preventSwipe={['up', 'down']}
-            threshold={100}
+      {isLoading ? (
+        <Typography variant="h6">Loading potential mates...</Typography>
+      ) : error ? (
+        <Typography variant="h6" sx={{ textAlign: 'center', mt: 4 }}>
+          Error fetching potential mates: {error.message}
+        </Typography>
+      ) : potentialMates && potentialMates.length > 0 ? (
+        <TinderCard
+          key={potentialMates[currentCardIndex]?.name}
+          onCardLeftScreen={() => outOfFrame(potentialMates[currentCardIndex]?.name)}
+          preventSwipe={['up', 'down']}
+          threshold={100}
+        >
+          <Box
+            id={`card-${currentCardIndex}`}
+            className="card"
+            sx={{
+              ...CommonStyles.matchCard,
+              backgroundImage: `url(http://localhost:3001/${potentialMates[currentCardIndex]?.profilePicture})`
+            }}
           >
-            <Box
-              id={`card-${currentCardIndex}`}
-              className="card"
-              sx={{
-                ...CommonStyles.matchCard,
-                backgroundImage: `url(${db[currentCardIndex].url})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-              }}
-            >
-              <Typography variant="h5" sx={CommonStyles.matchName}>
-                {db[currentCardIndex].name}
-                {renderGenderIcon(db[currentCardIndex].gender)}
-              </Typography>
-              <Typography variant="h5" sx={CommonStyles.matchBreed}>
-                {db[currentCardIndex].breed}
-              </Typography>
-              <Typography variant="h5" sx={CommonStyles.matchInfo}>
-                {db[currentCardIndex].weight}kg / {calculateAge(db[currentCardIndex].dob)}
-              </Typography>
-            </Box>
-          </TinderCard>
-        ) : (
-          <>
-            <Typography variant="h6" sx={{ textAlign: 'center', mt: 4 }}>
-              Seems like no other users match your criteria at the moment.
+            <Typography variant="h4" sx={CommonStyles.matchName}>
+              {potentialMates[currentCardIndex]?.name}
+              {renderGenderIcon(potentialMates[currentCardIndex]?.gender)}
             </Typography>
-            <Button
-              variant="contained"
-              onClick={handleTryAgain}
-              sx={{ marginTop: '20px', backgroundColor: '#aad5dc', color: 'white' }}
-            >
-              <ReplayIcon /> Try Again
-            </Button>
-          </>
-        )}
-      </Box>
-      <Box sx={{ marginTop: '5px', display: 'flex', gap: '20px' }}>
-        <Button variant="contained" onClick={handleSwipeLeft} sx={CommonStyles.matchLeftButton}>
+            <Typography variant="h6" sx={CommonStyles.matchBreed}>
+              {potentialMates[currentCardIndex]?.breed}
+            </Typography>
+            <Typography variant="body1" sx={CommonStyles.matchInfo}>
+              {potentialMates[currentCardIndex]?.weight} kg /
+              {calculateAge(potentialMates[currentCardIndex]?.dob)}
+            </Typography>
+          </Box>
+        </TinderCard>
+      ) : (
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography variant="h6">No potential mates found.</Typography>
+          <Button variant="contained" onClick={handleTryAgain} sx={{ mt: 4 }}>
+            Try Again
+          </Button>
+        </Box>
+      )}
+      <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
+        <Button variant="contained" onClick={handleSwipeLeft} sx={CommonStyles.matchButton}>
           <CloseIcon fontSize="large" />
         </Button>
-        <Button variant="contained" onClick={handleSwipeRight} sx={CommonStyles.matchRightButton}>
+        <Button variant="contained" onClick={handleSwipeRight} sx={CommonStyles.matchButton}>
           <FavoriteIcon fontSize="large" />
         </Button>
       </Box>

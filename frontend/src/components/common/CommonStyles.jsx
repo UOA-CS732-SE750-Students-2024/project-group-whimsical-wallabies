@@ -117,69 +117,51 @@ export const CommonStyles = {
   matchDashboard: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     height: '100vh',
-    backgroundColor: '#f8f9fa'
-  },
-  matchSwipeContainer: {
-    position: 'relative',
-    width: '100%',
-    maxWidth: '1000px',
-    height: '80vh',
-    overflow: 'hidden',
-    marginTop: '50px'
+    backgroundColor: '#f8f9fa',
+    padding: '20px'
   },
   matchCard: {
-    width: '50%',
-    height: '50%',
+    width: '400px',
+    height: '400px',
     borderRadius: '20px',
     boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.3)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    padding: '250px',
-    position: 'relative'
+    padding: '20px',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    color: 'white',
+    textAlign: 'center'
   },
   matchName: {
-    color: 'white',
-    textAlign: 'center',
-    position: 'absolute',
-    bottom: '40px',
-    left: '50%',
-    transform: 'translateX(-50%)',
     fontWeight: 'bold',
-    fontSize: '100px'
+    color: 'black',
+    fontSize: '28px',
+    marginBottom: '10px'
   },
   matchBreed: {
-    color: 'white',
-    textAlign: 'center',
-    position: 'absolute',
-    bottom: '25px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    fontWeight: 'bold'
+    fontSize: '18px',
+    marginBottom: '10px'
   },
   matchInfo: {
-    color: 'white',
-    textAlign: 'center',
-    position: 'absolute',
-    bottom: '0px',
-    left: '50%',
-    transform: 'translateX(-50%)'
+    fontSize: '16px',
+    opacity: 0.8
   },
-  matchLeftButton: {
-    width: '80px',
-    height: '40px',
-    backgroundColor: '#aad5dc',
-    color: 'white'
-  },
-  matchRightButton: {
-    width: '80px',
-    height: '40px',
+  matchButton: {
     backgroundColor: '#aad5dc',
     color: 'white',
-    marginLeft: '20px'
+
+    padding: '15px 30px',
+    borderRadius: '10px',
+    fontSize: '20px',
+    minWidth: '150px',
+    '&:hover': {
+      backgroundColor: '#1a4c88'
+    }
   },
   chipButton: {
     padding: '6px 12px',
