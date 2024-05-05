@@ -8,6 +8,9 @@ export const createPhoto = async (dog, url) => {
   const dogPhoto = new Photo({ dog, url });
   await dogPhoto.save();
 
+  dogExists.photos.push(dogPhoto._id);
+  await dogExists.save();
+
   return dogPhoto;
 };
 
