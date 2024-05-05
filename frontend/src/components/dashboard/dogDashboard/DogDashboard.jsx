@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import React from 'react';
 import DogCreateUpdateDialog from '../../dogs/DogCreateUpdateDialog';
@@ -6,12 +6,10 @@ import DogCards from '../dogCards';
 
 export default function DogDashboard() {
   return (
-    <div>
-      <h1>My Dog Dashboard</h1>
+    <Box>
+      <Typography variant="h2">My Dog Dashboard</Typography>
       <DogCreateUpdateDialog />
-      <Box display="flex" justifyContent="center" alignItems="center" position="relative">
-        <DogCards />
-      </Box>
-    </div>
+      <DogCards />
+    </Box>
   );
 }
