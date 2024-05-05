@@ -1,4 +1,3 @@
-import { joiResolver } from '@hookform/resolvers/joi';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
@@ -9,31 +8,20 @@ import PasswordIcon from '@mui/icons-material/Password';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import {
-  Alert,
-  CircularProgress,
-  TextField,
-  Button,
-  InputAdornment,
-  CardActions,
-  Typography,
   Box,
+  Button,
+  CardActions,
+  CircularProgress,
+  FormHelperText,
   Grid,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormHelperText
+  InputAdornment,
+  TextField
 } from '@mui/material';
-import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
-import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { Autocomplete, useJsApiLoader } from '@react-google-maps/api';
+import PropTypes from 'prop-types';
+import React, { useCallback, useRef, useState } from 'react';
+import { Controller } from 'react-hook-form';
 import { CommonStyles } from '../common/CommonStyles';
-import { signupSchema } from './SignUp.validation';
-
-const libraries = ['places'];
 
 const debounce = (func, wait) => {
   let timeout;
@@ -45,63 +33,27 @@ const debounce = (func, wait) => {
   };
 };
 
-const defaultValues = {
-  aboutMe: '',
-  username: '',
-  address: '',
-  phone: '',
-  password: '',
-  confirmPassword: '',
-  email: '',
-  latitude: '',
-  longitude: ''
-};
+const libraries = ['places'];
 
-const SignUp = () => {
-  const { signup, signupErrors, isPendingSignup, isSignup, setIsSignup } = useAuth();
-  let navigate = useNavigate();
-
+const UserFormBase = ({ control, isPendingSignup, setValue, handleLoginClick }) => {
   const [address, setAddress] = useState('');
   const [isAddressValid, setIsAddressValid] = useState(false);
+  const autocompleteRef = useRef(null);
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    reset,
-    setValue,
-    setError,
-    formState: { errors }
-  } = useForm({
-    defaultValues,
-    resolver: joiResolver(signupSchema, {
-      abortEarly: false,
-      stripUnknown: true
-    })
-  });
   const { isLoaded } = useJsApiLoader({
     // eslint-disable-next-line no-undef
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries
   });
 
-  const autocompleteRef = useRef(null);
-
-  useEffect(() => {
-    register('address');
-  }, [register]);
-
-  useEffect(() => {
-    const serverErrors = signupErrors?.response?.data?.fields;
-    if (serverErrors) {
-      Object.keys(serverErrors).forEach((fieldName) => {
-        setError(fieldName, {
-          type: 'server',
-          message: serverErrors[fieldName]
-        });
-      });
-    }
-  }, [signupErrors, setError]);
+  const debouncedSearch = useCallback((value) => {
+    const debounced = debounce((value) => {
+      if (autocompleteRef.current) {
+        autocompleteRef.current.set('input', value);
+      }
+    }, 500);
+    debounced(value);
+  }, []);
 
   const onLoad = (autocomplete) => {
     autocompleteRef.current = autocomplete;
@@ -150,50 +102,8 @@ const SignUp = () => {
       debouncedSearch(newAddress);
     }
   };
-
-  const debouncedSearch = useCallback((value) => {
-    const debounced = debounce((value) => {
-      if (autocompleteRef.current) {
-        autocompleteRef.current.set('input', value);
-      }
-    }, 500);
-    debounced(value);
-  }, []);
-
-  const handleLoginClick = () => {
-    navigate('/login');
-  };
-
-  const handleDialogClose = () => {
-    setIsSignup(false);
-    reset();
-  };
-
-  const handleDialogButtonClick = () => {
-    handleDialogClose();
-    navigate('/login');
-  };
-
-  console.log(errors, 'errors');
-  console.log(signupErrors, 'errors signupErrors');
-
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(signup)}
-      noValidate
-      autoComplete="off"
-      sx={CommonStyles.formContainer}
-    >
-      <Box sx={CommonStyles.formHeader}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Signup Form
-        </Typography>
-        <Typography variant="subtitle" component="p">
-          Please fill out the form to register.
-        </Typography>
-      </Box>
-
+    <>
       <Box>
         <Controller
           name="username"
@@ -331,12 +241,11 @@ const SignUp = () => {
                     label="Address"
                     fullWidth
                     margin="normal"
-                    // error={!!error}
                     value={address}
                     onChange={handleAddressChange}
                     onBlur={handleAddressBlur} // Add onBlur event handler here
-                    error={Boolean(errors.address) || addressError !== ''}
-                    helperText={errors.address ? errors.address.message : addressError}
+                    error={!!error || addressError !== ''}
+                    helperText={error?.message || addressError}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -357,47 +266,55 @@ const SignUp = () => {
         )}
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <TextField
-              id="latitude"
+            <Controller
               name="latitude"
-              label="Latitude"
-              type="text"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MyLocationIcon />
-                  </InputAdornment>
-                )
-              }}
-              inputProps={{
-                readOnly: true
-              }}
-              margin="normal"
-              fullWidth
-              {...register('latitude')}
-              disabled={true}
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <>
+                  <TextField
+                    {...field}
+                    label="Latitude"
+                    fullWidth
+                    margin="normal"
+                    error={!!error}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <MyLocationIcon />
+                        </InputAdornment>
+                      )
+                    }}
+                    disabled={true}
+                  />
+                  {error && <FormHelperText error>{error.message}</FormHelperText>}
+                </>
+              )}
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              id="longitude"
+            <Controller
               name="longitude"
-              label="Longitude"
-              type="text"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MyLocationIcon />
-                  </InputAdornment>
-                )
-              }}
-              inputProps={{
-                readOnly: true
-              }}
-              margin="normal"
-              fullWidth
-              {...register('longitude')}
-              disabled={true}
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <>
+                  <TextField
+                    {...field}
+                    label="Longitude"
+                    fullWidth
+                    margin="normal"
+                    error={!!error}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <MyLocationIcon />
+                        </InputAdornment>
+                      )
+                    }}
+                    disabled={true}
+                  />
+                  {error && <FormHelperText error>{error.message}</FormHelperText>}
+                </>
+              )}
             />
           </Grid>
         </Grid>
@@ -450,44 +367,15 @@ const SignUp = () => {
           Login
         </Button>
       </CardActions>
-
-      {/* Progress Indicator and Alert */}
-      {isPendingSignup && <CircularProgress size={24} sx={CommonStyles.progressIndicator} />}
-      {signupErrors && (
-        <Alert severity="error" sx={CommonStyles.alert}>
-          Failed to register:{' '}
-          {signupErrors?.response?.data?.error || signupErrors.response.data?.message}
-        </Alert>
-      )}
-
-      {/* Success Dialog */}
-      <Dialog
-        open={isSignup}
-        onClose={() => handleDialogClose()}
-        aria-labelledby="success-dialog-title"
-        aria-describedby="success-dialog-description"
-      >
-        <DialogTitle id="success-dialog-title" sx={CommonStyles.dialogTitle}>
-          Registration is Successful!
-        </DialogTitle>
-        <DialogContent sx={CommonStyles.dialogContent}>
-          <DialogContentText id="success-dialog-description" sx={CommonStyles.dialogContentText}>
-            Your account has been successfully created.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions sx={CommonStyles.dialogAction}>
-          <Button
-            onClick={() => handleDialogButtonClick()}
-            variant="contained"
-            color="success"
-            sx={CommonStyles.dialogButton}
-          >
-            Go to Login
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+    </>
   );
 };
 
-export default SignUp;
+UserFormBase.propTypes = {
+  setValue: PropTypes.func.isRequired,
+  handleLoginClick: PropTypes.func.isRequired,
+  control: PropTypes.any.isRequired,
+  isPendingSignup: PropTypes.bool.isRequired
+};
+
+export default UserFormBase;

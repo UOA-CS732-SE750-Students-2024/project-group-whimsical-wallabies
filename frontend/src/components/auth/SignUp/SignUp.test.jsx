@@ -23,7 +23,7 @@ describe('SignUp Component', () => {
       </Router>
     );
 
-  test('renders the signup form with all fields', () => {
+  test('renders the SignUp form with all fields', () => {
     setup();
     expect(screen.getByLabelText('Username')).toBeInTheDocument();
     expect(screen.getByLabelText('Password')).toBeInTheDocument();

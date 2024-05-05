@@ -16,9 +16,9 @@ import InputAdornment from '@mui/material/InputAdornment';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { APPLICATION_PATH } from '../../utils/urlRoutes';
-import { CommonStyles } from '../common/CommonStyles';
+import { useAuth } from '../../../context/AuthContext';
+import { APPLICATION_PATH } from '../../../utils/urlRoutes';
+import { CommonStyles } from '../../common/CommonStyles';
 import { loginSchema } from './Login.validation';
 
 const Login = () => {
@@ -53,7 +53,7 @@ const Login = () => {
   }, [loginErrors, setError]);
 
   const handleSignUpClick = () => {
-    navigate('/signup'); // Navigate to the signup route
+    navigate(APPLICATION_PATH.auth.signup); // Navigate to the SignUp route
   };
 
   return (
