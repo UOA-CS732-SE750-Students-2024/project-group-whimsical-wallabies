@@ -42,11 +42,34 @@ const Weather = () => {
   const { main, weather, wind, isGoodDayForWalk } = weatherData;
 
   return (
-    <Paper elevation={3} sx={{ p: 2, maxWidth: 400, margin: 'auto' }}>
-      <Typography variant="h5" align="center">
+    <Paper
+      elevation={3}
+      sx={{
+        p: 2,
+        maxWidth: 400,
+        margin: 'auto',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        backdropFilter: 'blur(1px)'
+      }}
+    >
+      <Typography
+        variant="h2"
+        sx={{
+          fontSize: '24px',
+          fontWeight: 'bold',
+          mb: 1,
+          textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+        }}
+      >
         Weather in Auckland
       </Typography>
-      <Typography variant="caption" align="center">
+      <Typography
+        variant="caption"
+        align="center"
+        sx={{
+          textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+        }}
+      >
         Powered by OpenWeatherMap.org
       </Typography>
       <Divider sx={{ my: 1 }} />
