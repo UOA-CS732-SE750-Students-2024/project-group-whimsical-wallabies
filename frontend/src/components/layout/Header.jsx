@@ -1,18 +1,25 @@
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from '@mui/icons-material/Menu';
-import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Tooltip,
+  Typography,
+  ListItemIcon
+} from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { userDataStorage } from '../../utils/localStorageNames';
 import { APPLICATION_PATH } from '../../utils/urlRoutes';
 
 const pages = {
@@ -33,8 +40,6 @@ const pages = {
     url: APPLICATION_PATH.matching
   }
 };
-
-const settings = ['Account', 'Logout'];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -77,6 +82,21 @@ function Header() {
     navigate(APPLICATION_PATH.homepage);
   };
 
+  const getInitials = (name) => {
+    if (!name) {
+      return '';
+    }
+    const names = name.split(' ');
+    let initials = '';
+    names.forEach((n) => {
+      initials += n.charAt(0);
+    });
+    return initials.toUpperCase();
+  };
+  const userData = userDataStorage.get();
+  const initials = userData ? getInitials(userData.username) : '';
+  const username = userData ? userData.username : '';
+
   if (!isAuthenticated) {
     return null;
   }
@@ -99,7 +119,7 @@ function Header() {
               textDecoration: 'none'
             }}
           >
-            <Avatar alt="Remy Sharp" src="./logo.png" />
+            <Avatar variant="square" src="./logo.png" />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -160,7 +180,7 @@ function Header() {
               textDecoration: 'none'
             }}
           >
-            <Avatar alt="Remy Sharp" src="./logo.png" />
+            <Avatar variant="square" src="./logo.png" />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -179,11 +199,24 @@ function Header() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+              <Typography sx={{ margin: '0 10px' }}>Welcome, {username}</Typography>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  {userData ? (
+                    <Tooltip title={userData.name}>
+                      <Avatar>{initials}</Avatar>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title="Default User">
+                      <Avatar>
+                        <PermIdentityOutlinedIcon />
+                      </Avatar>
+                    </Tooltip>
+                  )}
+                </IconButton>
+              </Tooltip>
+            </Box>
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -200,11 +233,18 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleUserMenu(setting)}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem key="Account" onClick={() => handleUserMenu('Account')}>
+                <ListItemIcon>
+                  <AccountBoxIcon fontSize="small" />
+                </ListItemIcon>
+                <Typography textAlign="center">Account</Typography>
+              </MenuItem>
+              <MenuItem key="Logout" onClick={() => handleUserMenu('Logout')}>
+                <ListItemIcon>
+                  <ExitToAppIcon fontSize="small" />
+                </ListItemIcon>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
