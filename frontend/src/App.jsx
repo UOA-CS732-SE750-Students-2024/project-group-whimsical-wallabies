@@ -49,8 +49,8 @@ const App = () => {
               <Routes>
                 <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
                 <Route path={APPLICATION_PATH.auth.signup} element={<SignUp />} />
-                <Route path="/filter" element={<Filter />} />
-                <Route path="/friendlist" element={<FriendList />} />
+                <Route path={APPLICATION_PATH.filter} element={<Filter />} />
+                <Route path={APPLICATION_PATH.friendlist} element={<FriendList />} />
                 <Route
                   path={APPLICATION_PATH.matching}
                   element={

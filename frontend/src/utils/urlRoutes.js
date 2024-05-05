@@ -22,5 +22,7 @@ export const APPLICATION_PATH = {
   },
   matching: '/matching',
   dashboard: '/dashboard',
-  homepage: '/'
+  homepage: '/',
+  friendlist: '/filter',
+  filter: '/filter'
 };
