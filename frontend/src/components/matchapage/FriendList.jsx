@@ -20,15 +20,19 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 //import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useGetFriends } from '../../queries/friends';
+import { useGetUserProfile } from '../../queries/users';
 
 const FriendList = () => {
   const { data: friends, isLoading, isError } = useGetFriends();
+  const { userId } = useParams();
+  const { data: userProfile } = useGetUserProfile(userId);
   const [searchInput, setSearchInput] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
-  // const userId = '66376a93bd180f542a9eb6af';
-
+  console.log(userId);
+  console.log('User profile data:', userProfile);
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);
   };
@@ -79,17 +83,15 @@ const FriendList = () => {
           <CardMedia
             component="img"
             height="140"
-            image={
-              'https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jp'
-            }
-            alt="Profile Photo"
+            image={userProfile?.photoProfile}
+            alt="Dog Photo"
           />
           <CardContent>
             <Typography gutterBottom variant="h5">
-              username
+              {userProfile?.username}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              userProfile?.aboutMe
+              {userProfile?.aboutMe}
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -124,7 +126,7 @@ const FriendList = () => {
             <ListItemAvatar>
               <Avatar src={friend.photoProfile || 'default_friend.jpg'} />
             </ListItemAvatar>
-            <ListItemText primary={friend.username} secondary={friend.bio} />
+            <ListItemText primary={friend.username} secondary={friend.aboutMe} />
             <ListItemSecondaryAction>
               <IconButton onClick={(event) => handleClickDelete(event, friend)}>
                 <DeleteOutlineRoundedIcon />
