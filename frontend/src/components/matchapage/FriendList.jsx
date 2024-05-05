@@ -20,53 +20,17 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 //import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
+import { useGetFriends } from '../../queries/friends';
 
 const FriendList = () => {
-  const db = [
-    {
-      username: 'user1',
-      profilePhoto:
-        'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*',
-      bio: 'I love dogs!',
-      friendList: ['user2', 'user3', 'user4', 'user5']
-    },
-    {
-      username: 'user2',
-      profilePhoto:
-        'https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg',
-      bio: 'Dog lover and adventurer.',
-      friendList: ['user1', 'user3']
-    },
-    {
-      username: 'user3',
-      profilePhoto:
-        'https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/advisor/wp-content/uploads/2023/07/top-20-small-dog-breeds.jpeg.jpg',
-      bio: 'Looking for playmates for my dog.',
-      friendList: ['user1', 'user2']
-    },
-    {
-      username: 'user4',
-      profilePhoto:
-        'https://images.pexels.com/photos/1805164/pexels-photo-1805164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      bio: 'Looking for playmates for my dog.',
-      friendList: ['user1', 'user2']
-    },
-    {
-      username: 'user5',
-      profilePhoto:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUvo1ANKIUkgA9CBkgsKYAbPaFHfqTIKTtjsZOV0CgwA&s',
-      bio: 'Looking for playmates for my dog.',
-      friendList: ['user1', 'user2']
-    }
-  ];
-
+  const { data: friends, isLoading, isError } = useGetFriends();
   const [searchInput, setSearchInput] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
+  // const userId = '66376a93bd180f542a9eb6af';
 
-  const handleSearch = () => {
-    // Perform search using searchInput
-    console.log('Searching for:', searchInput);
+  const handleSearchChange = (event) => {
+    setSearchInput(event.target.value);
   };
 
   const handleFriendDelete = (friend) => {
@@ -86,6 +50,13 @@ const FriendList = () => {
     setAnchorEl(null);
     setSelectedFriend(null);
   };
+
+  const filteredFriends = searchInput
+    ? friends?.filter((friend) => friend.username.toLowerCase().includes(searchInput.toLowerCase()))
+    : friends;
+
+  if (isLoading) return <Typography>Loading...</Typography>;
+  if (isError) return <Typography>Error loading friends.</Typography>;
 
   const open = Boolean(anchorEl);
 
@@ -108,15 +79,17 @@ const FriendList = () => {
           <CardMedia
             component="img"
             height="140"
-            image="https://images.pexels.com/photos/1805164/pexels-photo-1805164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-            alt="dog photo"
+            image={
+              'https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jp'
+            }
+            alt="Profile Photo"
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {db[0].username}
+            <Typography gutterBottom variant="h5">
+              username
             </Typography>
-            <Typography variant="body" color="text.secondary">
-              {db[0].bio}
+            <Typography variant="body2" color="text.secondary">
+              userProfile?.aboutMe
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -132,40 +105,35 @@ const FriendList = () => {
         }}
       >
         <TextField
-          label="Search..."
+          fullWidth
+          label="Search Friends..."
           value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          size="small"
+          onChange={handleSearchChange}
           variant="outlined"
-          sx={{ mr: 1 }}
+          sx={{ m: 2 }}
         />
-        <IconButton onClick={handleSearch}>
+        <IconButton onClick={handleSearchChange}>
           <ManageSearchRoundedIcon />
         </IconButton>
       </Box>
 
       {/* Friends list */}
       <List>
-        {db[0].friendList.map((friendUsername) => {
-          const friend = db.find((user) => user.username === friendUsername);
-          return (
-            <ListItem
-              key={friendUsername}
-              sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' } }}
-            >
-              <ListItemAvatar>
-                <Avatar src={friend.profilePhoto} />
-              </ListItemAvatar>
-              <ListItemText primary={friend.username} secondary={friend.bio} />
-              <ListItemSecondaryAction>
-                <IconButton onClick={handleClickDelete(friend)}>
-                  <DeleteOutlineRoundedIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          );
-        })}
+        {filteredFriends.map((friend) => (
+          <ListItem key={friend._id} sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' } }}>
+            <ListItemAvatar>
+              <Avatar src={friend.photoProfile || 'default_friend.jpg'} />
+            </ListItemAvatar>
+            <ListItemText primary={friend.username} secondary={friend.bio} />
+            <ListItemSecondaryAction>
+              <IconButton onClick={(event) => handleClickDelete(event, friend)}>
+                <DeleteOutlineRoundedIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        ))}
       </List>
+      {/* Friends list */}
 
       {/* Popover */}
       <Popover
