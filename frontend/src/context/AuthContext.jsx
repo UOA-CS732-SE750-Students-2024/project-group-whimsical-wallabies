@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { createContext, useContext, useState } from 'react';
 import { tokenStorage, userDataStorage } from '../utils/localStorageNames';
-import { useLoginMutation, useSignupMutation, useUpdateUserMutation } from './AuthContext.queries';
+import { useLoginMutation, useSignupMutation } from './AuthContext.queries';
 
 const AuthContext = createContext();
 
@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }) => {
     userDataStorage.remove();
     setIsAuthenticated(false);
   };
- 
 
   return (
     <AuthContext.Provider
@@ -53,10 +52,7 @@ export const AuthProvider = ({ children }) => {
         isPendingSignup,
         setIsSignup,
         currentUser,
-        setUser,
-        updateUserProfile,
-        updateUserProfileErrors,
-        isPendinguserProfileUpdate
+        setUser
       }}
     >
       {children}

@@ -2,8 +2,10 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
+import EditIcon from '@mui/icons-material/Edit';
 import HomeIcon from '@mui/icons-material/Home';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
+import SaveIcon from '@mui/icons-material/Save';
 import { Button } from '@mui/material';
 import {
   TextField,
@@ -19,8 +21,7 @@ import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 import React, { useRef, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useAuth } from '../../context/AuthContext';
-import { useGetUser } from '../../context/AuthContext.queries';
-import { useUpdateUserMutation } from '../../queries/user.js';
+import { useUpdateUserMutation, useGetUser } from '../../queries/user.js';
 import { userDataStorage } from '../../utils/localStorageNames';
 import { CommonStyles } from '../common/CommonStyles';
 import { userProfileSchema } from './userProfile.validation';
@@ -340,6 +341,7 @@ const UserProfile = () => {
             onClick={handleEdit}
             disabled={edit}
             sx={CommonStyles.actionButton}
+            startIcon={<EditIcon />}
           >
             Edit
           </Button>
@@ -352,6 +354,7 @@ const UserProfile = () => {
             onClick={handleSave}
             disabled={!edit}
             sx={CommonStyles.actionButton}
+            startIcon={<SaveIcon />}
           >
             Save
           </Button>
