@@ -188,6 +188,12 @@ const MatchPage = () => {
             onCardLeftScreen={() => outOfFrame(shuffledMates[currentCardIndex]?.name)}
             preventSwipe={['up', 'down']}
             threshold={100}
+            sx={{
+              ...CommonStyles.matchCard,
+              backgroundImage: `url(http://localhost:3001/${shuffledMates[currentCardIndex]?.profilePicture})`,
+              width: { xs: '100%', sm: '50%', md: '25%' },
+              padding: { xs: 1, sm: 2, md: 3 }
+            }}
           >
             <Box
               id={`card-${currentCardIndex}`}
@@ -227,10 +233,30 @@ const MatchPage = () => {
         />
 
         <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
-          <Button variant="contained" onClick={handleSwipeLeft} sx={CommonStyles.matchButton}>
+          <Button
+            variant="contained"
+            onClick={handleSwipeLeft}
+            sx={{
+              ...CommonStyles.matchButton,
+              '@media (max-width: 768px)': {
+                padding: '10px 20px', // Adjust padding for smaller screens
+                minWidth: '120px' // Adjust button width for smaller screens
+              }
+            }}
+          >
             <CloseIcon fontSize="large" />
           </Button>
-          <Button variant="contained" onClick={handleSwipeRight} sx={CommonStyles.matchButton}>
+          <Button
+            variant="contained"
+            onClick={handleSwipeRight}
+            sx={{
+              ...CommonStyles.matchButton,
+              '@media (max-width: 768px)': {
+                padding: '10px 20px', // Adjust padding for smaller screens
+                minWidth: '120px' // Adjust button width for smaller screens
+              }
+            }}
+          >
             <FavoriteIcon fontSize="large" />
           </Button>
         </Box>
