@@ -29,7 +29,7 @@ const DogCardItem = ({ id, image, name, gender, aboutMe }) => {
         <CardMedia
           component="img"
           height={300}
-          image={`http://localhost:3001/${image}`}
+          image={`${process.env.REACT_APP_API_URL}/${image}`}
           alt={id}
           sx={{ objectFit: 'cover' }}
         />

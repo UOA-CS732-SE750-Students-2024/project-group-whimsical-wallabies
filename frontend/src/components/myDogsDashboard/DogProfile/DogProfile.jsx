@@ -13,7 +13,8 @@ import {
   Typography,
   Button,
   IconButton,
-  Tooltip
+  Tooltip,
+  CircularProgress
 } from '@mui/material';
 import {
   DialogActions,
@@ -22,12 +23,90 @@ import {
   DialogContentText,
   DialogTitle
 } from '@mui/material';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useGetDog, useDeleteDogMutation } from '../../../queries/dogs';
+import { APPLICATION_PATH } from '../../../utils/urlRoutes';
 import DogCreateUpdateDialog from '../DogCreateUpdateDialog';
 import DogPhotoGallery from '../DogPhotoGallery/DogPhotoGallery';
+
+const getAge = (dob) => {
+  const today = new Date();
+  const birthDate = new Date(dob);
+  let ageInYears = today.getFullYear() - birthDate.getFullYear();
+  let ageInMonths = today.getMonth() - birthDate.getMonth();
+  if (ageInMonths < 0 || (ageInMonths === 0 && today.getDate() < birthDate.getDate())) {
+    ageInYears--;
+    ageInMonths += 12;
+  }
+  return `${ageInYears} years ${ageInMonths} months`;
+};
+
+const DogAttributes = ({ breed, dob, weight, neutered, bio }) => {
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Attribute icon={<PetsIcon />} label={breed} />
+      <Attribute icon={<EmojiEventsIcon />} label={`Age: ${getAge(dob)}`} />
+      <Attribute icon={<FitnessCenterIcon />} label={`Weight: ${weight} kg`} />
+      <Attribute icon={<FavoriteBorderIcon />} label={`Neutered: ${neutered ? 'Yes' : 'No'}`} />
+      <Typography variant="body1" gutterBottom mt={2}>
+        About Me:
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        {bio}
+      </Typography>
+    </Box>
+  );
+};
+
+DogAttributes.propTypes = {
+  breed: PropTypes.string.isRequired,
+  dob: PropTypes.string.isRequired,
+  weight: PropTypes.number.isRequired,
+  bio: PropTypes.string.isRequired,
+  neutered: PropTypes.bool.isRequired
+};
+
+const Attribute = ({ icon, label }) => {
+  return (
+    <Box mt={2} display="flex" alignItems="center">
+      {icon}
+      <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+        {label}
+      </Typography>
+    </Box>
+  );
+};
+
+Attribute.propTypes = {
+  icon: PropTypes.element.isRequired,
+  label: PropTypes.string.isRequired
+};
+
+const DeleteConfirmationDialog = ({ open, onClose, onDelete }) => {
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>Delete Dog Profile</DialogTitle>
+      <DialogContent>
+        <DialogContentText>Are you sure you want to delete this dog profile?</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onDelete} color="error" autoFocus>
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+DeleteConfirmationDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
+};
 
 export default function DogProfile() {
   let navigate = useNavigate();
@@ -35,8 +114,8 @@ export default function DogProfile() {
   const { id } = useParams();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  const { data: dog, isLoading, isError } = useGetDog(id); // Use the useGetDogs query
-  const { mutate: deleteDog } = useDeleteDogMutation(id); // Use the useDeleteDogMutation mutation
+  const { data: dog, isLoading, isError } = useGetDog(id);
+  const { mutate: deleteDog } = useDeleteDogMutation(id);
 
   const handleDeleteOpen = () => {
     setOpenDeleteDialog(true);
@@ -50,30 +129,13 @@ export default function DogProfile() {
     deleteDog(dog._id, {
       onSuccess: () => {
         handleDeleteClose();
-        navigate(`/my-dogs`);
+        navigate(APPLICATION_PATH.dog.dashboard);
         console.log('Dog profile deleted successfully');
-      },
-      onError: (error) => {
-        console.error('Error deleting dog profile:', error);
       }
     });
   };
 
-  const getAge = (dob) => {
-    const today = new Date();
-    const birthDate = new Date(dob);
-    let ageInYears = today.getFullYear() - birthDate.getFullYear();
-    let ageInMonths = today.getMonth() - birthDate.getMonth();
-    if (ageInMonths < 0 || (ageInMonths === 0 && today.getDate() < birthDate.getDate())) {
-      ageInYears--;
-      ageInMonths += 12;
-    }
-    return `${ageInYears} years ${ageInMonths} months`;
-  };
-
-  if (isLoading) {
-    return <Typography variant="h6">Loading...</Typography>;
-  }
+  if (isLoading) return <CircularProgress />;
 
   if (isError) {
     return <Typography variant="h6">Error loading dogs.</Typography>;
@@ -87,7 +149,7 @@ export default function DogProfile() {
             <CardMedia
               component="img"
               height="400"
-              image={`http://localhost:3001/${dog.profilePicture}`}
+              image={`${process.env.REACT_APP_API_URL}/${dog.profilePicture}`}
               alt={dog.name}
             />
             <CardContent>
@@ -115,42 +177,13 @@ export default function DogProfile() {
                 )}
               </Typography>
 
-              <Box mt={2}>
-                <PetsIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
-                <Typography variant="body2" color="text.secondary" display="inline">
-                  {dog.breed}
-                </Typography>
-              </Box>
-
-              <Box mt={2}>
-                <EmojiEventsIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
-                <Typography variant="body2" color="text.secondary" display="inline">
-                  {getAge(dog.dob)}
-                </Typography>
-              </Box>
-
-              <Box mt={2}>
-                <FitnessCenterIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
-                <Typography variant="body2" color="text.secondary" display="inline">
-                  Weight: {dog.weight} kg
-                </Typography>
-              </Box>
-
-              <Box mt={2}>
-                <FavoriteBorderIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
-                <Typography variant="body2" color="text.secondary" display="inline">
-                  Neutered: {dog.neutered ? 'Yes' : 'No'}
-                </Typography>
-              </Box>
-
-              <Box mt={2}>
-                <Typography variant="body1" gutterBottom>
-                  About Me:
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {dog.bio}
-                </Typography>
-              </Box>
+              <DogAttributes
+                bio={dog.bio}
+                breed={dog.breed}
+                dob={dog.dob}
+                neutered={dog.neutered}
+                weight={dog.weight}
+              />
 
               <Box mt={2} display="flex" justifyContent="flex-end">
                 <DogCreateUpdateDialog dogId={id} />
@@ -163,25 +196,18 @@ export default function DogProfile() {
             </CardContent>
           </Card>
 
-          <Box mt={4} sx={{ maxWidth: 1050, width: '100%' }}>
+          <Box display="flex" justifyContent="center" alignItems="center">
             <DogPhotoGallery id={dog._id} />
           </Box>
         </>
       ) : (
         <Typography variant="h6">No dog found with the provided ownerId and id.</Typography>
       )}
-      <Dialog open={openDeleteDialog} onClose={handleDeleteClose}>
-        <DialogTitle>Delete Dog Profile</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Are you sure you want to delete this dog profile?</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteClose}>Cancel</Button>
-          <Button onClick={handleDelete} color="error" autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DeleteConfirmationDialog
+        onClose={handleDeleteClose}
+        onDelete={handleDelete}
+        open={openDeleteDialog}
+      />
     </Box>
   );
 }
