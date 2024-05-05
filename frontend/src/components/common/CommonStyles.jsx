@@ -123,8 +123,6 @@ export const CommonStyles = {
     padding: '20px'
   },
   matchCard: {
-    width: '700px',
-    height: '500px',
     borderRadius: '20px',
     boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.5)',
     display: 'flex',
@@ -136,7 +134,19 @@ export const CommonStyles = {
     backgroundPosition: 'center',
     color: 'white',
     textAlign: 'center',
-    marginTop: '-20vh'
+    marginTop: '-20vh',
+    width: {
+      xs: '100%',
+      sm: '500px',
+      md: '600px',
+      lg: '700px'
+    },
+    height: {
+      xs: '500px',
+      sm: '500px',
+      md: '500px',
+      lg: '500px'
+    }
   },
   matchName: {
     fontWeight: 'bold',
