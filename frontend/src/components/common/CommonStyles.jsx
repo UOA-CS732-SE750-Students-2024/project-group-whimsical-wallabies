@@ -120,41 +120,44 @@ export const CommonStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100vh',
-    backgroundColor: '#f8f9fa',
     padding: '20px'
   },
   matchCard: {
-    width: '400px',
-    height: '400px',
+    width: '700px',
+    height: '500px',
     borderRadius: '20px',
-    boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.3)',
+    boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.5)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    padding: '20px',
+    alignItems: 'center',
+    padding: '10px',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: '-20vh'
   },
   matchName: {
     fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
     fontSize: '28px',
-    marginBottom: '10px'
+    marginBottom: '10px',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'
   },
   matchBreed: {
     fontSize: '18px',
-    marginBottom: '10px'
+    marginBottom: '10px',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 1)'
   },
   matchInfo: {
     fontSize: '16px',
-    opacity: 0.8
+    opacity: 0.8,
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 1)'
   },
   matchButton: {
     backgroundColor: '#aad5dc',
     color: 'white',
-
     padding: '15px 30px',
     borderRadius: '10px',
     fontSize: '20px',

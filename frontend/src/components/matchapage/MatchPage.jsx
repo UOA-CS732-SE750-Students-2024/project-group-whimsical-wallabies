@@ -26,7 +26,24 @@ const MatchPage = () => {
   };
 
   const { data: potentialMates, isLoading, error, refetch } = useGetPotentialMates();
+  const [shuffledMates, setShuffledMates] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
+
+  useEffect(() => {
+    if (potentialMates && potentialMates.length > 0) {
+      const shuffledArray = shuffleArray(potentialMates);
+      setShuffledMates(shuffledArray);
+    }
+  }, [potentialMates]);
+
+  const shuffleArray = (array) => {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+  };
 
   const handleSwipe = useCallback(
     (direction) => {
@@ -37,12 +54,12 @@ const MatchPage = () => {
           cardElement.classList.remove(`swipe-${direction}`);
           setCurrentCardIndex((prevIndex) => {
             const newIndex = prevIndex + 1;
-            return newIndex < (potentialMates?.length || 0) ? newIndex : prevIndex;
+            return newIndex < (shuffledMates?.length || 0) ? newIndex : prevIndex;
           });
         }, 300);
       }
     },
-    [currentCardIndex, potentialMates]
+    [currentCardIndex, shuffledMates]
   );
 
   const handleTryAgain = () => {
@@ -76,6 +93,7 @@ const MatchPage = () => {
       };
     }
   }, [currentCardIndex, handleSwipe]);
+
   const handleSwipeLeft = () => {
     const cardElement = document.getElementById(`card-${currentCardIndex}`);
     if (cardElement) {
@@ -143,10 +161,10 @@ const MatchPage = () => {
         <Typography variant="h6" sx={{ textAlign: 'center', mt: 4 }}>
           Error fetching potential mates: {error.message}
         </Typography>
-      ) : potentialMates && potentialMates.length > 0 ? (
+      ) : shuffledMates && shuffledMates.length > 0 ? (
         <TinderCard
-          key={potentialMates[currentCardIndex]?.name}
-          onCardLeftScreen={() => outOfFrame(potentialMates[currentCardIndex]?.name)}
+          key={shuffledMates[currentCardIndex]?.name}
+          onCardLeftScreen={() => outOfFrame(shuffledMates[currentCardIndex]?.name)}
           preventSwipe={['up', 'down']}
           threshold={100}
         >
@@ -155,19 +173,19 @@ const MatchPage = () => {
             className="card"
             sx={{
               ...CommonStyles.matchCard,
-              backgroundImage: `url(http://localhost:3001/${potentialMates[currentCardIndex]?.profilePicture})`
+              backgroundImage: `url(http://localhost:3001/${shuffledMates[currentCardIndex]?.profilePicture})`
             }}
           >
             <Typography variant="h4" sx={CommonStyles.matchName}>
-              {potentialMates[currentCardIndex]?.name}
-              {renderGenderIcon(potentialMates[currentCardIndex]?.gender)}
+              {shuffledMates[currentCardIndex]?.name}
+              {renderGenderIcon(shuffledMates[currentCardIndex]?.gender)}
             </Typography>
             <Typography variant="h6" sx={CommonStyles.matchBreed}>
-              {potentialMates[currentCardIndex]?.breed}
+              {shuffledMates[currentCardIndex]?.breed}
             </Typography>
             <Typography variant="body1" sx={CommonStyles.matchInfo}>
-              {potentialMates[currentCardIndex]?.weight} kg /
-              {calculateAge(potentialMates[currentCardIndex]?.dob)}
+              {shuffledMates[currentCardIndex]?.weight} kg /
+              {calculateAge(shuffledMates[currentCardIndex]?.dob)}
             </Typography>
           </Box>
         </TinderCard>

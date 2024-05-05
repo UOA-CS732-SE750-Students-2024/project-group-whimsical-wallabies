@@ -1,5 +1,4 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -16,16 +15,19 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import {
+  DialogActions,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from '@mui/material';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useGetDog, useDeleteDogMutation } from '../../queries/dogs';
 import DogPhotoGallery from '../dogPhotoGallery/DogPhotoGallery';
+import DogCreateUpdateDialog from '../dogs/DogCreateUpdateDialog';
 
 export default function DogProfile() {
   let navigate = useNavigate();
@@ -48,18 +50,13 @@ export default function DogProfile() {
     deleteDog(dog._id, {
       onSuccess: () => {
         handleDeleteClose();
-        navigate(`/dashboard`);
+        navigate(`/my-dogs`);
         console.log('Dog profile deleted successfully');
       },
       onError: (error) => {
         console.error('Error deleting dog profile:', error);
       }
     });
-  };
-
-  const handleEdit = () => {
-    // Implement edit logic here
-    console.log('Edit dog profile');
   };
 
   const getAge = (dob) => {
@@ -86,8 +83,13 @@ export default function DogProfile() {
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
       {dog ? (
         <>
-          <Card sx={{ maxWidth: 600, width: 600, height: 400 }}>
-            <CardMedia component="img" height="300" image={dog.image} alt={dog.name} />
+          <Card sx={{ maxWidth: 600, width: '100%', height: '100%' }}>
+            <CardMedia
+              component="img"
+              height="300"
+              image={`http://localhost:3001/${dog.profilePicture}`}
+              alt={dog.name}
+            />
             <CardContent>
               <Typography
                 gutterBottom
@@ -146,16 +148,12 @@ export default function DogProfile() {
                   About Me:
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {dog.about_me}
+                  {dog.bio}
                 </Typography>
               </Box>
 
               <Box mt={2} display="flex" justifyContent="flex-end">
-                <Tooltip title="Edit">
-                  <IconButton onClick={handleEdit} sx={{ mr: 1 }}>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
+                <DogCreateUpdateDialog dogId={id} />
                 <Tooltip title="Delete">
                   <IconButton onClick={handleDeleteOpen}>
                     <DeleteIcon fontSize="small" />

@@ -81,7 +81,7 @@ function Header() {
     return null;
   }
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: '#aad5dc' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -131,8 +131,14 @@ function Header() {
                 display: { xs: 'block', md: 'none' }
               }}
             >
-              {Object.entries(pages).map(([key, { text }]) => (
-                <MenuItem key={key} onClick={handleCloseNavMenu}>
+              {Object.entries(pages).map(([key, { text, url }]) => (
+                <MenuItem
+                  key={key}
+                  onClick={() => {
+                    navigate(url);
+                    handleCloseNavMenu();
+                  }}
+                >
                   <Typography textAlign="center">{text}</Typography>
                 </MenuItem>
               ))}
