@@ -50,7 +50,7 @@ export default function DogProfile() {
     deleteDog(dog._id, {
       onSuccess: () => {
         handleDeleteClose();
-        navigate(`/dashboard`);
+        navigate(`/my-dogs`);
         console.log('Dog profile deleted successfully');
       },
       onError: (error) => {
