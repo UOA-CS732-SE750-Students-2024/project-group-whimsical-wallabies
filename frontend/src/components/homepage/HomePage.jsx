@@ -1,78 +1,79 @@
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import petImage from '../../images/homeDogImage.png';
+import { APPLICATION_PATH } from '../../utils/urlRoutes';
 import { CommonStyles } from '../common/CommonStyles';
 
 const HomePage = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    document.body.style.margin = '0';
-    document.body.style.padding = '0';
-    document.documentElement.style.margin = '0';
-    document.documentElement.style.padding = '0';
-    document.getElementById('root').style.margin = '0';
-    document.getElementById('root').style.padding = '0';
-  }, []);
+    if (isAuthenticated) {
+      navigate(APPLICATION_PATH.dashboard);
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
-    <Container sx={CommonStyles.homeContainerStyles} maxWidth="xl">
-      <Box sx={CommonStyles.homeBoxStyles}>
-        <Typography variant="h1" sx={CommonStyles.homeTypographyStyles}>
-          Paw Mate
-        </Typography>
-        <Typography variant="subtitle1" sx={CommonStyles.homeSubtitleStyles}>
-          Find your pet&apos;s <strong>perfect playdate</strong>.<br />
-          Discover personalized playdates for your pet&apos;s size, energy, and personality.
-        </Typography>
+    <Box sx={{ height: '100vh' }} style={CommonStyles.homeContainerStyles}>
+      <Box sx={{ height: '85.7vh' }}>
+        <Box sx={{ ...CommonStyles.homeBoxStyles }}>
+          <Typography variant="h1" sx={CommonStyles.homeTypographyStyles}>
+            Paw Mate
+          </Typography>
+          <Typography variant="subtitle1" sx={CommonStyles.homeSubtitleStyles}>
+            Find your pet&apos;s <strong>perfect playdate</strong>.<br />
+            Discover personalized playdates for your pet&apos;s size, energy, and personality.
+          </Typography>
 
-        <Box>
-          <Link to="/login" style={{ textDecoration: 'none' }}>
-            <Button
-              variant="contained"
-              startIcon={<VpnKeyIcon />}
-              color="primary"
-              sx={CommonStyles.homeButtonStyles}
-            >
+          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+            <ButtonLink to="/login" color="primary" icon={<VpnKeyIcon />}>
               Log in
-            </Button>
-          </Link>
-          <Link to="/signup" style={{ textDecoration: 'none' }}>
-            <Button
-              variant="contained"
-              color="success"
-              startIcon={<PersonAddIcon />}
-              sx={CommonStyles.homeButtonStyles}
-            >
+            </ButtonLink>
+            <ButtonLink to="/signup" color="success" icon={<PersonAddIcon />}>
               Sign Up
-            </Button>
-          </Link>
+            </ButtonLink>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: 0,
+            transform: 'translateX(-50%)',
+            zIndex: 1
+          }}
+        >
+          <img
+            src={petImage}
+            alt="PawMate logo"
+            style={{ width: '100%', height: 'auto', marginLeft: '30%' }}
+          />
         </Box>
       </Box>
-      <Box
-        style={{
-          height: '130px',
-          width: '100%',
-          backgroundColor: 'white',
-          position: 'absolute',
-          bottom: 0,
-          zIndex: 1
-        }}
-      ></Box>
-      <Box
-        style={{
-          position: 'absolute',
-          left: '50%',
-          bottom: 0,
-          transform: 'translateX(-30%)',
-          zIndex: 1
-        }}
-      >
-        <img src={petImage} alt="Your Image" style={{ maxWidth: '120%', maxHeight: '1000px' }} />
-      </Box>
-    </Container>
+      <Box sx={{ height: '14.3vh', backgroundColor: 'white', width: '100%' }} />
+    </Box>
   );
+};
+
+const ButtonLink = ({ to, color, icon, children }) => (
+  <Link to={to} style={{ textDecoration: 'none' }}>
+    <Button variant="contained" startIcon={icon} color={color} sx={CommonStyles.homeButtonStyles}>
+      {children}
+    </Button>
+  </Link>
+);
+
+ButtonLink.propTypes = {
+  to: PropTypes.string.isRequired,
+  color: PropTypes.oneOf(['primary', 'secondary', 'success', 'error', 'info', 'warning'])
+    .isRequired,
+  icon: PropTypes.element,
+  children: PropTypes.node.isRequired
 };
 
 export default HomePage;

@@ -15,7 +15,25 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { APPLICATION_PATH } from '../../utils/urlRoutes';
 
-const pages = ['Home', 'My Dogs', 'Friends', 'Matching'];
+const pages = {
+  home: {
+    text: 'Home',
+    url: APPLICATION_PATH.dashboard
+  },
+  myDogs: {
+    text: 'My Dogs',
+    url: APPLICATION_PATH.dog.dashboard
+  },
+  friends: {
+    text: 'Friends',
+    url: APPLICATION_PATH.user.friends
+  },
+  matching: {
+    text: 'Matching',
+    url: APPLICATION_PATH.matching
+  }
+};
+
 const settings = ['Account', 'Logout'];
 
 function Header() {
@@ -23,7 +41,7 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const { isAuthenticated, logout } = useAuth();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -56,13 +74,12 @@ function Header() {
 
   const handleLogout = () => {
     logout();
-    navigate(APPLICATION_PATH.auth.login);
+    navigate(APPLICATION_PATH.homepage);
   };
 
   if (!isAuthenticated) {
     return null;
   }
-
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -114,9 +131,9 @@ function Header() {
                 display: { xs: 'block', md: 'none' }
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {Object.entries(pages).map(([key, { text }]) => (
+                <MenuItem key={key} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{text}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -141,13 +158,16 @@ function Header() {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {Object.entries(pages).map(([key, { text, url }]) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={key}
+                onClick={() => {
+                  navigate(url);
+                  handleCloseNavMenu();
+                }}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {text}
               </Button>
             ))}
           </Box>

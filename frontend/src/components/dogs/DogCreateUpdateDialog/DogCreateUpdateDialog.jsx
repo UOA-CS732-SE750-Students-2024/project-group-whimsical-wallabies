@@ -104,6 +104,9 @@ const DogCreateUpdateDialog = ({ dogId }) => {
     if (dog) {
       reset(dog);
     }
+    return () => {
+      reset(defaultValues);
+    };
   }, [dog, reset]);
 
   if (!open) {

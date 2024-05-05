@@ -14,7 +14,13 @@ export const APPLICATION_PATH = {
     signup: '/signup'
   },
   dog: {
+    dashboard: '/my-dogs',
     profile: '/dog/:id'
   },
-  dashboard: '/dashboard'
+  user: {
+    friends: '/dashboard'
+  },
+  matching: '/dashboard',
+  dashboard: '/dashboard',
+  homepage: '/'
 };
