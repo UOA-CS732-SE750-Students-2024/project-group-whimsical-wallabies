@@ -10,11 +10,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function DogCardItem({ ownerId, id, image, name, gender, about_me }) {
+export default function DogCardItem({ id, image, name, gender, about_me }) {
   let navigate = useNavigate();
 
   const handleViewClick = () => {
-    navigate(`/${ownerId}/dog/${id}`); // Navigate to the dog profile
+    navigate(`/dog/${id}`); // Navigate to the dog profile
     console.log('View clicked');
   };
 
@@ -60,7 +60,6 @@ export default function DogCardItem({ ownerId, id, image, name, gender, about_me
   );
 }
 DogCardItem.propTypes = {
-  ownerId: PropTypes.number.isRequired,
   id: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

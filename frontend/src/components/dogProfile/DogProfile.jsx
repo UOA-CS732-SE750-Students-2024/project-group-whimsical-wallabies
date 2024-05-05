@@ -11,7 +11,6 @@ import {
   Card,
   CardContent,
   CardMedia,
-  // Chip,
   Typography,
   Button,
   IconButton,
@@ -25,44 +24,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-//mock data
-// import dogDummyData from '../dogdashboard/dogDummyData.json';
 import { useGetDog, useDeleteDogMutation } from '../../queries/dogs';
 import DogPhotoGallery from '../dogphotogallery/DogPhotoGallery';
 
 export default function DogProfile() {
   let navigate = useNavigate();
 
-  const { ownerId, id } = useParams();
+  const { id } = useParams();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const { data: dog, isLoading, isError } = useGetDog(id); // Use the useGetDogs query
-  const { mutate: deleteDog } = useDeleteDogMutation(); // Use the useDeleteDogMutation mutation
-
-  // running mock data
-  // useEffect(() => {
-  //   const filteredDogs = dogDummyData.filter(
-  //     (dog) => dog.ownerId === parseInt(ownerId, 10) && dog.id === parseInt(id, 10)
-  //   );
-  //   if (filteredDogs.length > 0) {
-  //     setDog(filteredDogs[0]);
-  //   } else {
-  //     setDog(null);
-  //   }
-  // }, [ownerId, id]);
-
-  // useEffect(() => {
-  //   if (dogs) {
-  //     const filteredDogs = dogs.filter(
-  //       (dog) => dog.ownerId === parseInt(owner, 10) && dog.id === parseInt(_id, 10)
-  //     );
-  //     if (filteredDogs.length > 0) {
-  //       setDog(filteredDogs[0]);
-  //     } else {
-  //       setDog(null);
-  //     }
-  //   }
-  // }, [owner, _id, dogs]);
+  const { mutate: deleteDog } = useDeleteDogMutation(id); // Use the useDeleteDogMutation mutation
 
   const handleDeleteOpen = () => {
     setOpenDeleteDialog(true);
@@ -73,10 +45,10 @@ export default function DogProfile() {
   };
 
   const handleDelete = () => {
-    deleteDog(dog.id, {
+    deleteDog(dog._id, {
       onSuccess: () => {
         handleDeleteClose();
-        navigate(`/${ownerId}/dog`);
+        navigate(`/dog`);
         console.log('Dog profile deleted successfully');
       },
       onError: (error) => {
@@ -84,24 +56,6 @@ export default function DogProfile() {
       }
     });
   };
-
-  // running mock data
-  // const handleDelete = () => {
-  //   const dogIndex = dogDummyData.findIndex(
-  //     (dog) => dog.ownerId === parseInt(ownerId, 10) && dog.id === parseInt(id, 10)
-  //   );
-
-  //   if (dogIndex !== -1) {
-  //     dogDummyData.splice(dogIndex, 1);
-  //     setDog(null);
-  //     handleDeleteClose();
-  //     navigate(`/${ownerId}/dog`);
-
-  //     console.log('Dog profile deleted successfully');
-  //   } else {
-  //     console.error('Dog profile not found');
-  //   }
-  // };
 
   const handleEdit = () => {
     // Implement edit logic here
@@ -196,24 +150,6 @@ export default function DogProfile() {
                 </Typography>
               </Box>
 
-              <Box mt={2}>
-                <Typography variant="body1" gutterBottom>
-                  Interested In:
-                </Typography>
-                {/* {dog.interested_in.map((interest, index) => (
-                  <Chip
-                    key={index}
-                    label={interest}
-                    sx={{
-                      mr: 1,
-                      mb: 1,
-                      backgroundColor: '#fffee0',
-                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)'
-                    }}
-                  />
-                ))} */}
-              </Box>
-
               <Box mt={2} display="flex" justifyContent="flex-end">
                 <Tooltip title="Edit">
                   <IconButton onClick={handleEdit} sx={{ mr: 1 }}>
@@ -230,7 +166,8 @@ export default function DogProfile() {
           </Card>
 
           <Box mt={4}>
-            <DogPhotoGallery id={dog.id} />
+            <DogPhotoGallery id={dog._id} />
+            {/* <DogPhotoGallery id={1} /> */}
           </Box>
         </>
       ) : (

@@ -67,9 +67,9 @@ export function useUploadDogProfilePictureMutation(options) {
   });
 }
 
-export function useDeleteDogMutation(options) {
+export function useDeleteDogMutation(dogId, options) {
   return useMutation({
-    mutationFn: async (dogId) => {
+    mutationFn: async () => {
       const { data } = await axiosApiInstance.delete(`/api/dog/${dogId}`);
       return data;
     },

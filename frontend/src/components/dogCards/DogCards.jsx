@@ -13,12 +13,11 @@ export default function DogCards({ items }) {
           {items.map((dog) => (
             <Grid item key={dog.id} style={{ display: 'flex', justifyContent: 'center' }}>
               <DogCardItem
-                ownerId={dog.ownerId}
-                id={dog.id}
-                image={dog.image}
+                id={dog._id}
+                image={dog.profilePicture}
                 name={dog.name}
                 gender={dog.gender}
-                about_me={dog.about_me}
+                about_me={dog.bio}
               />
             </Grid>
           ))}
@@ -37,7 +36,6 @@ export default function DogCards({ items }) {
 DogCards.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      ownerId: PropTypes.number.isRequired,
       id: PropTypes.number.isRequired,
       image: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
