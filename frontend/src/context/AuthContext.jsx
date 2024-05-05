@@ -1,13 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { createContext, useContext, useState } from 'react';
 import { tokenStorage, userDataStorage } from '../utils/localStorageNames';
-import { useLoginMutation, useSignupMutation } from './AuthContext.queries';
+import { useLoginMutation, useSignupMutation, useUpdateUserMutation } from './AuthContext.queries';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!tokenStorage.get());
   const [isSignup, setIsSignup] = useState(false);
+  const [currentUser, setUser] = useState(() => {
+    if (userDataStorage.get()) {
+      return userDataStorage.get();
+    }
+  });
 
   const {
     mutate: login,
@@ -16,6 +21,7 @@ export const AuthProvider = ({ children }) => {
   } = useLoginMutation(({ data: { user, token } }) => {
     tokenStorage.save(token);
     userDataStorage.save(user);
+    setUser(user);
     setIsAuthenticated(true);
   });
   const {
@@ -30,6 +36,14 @@ export const AuthProvider = ({ children }) => {
     userDataStorage.remove();
     setIsAuthenticated(false);
   };
+  const {
+    mutate: updateUserProfile,
+    error: updateUserProfileErrors,
+    isPending: isPendinguserProfileUpdate
+  } = useUpdateUserMutation((userProfile) => {
+    userDataStorage.save(userProfile.data);
+    setUser(userProfile.data);
+  });
 
   return (
     <AuthContext.Provider
@@ -44,7 +58,12 @@ export const AuthProvider = ({ children }) => {
         signupErrors,
         isSignup,
         isPendingSignup,
-        setIsSignup
+        setIsSignup,
+        currentUser,
+        setUser,
+        updateUserProfile,
+        updateUserProfileErrors,
+        isPendinguserProfileUpdate
       }}
     >
       {children}

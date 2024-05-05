@@ -14,7 +14,9 @@ import MatchPage from './components/matchapage/MatchPage';
 import DogDashboard from './components/myDogsDashboard/DogDashboard';
 import DogProfile from './components/myDogsDashboard/DogProfile/DogProfile';
 import SignUp from './components/signup/SignUp';
+import UserProfile from './components/userProfile/userProfile';
 import Welcome from './components/welcome/Welcome';
+
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 import theme from './theme';
@@ -80,6 +82,14 @@ const App = () => {
                   element={
                     <PrivateRoute>
                       <DogProfile />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path={APPLICATION_PATH.user.profile}
+                  element={
+                    <PrivateRoute>
+                      <UserProfile />
                     </PrivateRoute>
                   }
                 />
