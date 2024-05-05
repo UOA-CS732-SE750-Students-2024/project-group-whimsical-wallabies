@@ -1,9 +1,10 @@
 import PeopleIcon from '@mui/icons-material/People';
 import PetsIcon from '@mui/icons-material/Pets';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, Typography, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Box, Typography, List, ListItem, ListItemIcon, ListItemText, Grid } from '@mui/material';
 import React from 'react';
 import backgroundImage from '../../images/homeDogImage.png';
+import Weather from '../utils/Weather';
 
 const Welcome = () => {
   return (
@@ -28,75 +29,82 @@ const Welcome = () => {
           bgcolor: 'rgba(255, 255, 255, 0.6)'
         }}
       >
-        <Box sx={{ maxWidth: 800, position: 'relative', zIndex: 3 }}>
-          <Typography
-            variant="h1"
-            sx={{
-              fontSize: '32px',
-              fontWeight: 'bold',
-              mb: 2,
-              textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
-            }}
-          >
-            Welcome to Paw Mate!
-          </Typography>
-          <Typography variant="body1" sx={{ fontSize: '18px', lineHeight: 1.5 }}>
-            Paw Mate is your go-to platform for finding the perfect playdate for your pet. Whether
-            you have a dog, cat, or any furry friend, Paw Mate helps you discover personalized
-            playdates based on your pet&apos;s size, energy level, and personality.
-          </Typography>
-          <Typography
-            variant="h2"
-            sx={{
-              fontSize: '24px',
-              fontWeight: 'bold',
-              mt: 5,
-              mb: 2,
-              textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
-            }}
-          >
-            Key Features:
-          </Typography>
-          <List sx={{ bgcolor: 'transparent', fontSize: '18px' }}>
-            <ListItem>
-              <ListItemIcon>
-                <PetsIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="MY DOGS"
-                primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to primary text
-                secondary="Access all your dogs' information, where you can add, edit, review, or delete their details."
-                secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to secondary text
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="FRIENDS"
-                primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to primary text
-                secondary="View your friend list, see who has matched with you, and explore potential playdates for your pets."
-                secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to secondary text
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <SearchIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="MATCHING"
-                primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to primary text
-                secondary="Engage in matching with other users' dogs to find compatible playmates for your furry companions."
-                secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to secondary text
-              />
-            </ListItem>
-          </List>
-          <Typography variant="body1" sx={{ fontSize: '18px', lineHeight: 1.5, mt: 2 }}>
-            Start connecting with fellow pet owners and make your pet&apos;s social life more fun
-            and exciting with Paw Mate!
-          </Typography>
-        </Box>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={4}>
+            <Weather />
+          </Grid>
+          <Grid item xs={12} sm={8}>
+            <Box sx={{ maxWidth: 800, position: 'relative', zIndex: 3 }}>
+              <Typography
+                variant="h1"
+                sx={{
+                  fontSize: '32px',
+                  fontWeight: 'bold',
+                  mb: 2,
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                }}
+              >
+                Welcome to Paw Mate!
+              </Typography>
+              <Typography variant="body1" sx={{ fontSize: '18px', lineHeight: 1.5 }}>
+                Paw Mate is your go-to platform for finding the perfect playdate for your pet.
+                Whether you have a dog, cat, or any furry friend, Paw Mate helps you discover
+                personalized playdates based on your pet&apos;s size, energy level, and personality.
+              </Typography>
+              <Typography
+                variant="h2"
+                sx={{
+                  fontSize: '24px',
+                  fontWeight: 'bold',
+                  mt: 5,
+                  mb: 2,
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                }}
+              >
+                Key Features:
+              </Typography>
+              <List sx={{ bgcolor: 'transparent', fontSize: '18px' }}>
+                <ListItem>
+                  <ListItemIcon>
+                    <PetsIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="MY DOGS"
+                    primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to primary text
+                    secondary="Access all your dogs' information, where you can add, edit, review, or delete their details."
+                    secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to secondary text
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <PeopleIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="FRIENDS"
+                    primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to primary text
+                    secondary="View your friend list, see who has matched with you, and explore potential playdates for your pets."
+                    secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to secondary text
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <SearchIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="MATCHING"
+                    primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to primary text
+                    secondary="Engage in matching with other users' dogs to find compatible playmates for your furry companions."
+                    secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to secondary text
+                  />
+                </ListItem>
+              </List>
+              <Typography variant="body1" sx={{ fontSize: '18px', lineHeight: 1.5, mt: 2 }}>
+                Start connecting with fellow pet owners and make your pet&apos;s social life more
+                fun and exciting with Paw Mate!
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );

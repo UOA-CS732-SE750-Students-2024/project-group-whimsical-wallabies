@@ -83,10 +83,10 @@ export default function DogProfile() {
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
       {dog ? (
         <>
-          <Card sx={{ maxWidth: 600, width: '100%', height: '100%' }}>
+          <Card sx={{ maxWidth: 630, width: '100%', height: '100%' }}>
             <CardMedia
               component="img"
-              height="300"
+              height="400"
               image={`http://localhost:3001/${dog.profilePicture}`}
               alt={dog.name}
             />
@@ -163,9 +163,8 @@ export default function DogProfile() {
             </CardContent>
           </Card>
 
-          <Box mt={4}>
+          <Box mt={4} sx={{ maxWidth: 1050, width: '100%' }}>
             <DogPhotoGallery id={dog._id} />
-            {/* <DogPhotoGallery id={1} /> */}
           </Box>
         </>
       ) : (
