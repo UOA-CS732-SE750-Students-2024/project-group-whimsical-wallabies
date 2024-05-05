@@ -69,7 +69,9 @@ function Header() {
         if (isAuthenticated) {
           handleLogout();
         }
-
+        break;
+      case 'Logo':
+        navigate(APPLICATION_PATH.homepage);
         break;
       default:
         navigate('/');
@@ -107,8 +109,6 @@ function Header() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -164,24 +164,6 @@ function Header() {
               ))}
             </Menu>
           </Box>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none'
-            }}
-          >
-            <Avatar variant="square" src="./logo.png" />
-          </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {Object.entries(pages).map(([key, { text, url }]) => (
@@ -233,13 +215,13 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem key="Account" onClick={() => handleUserMenu('Account')}>
+              <MenuItem key="Account" onClick={handleUserMenu('Account')}>
                 <ListItemIcon>
                   <AccountBoxIcon fontSize="small" />
                 </ListItemIcon>
                 <Typography textAlign="center">Account</Typography>
               </MenuItem>
-              <MenuItem key="Logout" onClick={() => handleUserMenu('Logout')}>
+              <MenuItem key="Logout" onClick={handleUserMenu('Logout')}>
                 <ListItemIcon>
                   <ExitToAppIcon fontSize="small" />
                 </ListItemIcon>
