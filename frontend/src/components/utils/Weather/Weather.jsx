@@ -43,8 +43,11 @@ const Weather = () => {
 
   return (
     <Paper elevation={3} sx={{ p: 2, maxWidth: 400, margin: 'auto' }}>
-      <Typography variant="h6" align="center">
+      <Typography variant="h5" align="center">
         Weather in Auckland
+      </Typography>
+      <Typography variant="caption" align="center">
+        Powered by OpenWeatherMap.org
       </Typography>
       <Divider sx={{ my: 1 }} />
       <Grid container spacing={2}>
@@ -70,7 +73,7 @@ const Weather = () => {
         </Grid>
       </Grid>
       <Divider sx={{ my: 1 }} />
-      <Typography variant="h4" align="center" color={isGoodDayForWalk ? 'green' : 'red'}>
+      <Typography variant="caption" align="center" color={isGoodDayForWalk ? 'green' : 'red'}>
         {isGoodDayForWalk ? (
           <Box color="green" display="flex" alignItems="center" justifyContent="center">
             <ThumbUpIcon sx={{ mr: 1 }} />
