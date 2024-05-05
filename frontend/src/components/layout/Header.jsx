@@ -73,6 +73,11 @@ function Header() {
       case 'Logo':
         navigate(APPLICATION_PATH.homepage);
         break;
+      case 'Account':
+        if (isAuthenticated) {
+          navigate(APPLICATION_PATH.user.profile);
+        }
+        break;
       default:
         navigate('/');
     }

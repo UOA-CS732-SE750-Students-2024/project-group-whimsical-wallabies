@@ -8,6 +8,11 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!tokenStorage.get());
   const [isSignup, setIsSignup] = useState(false);
+  const [currentUser, setUser] = useState(() => {
+    if (userDataStorage.get()) {
+      return userDataStorage.get();
+    }
+  });
 
   const {
     mutate: login,
@@ -16,6 +21,7 @@ export const AuthProvider = ({ children }) => {
   } = useLoginMutation(({ data: { user, token } }) => {
     tokenStorage.save(token);
     userDataStorage.save(user);
+    setUser(user);
     setIsAuthenticated(true);
   });
   const {
@@ -44,7 +50,9 @@ export const AuthProvider = ({ children }) => {
         signupErrors,
         isSignup,
         isPendingSignup,
-        setIsSignup
+        setIsSignup,
+        currentUser,
+        setUser
       }}
     >
       {children}
