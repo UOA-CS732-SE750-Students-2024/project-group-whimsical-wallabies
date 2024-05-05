@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CommonStyles } from '../../common/CommonStyles';
-import DogCreateUpdateDialog from '../../dogs/DogCreateUpdateDialog';
+import DogCreateUpdateDialog from '../DogCreateUpdateDialog';
 
 const DogCardItem = ({ id, image, name, gender, aboutMe }) => {
   const navigate = useNavigate();

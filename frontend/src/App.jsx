@@ -4,8 +4,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import DogDashboard from './components/dashboard/dogDashboard';
-import DogProfile from './components/dogProfile/DogProfile';
 
 import HomePage from './components/homepage/HomePage';
 import Header from './components/layout/Header';
@@ -13,6 +11,8 @@ import Login from './components/login/Login';
 import Filter from './components/matchapage/Filter';
 import FriendList from './components/matchapage/FriendList';
 import MatchPage from './components/matchapage/MatchPage';
+import DogDashboard from './components/myDogsDashboard/DogDashboard';
+import DogProfile from './components/myDogsDashboard/DogProfile/DogProfile';
 import SignUp from './components/signup/SignUp';
 import Welcome from './components/welcome/Welcome';
 import { AuthProvider, useAuth } from './context/AuthContext';
