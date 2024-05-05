@@ -36,14 +36,7 @@ export const AuthProvider = ({ children }) => {
     userDataStorage.remove();
     setIsAuthenticated(false);
   };
-  const {
-    mutate: updateUserProfile,
-    error: updateUserProfileErrors,
-    isPending: isPendinguserProfileUpdate
-  } = useUpdateUserMutation((userProfile) => {
-    userDataStorage.save(userProfile.data);
-    setUser(userProfile.data);
-  });
+ 
 
   return (
     <AuthContext.Provider
