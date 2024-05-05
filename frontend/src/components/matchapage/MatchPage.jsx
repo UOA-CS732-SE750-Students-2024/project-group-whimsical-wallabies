@@ -1,13 +1,17 @@
 import CloseIcon from '@mui/icons-material/Close';
+import Diversity1RoundedIcon from '@mui/icons-material/Diversity1Rounded';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FemaleIcon from '@mui/icons-material/Female';
+import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import MaleIcon from '@mui/icons-material/Male';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, IconButton } from '@mui/material';
 import Hammer from 'hammerjs';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import TinderCard from 'react-tinder-card';
 import { CommonStyles } from '../common/CommonStyles';
+import Filter from './Filter';
+import FriendList from './FriendList';
 
 const MatchPage = () => {
   const db = [
@@ -52,6 +56,15 @@ const MatchPage = () => {
       gender: 'male'
     }
   ];
+
+  const [showFilter, setShowFilter] = useState(false);
+  const [showFriendList, setShowFriendList] = useState(false);
+  const toggleFilter = () => {
+    setShowFilter(!showFilter);
+  };
+  const toggleFriendList = () => {
+    setShowFriendList(!showFriendList);
+  };
 
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const tinderCardRef = useRef(null);
@@ -140,6 +153,15 @@ const MatchPage = () => {
 
   return (
     <Box className="dashboard" sx={CommonStyles.matchDashboard}>
+      <IconButton onClick={toggleFilter} color="primary">
+        <FilterListRoundedIcon />
+      </IconButton>
+      <IconButton onClick={toggleFriendList} color="secondary">
+        <Diversity1RoundedIcon />
+      </IconButton>
+      {showFilter && <Filter />}
+      {showFriendList && <FriendList />}
+
       <Box className="swipe-container" sx={CommonStyles.matchSwipeContainer}>
         {currentCardIndex < db.length ? (
           <TinderCard
