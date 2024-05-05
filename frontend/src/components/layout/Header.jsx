@@ -131,8 +131,14 @@ function Header() {
                 display: { xs: 'block', md: 'none' }
               }}
             >
-              {Object.entries(pages).map(([key, { text }]) => (
-                <MenuItem key={key} onClick={handleCloseNavMenu}>
+              {Object.entries(pages).map(([key, { text, url }]) => (
+                <MenuItem
+                  key={key}
+                  onClick={() => {
+                    navigate(url);
+                    handleCloseNavMenu();
+                  }}
+                >
                   <Typography textAlign="center">{text}</Typography>
                 </MenuItem>
               ))}
