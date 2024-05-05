@@ -13,7 +13,8 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Card
 } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/system';
 import React from 'react';
@@ -29,26 +30,27 @@ const Welcome = () => {
     <Box
       sx={{
         backgroundImage: `url(${backgroundImage})`,
-        backgroundPosition: 'right bottom', // Positions the image at the right bottom corner
+        backgroundPosition: 'right bottom',
         backgroundRepeat: 'no-repeat',
-        backgroundSize: '600px 450px', // Specifies the size of the image
+        backgroundSize: '650px 500px',
         position: 'relative'
       }}
     >
       <Box
         sx={{
-          minHeight: '80vh',
+          minHeight: '30vh',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: '0 20px',
+          padding: '0 10px',
           textAlign: 'center',
           bgcolor: 'rgba(255, 255, 255, 0.6)'
         }}
       >
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={1}></Grid>
+          <Grid item xs={12} sm={3}>
             {isMobile ? (
               <>
                 <Accordion>
@@ -70,27 +72,45 @@ const Welcome = () => {
               </>
             ) : (
               <Box>
-                <Weather />
+                <Box mt={0}>
+                  <Weather />
+                </Box>
                 <Box mt={2}>
                   <DogWalkingPlaces />
                 </Box>
               </Box>
             )}
           </Grid>
-          <Grid item xs={12} sm={8}>
-            <Box sx={{ maxWidth: 800, position: 'relative', zIndex: 3 }}>
+          <Grid item xs={12} sm={7}>
+            <Card
+              sx={{
+                width: { xs: '86%', sm: '95%' },
+                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                backdropFilter: 'blur(1px)',
+                padding: '20px',
+                boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+                borderRadius: '10px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                height: '94%'
+              }}
+            >
               <Typography
                 variant="h1"
                 sx={{
                   fontSize: '32px',
                   fontWeight: 'bold',
                   mb: 2,
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                 }}
               >
                 Welcome to Paw Mate!
               </Typography>
-              <Typography variant="body1" sx={{ fontSize: '18px', lineHeight: 1.5 }}>
+              <Typography
+                variant="body1"
+                sx={{ fontSize: '18px', lineHeight: 1.5, textAlign: 'center' }}
+              >
                 Paw Mate is your go-to platform for finding the perfect playdate for your pet.
                 Whether you have a dog, cat, or any furry friend, Paw Mate helps you discover
                 personalized playdates based on your pet&apos;s size, energy level, and personality.
@@ -101,8 +121,8 @@ const Welcome = () => {
                   fontSize: '24px',
                   fontWeight: 'bold',
                   mt: 5,
-                  mb: 2,
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                  mb: 1,
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                 }}
               >
                 Key Features:
@@ -142,12 +162,16 @@ const Welcome = () => {
                   />
                 </ListItem>
               </List>
-              <Typography variant="body1" sx={{ fontSize: '18px', lineHeight: 1.5, mt: 2 }}>
+              <Typography
+                variant="body1"
+                sx={{ fontSize: '18px', lineHeight: 1.5, mt: 2, textAlign: 'center' }}
+              >
                 Start connecting with fellow pet owners and make your pet&apos;s social life more
                 fun and exciting with Paw Mate!
               </Typography>
-            </Box>
+            </Card>
           </Grid>
+          <Grid item xs={12} sm={1}></Grid>
         </Grid>
       </Box>
     </Box>
