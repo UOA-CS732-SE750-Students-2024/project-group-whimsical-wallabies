@@ -43,12 +43,15 @@ const App = () => {
           <AuthProvider>
             <Router>
               <Routes>
-                <Route path="/" element={<HomePage />} />
                 <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
                 <Route path={APPLICATION_PATH.auth.signup} element={<SignUp />} />
                 {/*<Route path="/match" element={<MatchPage />} />*/}
                 <Route
                   path={APPLICATION_PATH.dashboard}
+                  element={<PrivateRoute>Welcome to the Dashboard</PrivateRoute>}
+                />
+                <Route
+                  path={APPLICATION_PATH.dog.dashboard}
                   element={
                     <PrivateRoute>
                       <DogDashboard />
@@ -63,7 +66,7 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
-                <Route path="*" element={<Navigate to="/welcome" />} />
+                <Route path={APPLICATION_PATH.homepage} element={<HomePage />} />
               </Routes>
             </Router>
           </AuthProvider>
