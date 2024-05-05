@@ -1,15 +1,30 @@
 import CloseIcon from '@mui/icons-material/Close';
+import Diversity1RoundedIcon from '@mui/icons-material/Diversity1Rounded';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FemaleIcon from '@mui/icons-material/Female';
+import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import MaleIcon from '@mui/icons-material/Male';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, IconButton } from '@mui/material';
 import Hammer from 'hammerjs';
 import React, { useState, useEffect, useCallback } from 'react';
 import TinderCard from 'react-tinder-card';
 import { useGetPotentialMates } from '../../queries/matches';
 import { CommonStyles } from '../common/CommonStyles';
+import Filter from './Filter';
+import FriendList from './FriendList';
 
 const MatchPage = () => {
+  const [showFilter, setShowFilter] = useState(false);
+  const [showFriendList, setShowFriendList] = useState(false);
+
+  const toggleFilter = () => {
+    setShowFilter(!showFilter);
+  };
+
+  const toggleFriendList = () => {
+    setShowFriendList(!showFriendList);
+  };
+
   const { data: potentialMates, isLoading, error, refetch } = useGetPotentialMates();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
@@ -112,6 +127,16 @@ const MatchPage = () => {
 
   return (
     <Box className="dashboard" sx={CommonStyles.matchDashboard}>
+      {showFilter && <Filter />}
+      {showFriendList && <FriendList />}
+      <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 2 }}>
+        <IconButton onClick={toggleFilter} color="primary">
+          <FilterListRoundedIcon />
+        </IconButton>
+        <IconButton onClick={toggleFriendList} color="secondary">
+          <Diversity1RoundedIcon />
+        </IconButton>
+      </Box>
       {isLoading ? (
         <Typography variant="h6">Loading potential mates...</Typography>
       ) : error ? (
