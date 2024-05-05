@@ -13,7 +13,10 @@ import {
   ImageList,
   ImageListItem,
   Tooltip,
-  Input
+  Input,
+  useMediaQuery,
+  useTheme,
+  Modal
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -84,10 +87,48 @@ export default function DogPhotoGallery({ id }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
+  const [openImageModal, setOpenImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [uploadError, setUploadError] = useState(null);
   const { data: photos, isLoading, refetch } = useGetPhotos(id);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Breakpoint for mobile devices
+  const isSmallMobile = useMediaQuery(theme.breakpoints.down('xs')); // Extra small screen breakpoint
+  const isLargeMobile = useMediaQuery(theme.breakpoints.down('md')); // Breakpoint for large mobile devices
+
+  const handleOpenImageModal = (photoUrl) => {
+    setSelectedImage(photoUrl);
+    setOpenImageModal(true);
+  };
+
+  const handleCloseImageModal = () => {
+    setOpenImageModal(false);
+    setSelectedImage(null);
+  };
+
+  const getCols = () => {
+    if (isSmallMobile) {
+      return 1; // Single column for extra small screens
+    } else if (isMobile) {
+      return 1; // One columns for small screens
+    } else if (isLargeMobile) {
+      return 3; // Three columns for medium screens
+    } else {
+      return 4; // Three columns for larger screens
+    }
+  };
+
+  const getImageSize = () => {
+    if (isMobile) {
+      return 342; // 50% of the viewport width for mobile devices
+    } else {
+      return 200; // Fixed width of 200px for larger screens
+    }
+  };
 
   const { mutate: createPhoto } = useCreatePhotoMutation(id, {
     onSuccess: refetch
@@ -159,19 +200,35 @@ export default function DogPhotoGallery({ id }) {
     return <Typography>Loading...</Typography>;
   }
 
+  console.log(getImageSize());
+
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
         Photo Gallery
       </Typography>
-      <ImageList sx={{ width: 510, height: 340 }} cols={3} rowHeight={164}>
+      <ImageList
+        sx={{
+          width: '100%',
+          height: 'auto'
+        }}
+        cols={getCols()}
+        rowHeight={getImageSize()} // Use getImageSize to set the rowHeight
+      >
         {photos.map((photo) => (
           <ImageListItem key={photo.url}>
             <img
-              src={`http://localhost:3001/${photo.url}?w=164&h=164&fit=crop&auto=format`}
+              src={`http://localhost:3001/${photo.url}?w=${getImageSize()}&h=${getImageSize()}&fit=crop&auto=format`}
               alt="Dog"
               loading="lazy"
-              style={{ width: '164px', height: '164px', objectFit: 'cover' }}
+              style={{
+                width: '100%', // Span the full width of the column
+                height: '100%', // Maintain a square aspect ratio
+                objectFit: 'cover',
+                aspectRatio: '1/1',
+                cursor: 'pointer'
+              }}
+              onClick={() => handleOpenImageModal(`http://localhost:3001/${photo.url}`)} // Add click handler
             />
             <Tooltip title="Delete">
               <IconButton
@@ -184,7 +241,7 @@ export default function DogPhotoGallery({ id }) {
                   '&:hover': { opacity: 1 }
                 }}
               >
-                <DeleteIcon />
+                <DeleteIcon fontSize={isMobile ? 'small' : 'inherit'} />
               </IconButton>
             </Tooltip>
           </ImageListItem>
@@ -194,14 +251,14 @@ export default function DogPhotoGallery({ id }) {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            width="164px"
-            height="164px"
+            width="100%"
+            height={getImageSize()}
             border="1px dashed gray"
             borderRadius="4px"
             onClick={handleUploadOpen}
             style={{ cursor: 'pointer' }}
           >
-            <AddCircleOutlineIcon fontSize="large" color="action" />
+            <AddCircleOutlineIcon fontSize={isMobile ? 'large' : 'large'} color="action" />
           </Box>
         </ImageListItem>
       </ImageList>
@@ -215,6 +272,39 @@ export default function DogPhotoGallery({ id }) {
         uploadError={uploadError}
         fileName={file ? file.name : ''}
       />
+      <Modal
+        open={openImageModal}
+        onClose={handleCloseImageModal}
+        onClick={handleCloseImageModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        style={{ cursor: 'pointer' }}
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '90vw',
+            maxWidth: '1000px',
+            maxHeight: '90vh',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4
+          }}
+        >
+          <img
+            src={selectedImage}
+            alt="Enlarged"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain'
+            }}
+          />
+        </Box>
+      </Modal>
     </Box>
   );
 }
