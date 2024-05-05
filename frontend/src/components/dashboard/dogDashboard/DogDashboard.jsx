@@ -7,7 +7,7 @@ import DogCards from '../dogCards';
 export default function DogDashboard() {
   return (
     <div>
-      <h1>My Dog Dashboard</h1>
+      <h1>My Dog(s) Dashboard</h1>
       <DogCreateUpdateDialog />
       <Box display="flex" justifyContent="center" alignItems="center" position="relative">
         <DogCards />
