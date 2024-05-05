@@ -20,7 +20,7 @@ export const APPLICATION_PATH = {
   user: {
     friends: '/dashboard'
   },
-  matching: '/dashboard',
+  matching: '/matching',
   dashboard: '/dashboard',
   homepage: '/'
 };
