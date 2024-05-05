@@ -1,3 +1,5 @@
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { Box, Button, Container, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -27,12 +29,22 @@ const HomePage = () => {
 
         <Box>
           <Link to="/login" style={{ textDecoration: 'none' }}>
-            <Button variant="contained" color="primary" sx={CommonStyles.homeButtonStyles}>
+            <Button
+              variant="contained"
+              startIcon={<VpnKeyIcon />}
+              color="primary"
+              sx={CommonStyles.homeButtonStyles}
+            >
               Log in
             </Button>
           </Link>
           <Link to="/signup" style={{ textDecoration: 'none' }}>
-            <Button variant="contained" color="primary" sx={CommonStyles.homeButtonStyles}>
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<PersonAddIcon />}
+              sx={CommonStyles.homeButtonStyles}
+            >
               Sign Up
             </Button>
           </Link>

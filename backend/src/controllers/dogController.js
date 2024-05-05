@@ -1,4 +1,11 @@
-import { createDog, getDogs, getDog, updateDog, deleteDog } from '../services/dogService.js';
+import {
+  createDog,
+  getDogs,
+  getDog,
+  updateDog,
+  deleteDog,
+  getAllDogsExceptUser
+} from '../services/dogService.js';
 
 export const create = async (req, res) => {
   try {
@@ -41,6 +48,15 @@ export const remove = async (req, res) => {
   try {
     await deleteDog(req.params.id, req.user._id);
     res.status(204).json({ message: 'Dog deleted' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const getAllOthers = async (req, res) => {
+  try {
+    const dogs = await getAllDogsExceptUser(req.user._id);
+    res.status(200).json(dogs);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

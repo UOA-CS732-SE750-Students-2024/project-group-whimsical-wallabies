@@ -8,6 +8,9 @@ export const createDog = async (owner, { name, breed, dob, gender, weight, bio, 
   const dog = new Dog({ name, breed, dob, owner, gender, weight, bio, neutered });
   await dog.save();
 
+  user.dogs.push(dog._id);
+  await user.save();
+
   return dog;
 };
 
@@ -51,4 +54,12 @@ export const deleteDog = async (id, owner) => {
   if (!dog) throw new Error('Dog not found');
 
   return dog;
+};
+
+export const getAllDogsExceptUser = async (currentUserId) => {
+  const user = await User.findById(currentUserId);
+  if (!user) throw new Error('User not found');
+  const friendsIds = user.friends.map(({ _id }) => _id);
+  const excludeOwners = [currentUserId, ...friendsIds];
+  return await Dog.find({ owner: { $nin: excludeOwners } });
 };

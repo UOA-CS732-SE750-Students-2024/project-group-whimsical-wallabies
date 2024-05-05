@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
+  aboutMe: { type: String, required: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   email: { type: String, required: true },
@@ -8,6 +9,9 @@ const UserSchema = new mongoose.Schema({
   latitude: { type: Number, required: true },
   longitude: { type: Number, required: true },
   phone: { type: String, required: false },
+  like: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }],
+  likeMe: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }],
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }],
   dogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dog' }],
   photoProfile: { type: String, required: false }
 });

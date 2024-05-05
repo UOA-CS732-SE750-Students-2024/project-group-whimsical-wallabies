@@ -27,13 +27,10 @@ export const CommonStyles = {
     alignItems: 'center',
     height: 'auto',
     minHeight: '55vh',
-    mt: 1,
-    p: 2,
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
     borderRadius: 2,
     background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
-    width: '80%',
-    maxWidth: '780px',
+    width: '75%',
     mx: 'auto',
     my: 1
   },
@@ -47,8 +44,8 @@ export const CommonStyles = {
   },
   cardActions: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
+    justifyContent: 'center',
+    width: '90%',
     px: 2,
     mt: 2,
     mb: 3
@@ -99,7 +96,7 @@ export const CommonStyles = {
   homeBoxStyles: {
     position: 'absolute',
     top: 100,
-    left: 20,
+    left: 50,
     textAlign: 'center',
     zIndex: 2
   },
@@ -108,11 +105,13 @@ export const CommonStyles = {
     fontWeight: 'bold'
   },
   homeSubtitleStyles: {
-    m: 1,
+    m: 2,
+    alignSelf: 'center',
     color: '#1a4c88'
   },
   homeButtonStyles: {
-    m: 2,
+    m: 1,
+    padding: '10px 20px',
     backgroundColor: '#1a4c88'
   },
   matchDashboard: {
@@ -181,5 +180,25 @@ export const CommonStyles = {
     backgroundColor: '#aad5dc',
     color: 'white',
     marginLeft: '20px'
-  }
+  },
+  chipButton: {
+    padding: '6px 12px',
+    mr: 1,
+    backgroundColor: '#f5f5f5',
+    color: '#3296fa',
+    height: '36px',
+    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+    borderRadius: '13px',
+    fontWeight: 'normal',
+    '&:hover': {
+      backgroundColor: '#e0e0e0',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+    },
+    '&:focus': {
+      backgroundColor: '#e0e0e0',
+      boxShadow: '0 0 0 2px #4da6ff',
+      transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
+    }
+  },
+  dogDashboardCard: { maxWidth: 330, m: 1, mt: 2, boxShadow: 3, width: 350, height: 500 }
 };

@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login } from '../controllers/authController.js';
+import { register, login, getMyProfile } from '../controllers/authController.js';
 import { authenticate } from '../middlewares/authMiddleware.js';
 import schemaValidator from '../middlewares/schemaValidator.js';
 import { AUTH_PATHS, buildPathWithBase } from './paths.js';
@@ -12,10 +12,6 @@ router.post(AUTH_PATHS.register, schemaValidator(authPathBase.register), registe
 
 router.post(AUTH_PATHS.login, schemaValidator(authPathBase.login), login);
 
-router.get('/', (req, res) => res.send('Hello Wallabies!'));
-
-router.get('/protected', authenticate, (req, res) => {
-  res.json({ message: 'Access to protected data' });
-});
+router.get(AUTH_PATHS.profile, authenticate, getMyProfile);
 
 export default router;

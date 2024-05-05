@@ -3,7 +3,7 @@ import axiosApiInstance from '../utils/axiosApiInstance';
 
 export function useGetDogs() {
   return useQuery({
-    queryKey: ['dogs'],
+    queryKey: ['me', 'dogs'],
     queryFn: async () => {
       const { data } = await axiosApiInstance.get('/api/dog');
       return data;

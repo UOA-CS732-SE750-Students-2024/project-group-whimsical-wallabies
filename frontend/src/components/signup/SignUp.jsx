@@ -3,6 +3,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import PasswordIcon from '@mui/icons-material/Password';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -21,11 +22,12 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  FormHelperText
 } from '@mui/material';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { CommonStyles } from '../common/CommonStyles';
@@ -43,25 +45,40 @@ const debounce = (func, wait) => {
   };
 };
 
+const defaultValues = {
+  aboutMe: '',
+  username: '',
+  address: '',
+  phone: '',
+  password: '',
+  confirmPassword: '',
+  email: '',
+  latitude: '',
+  longitude: ''
+};
+
 const SignUp = () => {
   const { signup, signupErrors, isPendingSignup, isSignup, setIsSignup } = useAuth();
   let navigate = useNavigate();
 
   const [address, setAddress] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
   const [isAddressValid, setIsAddressValid] = useState(false);
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
+    setValue,
     setError,
     formState: { errors }
   } = useForm({
-    resolver: joiResolver(signupSchema)
+    defaultValues,
+    resolver: joiResolver(signupSchema, {
+      abortEarly: false,
+      stripUnknown: true
+    })
   });
-
   const { isLoaded } = useJsApiLoader({
     // eslint-disable-next-line no-undef
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -98,8 +115,11 @@ const SignUp = () => {
       if (place && place.formatted_address && place.geometry) {
         // Valid address
         setAddress(place.formatted_address);
-        setLatitude(place.geometry.location.lat().toString());
-        setLongitude(place.geometry.location.lng().toString());
+
+        setValue('latitude', place.geometry.location.lat().toString(), { shouldValidate: false });
+        setValue('longitude', place.geometry.location.lng().toString(), { shouldValidate: false });
+        setValue('address', place.formatted_address, { shouldValidate: true });
+
         setAddressError(''); // Clear any existing error message
         setIsAddressValid(true); // Set isAddressValid to true indicating a valid address has been selected
       } else {
@@ -107,15 +127,13 @@ const SignUp = () => {
         setIsAddressValid(false);
       }
     }
-
-    console.log(isAddressValid);
   };
 
   const handleAddressBlur = () => {
     if (!isAddressValid) {
       setAddressError('Please select a valid address from the dropdown.');
-      setLatitude('');
-      setLongitude('');
+      setValue('latitude', '', { shouldValidate: false });
+      setValue('longitude', '', { shouldValidate: false });
     }
   };
 
@@ -125,8 +143,8 @@ const SignUp = () => {
     setIsAddressValid(false);
 
     if (!newAddress || newAddress.length < 3) {
-      setLatitude('');
-      setLongitude('');
+      setValue('latitude', '', { shouldValidate: false });
+      setValue('longitude', '', { shouldValidate: false });
       setAddressError('Address is too short.');
     } else {
       debouncedSearch(newAddress);
@@ -141,6 +159,7 @@ const SignUp = () => {
     }, 500);
     debounced(value);
   }, []);
+
   const handleLoginClick = () => {
     navigate('/login');
   };
@@ -154,6 +173,9 @@ const SignUp = () => {
     handleDialogClose();
     navigate('/login');
   };
+
+  console.log(errors, 'errors');
+  console.log(signupErrors, 'errors signupErrors');
 
   return (
     <Box
@@ -173,115 +195,161 @@ const SignUp = () => {
       </Box>
 
       <Box>
-        <TextField
-          id="username"
-          label="Username"
+        <Controller
           name="username"
-          placeholder="Enter your name"
-          margin="normal"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircle />
-              </InputAdornment>
-            )
-          }}
-          fullWidth
-          autoFocus
-          required
-          {...register('username')}
-          error={Boolean(errors.username)}
-          helperText={errors.username ? errors.username.message : ''}
-          disabled={isPendingSignup}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <TextField
+                {...field}
+                label="Username"
+                fullWidth
+                autoFocus
+                margin="normal"
+                error={!!error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircle />
+                    </InputAdornment>
+                  )
+                }}
+                disabled={isPendingSignup}
+              />
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
+            </>
+          )}
         />
-        <TextField
+        <Controller
           name="password"
-          label="Password"
-          type="password"
-          id="password"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <PasswordIcon />
-              </InputAdornment>
-            )
-          }}
-          placeholder="Enter a password"
-          margin="normal"
-          fullWidth
-          required
-          {...register('password')}
-          error={Boolean(errors.password)}
-          helperText={errors.password ? errors.password.message : ''}
-          disabled={isPendingSignup}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <TextField
+                {...field}
+                label="Password"
+                type="password"
+                fullWidth
+                margin="normal"
+                error={!!error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PasswordIcon />
+                    </InputAdornment>
+                  )
+                }}
+                disabled={isPendingSignup}
+              />
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
+            </>
+          )}
         />
-        <TextField
-          id="confirmPassword"
+        <Controller
           name="confirmPassword"
-          label="Confirm Password"
-          type="password"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <PasswordIcon />
-              </InputAdornment>
-            )
-          }}
-          placeholder="Enter your confirm password"
-          margin="normal"
-          fullWidth
-          required
-          {...register('confirmpassword')}
-          error={Boolean(errors.confirmpassword)}
-          helperText={errors.confirmpassword ? errors.confirmpassword.message : ''}
-          disabled={isPendingSignup}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <TextField
+                {...field}
+                label="Confirm Password"
+                type="password"
+                fullWidth
+                margin="normal"
+                error={!!error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PasswordIcon />
+                    </InputAdornment>
+                  )
+                }}
+                disabled={isPendingSignup}
+              />
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
+            </>
+          )}
         />
-        <TextField
-          id="email"
+        <Controller
           name="email"
-          label="Email Address"
-          type="email"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <ContactMailIcon />
-              </InputAdornment>
-            )
-          }}
-          placeholder="Enter your email address"
-          margin="normal"
-          fullWidth
-          required
-          {...register('email')}
-          error={Boolean(errors.email)}
-          helperText={errors.email ? errors.email.message : ''}
-          disabled={isPendingSignup}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <TextField
+                {...field}
+                label="Email"
+                type="email"
+                fullWidth
+                margin="normal"
+                error={!!error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <ContactMailIcon />
+                    </InputAdornment>
+                  )
+                }}
+                disabled={isPendingSignup}
+              />
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
+            </>
+          )}
+        />
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <TextField
+                {...field}
+                label="Phone"
+                fullWidth
+                margin="normal"
+                error={!!error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <ContactPhoneIcon />
+                    </InputAdornment>
+                  )
+                }}
+                disabled={isPendingSignup}
+              />
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
+            </>
+          )}
         />
         {isLoaded ? (
           <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-            <TextField
-              id="address"
+            <Controller
               name="address"
-              label="Address"
-              type="text"
-              placeholder="Enter your address"
-              fullWidth
-              required
-              {...register('address')}
-              value={address}
-              onChange={handleAddressChange}
-              onBlur={handleAddressBlur} // Add onBlur event handler here
-              error={Boolean(errors.address) || addressError !== ''}
-              helperText={errors.address ? errors.address.message : addressError}
-              disabled={isPendingSignup}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <HomeIcon />
-                  </InputAdornment>
-                )
-              }}
-              sx={CommonStyles.autoCompleteBox}
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <>
+                  <TextField
+                    {...field}
+                    label="Address"
+                    fullWidth
+                    margin="normal"
+                    // error={!!error}
+                    value={address}
+                    onChange={handleAddressChange}
+                    onBlur={handleAddressBlur} // Add onBlur event handler here
+                    error={Boolean(errors.address) || addressError !== ''}
+                    helperText={errors.address ? errors.address.message : addressError}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <HomeIcon />
+                        </InputAdornment>
+                      )
+                    }}
+                    sx={CommonStyles.autoCompleteBox}
+                    disabled={isPendingSignup}
+                  />
+                  {error && <FormHelperText error>{error.message}</FormHelperText>}
+                </>
+              )}
             />
           </Autocomplete>
         ) : (
@@ -307,10 +375,7 @@ const SignUp = () => {
               margin="normal"
               fullWidth
               {...register('latitude')}
-              value={latitude}
-              error={Boolean(errors.latitude)}
-              helperText={errors.latitude ? errors.latitude.message : ''}
-              disabled={isPendingSignup}
+              disabled={true}
             />
           </Grid>
           <Grid item xs={6}>
@@ -332,32 +397,35 @@ const SignUp = () => {
               margin="normal"
               fullWidth
               {...register('longitude')}
-              value={longitude}
-              error={Boolean(errors.longitude)}
-              helperText={errors.longitude ? errors.longitude.message : ''}
-              disabled={isPendingSignup}
+              disabled={true}
             />
           </Grid>
         </Grid>
-        <TextField
-          id="phone"
-          name="phone"
-          label="Phone"
-          type="text"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <ContactPhoneIcon />
-              </InputAdornment>
-            )
-          }}
-          placeholder="Enter your phone number"
-          margin="normal"
-          fullWidth
-          {...register('phone')}
-          error={Boolean(errors.phone)}
-          helperText={errors.phone ? errors.phone.message : ''}
-          disabled={isPendingSignup}
+        <Controller
+          name="aboutMe"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <TextField
+                {...field}
+                label="About Me"
+                multiline
+                rows={4}
+                fullWidth
+                margin="normal"
+                error={!!error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <InfoIcon />
+                    </InputAdornment>
+                  )
+                }}
+                disabled={isPendingSignup}
+              />
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
+            </>
+          )}
         />
       </Box>
       <CardActions disableSpacing sx={CommonStyles.cardActions}>
@@ -411,7 +479,7 @@ const SignUp = () => {
           <Button
             onClick={() => handleDialogButtonClick()}
             variant="contained"
-            color="primary"
+            color="success"
             sx={CommonStyles.dialogButton}
           >
             Go to Login
