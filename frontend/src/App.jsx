@@ -4,8 +4,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// import dog page
 import DogDashboard from './components/dashboard/dogDashboard';
-import DogProfile from './components/dogProfile/DogProfile';
+import DogProfile from './components/dogprofile/DogProfile';
+
 import HomePage from './components/homepage/HomePage';
 import Header from './components/layout/Header';
 import Login from './components/login/Login';
