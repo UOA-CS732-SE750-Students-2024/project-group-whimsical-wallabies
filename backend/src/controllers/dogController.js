@@ -1,3 +1,4 @@
+import User from '../models/User.js';
 import {
   createDog,
   getDogs,
@@ -6,6 +7,7 @@ import {
   deleteDog,
   getAllDogsExceptUser
 } from '../services/dogService.js';
+import { calculateDistance } from '../utils/common.js';
 
 export const create = async (req, res) => {
   try {
@@ -55,8 +57,21 @@ export const remove = async (req, res) => {
 
 export const getAllOthers = async (req, res) => {
   try {
+    const currentUser = await User.findById(req.user._id);
     const dogs = await getAllDogsExceptUser(req.user._id);
-    res.status(200).json(dogs);
+    const dogsWithDistance = await Promise.all(
+      dogs.map(async (dog) => {
+        const owner = await User.findById(dog.owner);
+        const distance = calculateDistance(
+          currentUser.latitude,
+          currentUser.longitude,
+          owner.latitude,
+          owner.longitude
+        );
+        return { ...dog._doc, distance };
+      })
+    );
+    res.status(200).json(dogsWithDistance);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
