@@ -20,10 +20,10 @@ export function useCreatePhotoMutation(dogId) {
   });
 }
 
-export function useDeletePhotoMutation(dogId) {
+export function useDeletePhotoMutation(dogId, photoId) {
   return useMutation({
-    mutationFn: async (photoId) => {
-      const { data } = await axiosApiInstance.delete(`/api/dog/${dogId}photo/${photoId}`);
+    mutationFn: async () => {
+      const { data } = await axiosApiInstance.delete(`/api/dog/${dogId}/photos/${photoId}`);
       return data;
     }
   });

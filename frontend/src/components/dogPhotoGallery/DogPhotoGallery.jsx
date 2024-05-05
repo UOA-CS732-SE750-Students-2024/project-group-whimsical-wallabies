@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import dogPhotos from './dogPhotos.json';
+import { useGetPhotos, useCreatePhotoMutation, useDeletePhotoMutation } from '../../queries/photos';
 
 function UploadDialog({
   open,
@@ -81,15 +81,20 @@ function DeleteDialog({ open, onClose, onDelete }) {
 }
 
 export default function DogPhotoGallery({ id }) {
-  const [allPhotos, setAllPhotos] = useState(dogPhotos);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [uploadError, setUploadError] = useState(null);
+  const { data: photos, isLoading, refetch } = useGetPhotos(id);
 
-  const filteredPhotos = allPhotos.filter((photo) => photo.dog === id);
+  const { mutate: createPhoto } = useCreatePhotoMutation(id, {
+    onSuccess: refetch
+  });
+  const { mutate: deletePhoto } = useDeletePhotoMutation(id, selectedPhoto?._id, {
+    onSuccess: refetch
+  });
 
   const handleDeleteOpen = (photo) => {
     setSelectedPhoto(photo);
@@ -99,12 +104,22 @@ export default function DogPhotoGallery({ id }) {
   const handleDeleteClose = () => {
     setOpenDeleteDialog(false);
     setSelectedPhoto(null);
+    refetch();
   };
 
   const handleDelete = () => {
-    const updatedPhotos = allPhotos.filter((photo) => photo !== selectedPhoto);
-    setAllPhotos(updatedPhotos);
-    handleDeleteClose();
+    if (selectedPhoto) {
+      deletePhoto(
+        { dogId: id, photoId: selectedPhoto._id },
+        {
+          onSuccess: () => {
+            handleDeleteClose();
+          }
+        }
+      );
+    } else {
+      console.error('No photo selected for deletion');
+    }
   };
 
   const handleUploadOpen = () => {
@@ -116,6 +131,7 @@ export default function DogPhotoGallery({ id }) {
     setFile(null);
     setPreviewUrl(null);
     setUploadError(null);
+    refetch();
   };
 
   const handleFileChange = (e) => {
@@ -126,16 +142,22 @@ export default function DogPhotoGallery({ id }) {
 
   const handleUpload = async () => {
     try {
-      // Implement the upload logic here
-      const uploadedUrl = `https://example.com/uploaded-image-${Date.now()}.jpg`; // Simulated URL
-      const updatedPhotos = [...allPhotos, { dog: id, url: uploadedUrl }];
-      setAllPhotos(updatedPhotos);
-      handleUploadClose();
+      const formData = new FormData();
+      formData.append('photo', file);
+      createPhoto(formData, {
+        onSuccess: () => {
+          handleUploadClose();
+        }
+      });
     } catch (error) {
       setUploadError('Failed to upload the image. Please try again.');
       console.error('Upload error:', error);
     }
   };
+
+  if (isLoading) {
+    return <Typography>Loading...</Typography>;
+  }
 
   return (
     <Box>
@@ -143,10 +165,10 @@ export default function DogPhotoGallery({ id }) {
         Photo Gallery
       </Typography>
       <ImageList sx={{ width: 510, height: 340 }} cols={3} rowHeight={164}>
-        {filteredPhotos.map((photo) => (
+        {photos.map((photo) => (
           <ImageListItem key={photo.url}>
             <img
-              src={`${photo.url}?w=164&h=164&fit=crop&auto=format`}
+              src={`http://localhost:3001/${photo.url}?w=164&h=164&fit=crop&auto=format`}
               alt="Dog"
               loading="lazy"
               style={{ width: '164px', height: '164px', objectFit: 'cover' }}
