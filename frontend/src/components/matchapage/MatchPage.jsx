@@ -1,19 +1,33 @@
 import CloseIcon from '@mui/icons-material/Close';
+import Diversity1RoundedIcon from '@mui/icons-material/Diversity1Rounded';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FemaleIcon from '@mui/icons-material/Female';
+import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import MaleIcon from '@mui/icons-material/Male';
-import { Box, Button, Typography, Snackbar } from '@mui/material';
+import { Box, Button, Typography, Snackbar, IconButton } from '@mui/material';
 import Hammer from 'hammerjs';
 import React, { useState, useEffect, useCallback } from 'react';
 import TinderCard from 'react-tinder-card';
 import { useGetPotentialMates } from '../../queries/matches';
 import { CommonStyles } from '../common/CommonStyles';
+import Filter from './Filter';
+import FriendList from './FriendList';
 
 const MatchPage = () => {
   const { data: potentialMates, isLoading, error, refetch } = useGetPotentialMates();
   const [shuffledMates, setShuffledMates] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showLastCardMessage, setShowLastCardMessage] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [showFriendList, setShowFriendList] = useState(false);
+
+  const toggleFilter = () => {
+    setShowFilter(!showFilter);
+  };
+
+  const toggleFriendList = () => {
+    setShowFriendList(!showFriendList);
+  };
 
   useEffect(() => {
     if (potentialMates && potentialMates.length > 0) {
@@ -151,63 +165,75 @@ const MatchPage = () => {
   };
 
   return (
-    <Box className="dashboard" sx={CommonStyles.matchDashboard}>
-      {isLoading ? (
-        <Typography variant="h6">Loading potential mates...</Typography>
-      ) : error ? (
-        <Typography variant="h6" sx={{ textAlign: 'center', mt: 4 }}>
-          Error fetching potential mates: {error.message}
-        </Typography>
-      ) : shuffledMates && shuffledMates.length > 0 ? (
-        <TinderCard
-          key={shuffledMates[currentCardIndex]?.name}
-          onCardLeftScreen={() => outOfFrame(shuffledMates[currentCardIndex]?.name)}
-          preventSwipe={['up', 'down']}
-          threshold={100}
-        >
-          <Box
-            id={`card-${currentCardIndex}`}
-            className="card"
-            sx={{
-              ...CommonStyles.matchCard,
-              backgroundImage: `url(http://localhost:3001/${shuffledMates[currentCardIndex]?.profilePicture})`
-            }}
+    <Box>
+      <IconButton onClick={toggleFilter} color="primary">
+        <FilterListRoundedIcon />
+      </IconButton>
+      <IconButton onClick={toggleFriendList} color="secondary">
+        <Diversity1RoundedIcon />
+      </IconButton>
+      <Box className="dashboard" sx={CommonStyles.matchDashboard}>
+        {showFilter && <Filter />}
+        {showFriendList && <FriendList />}
+
+        {isLoading ? (
+          <Typography variant="h6">Loading potential mates...</Typography>
+        ) : error ? (
+          <Typography variant="h6" sx={{ textAlign: 'center', mt: 4 }}>
+            Error fetching potential mates: {error.message}
+          </Typography>
+        ) : shuffledMates && shuffledMates.length > 0 ? (
+          <TinderCard
+            key={shuffledMates[currentCardIndex]?.name}
+            onCardLeftScreen={() => outOfFrame(shuffledMates[currentCardIndex]?.name)}
+            preventSwipe={['up', 'down']}
+            threshold={100}
           >
-            <Typography variant="h4" sx={CommonStyles.matchName}>
-              {shuffledMates[currentCardIndex]?.name}
-              {renderGenderIcon(shuffledMates[currentCardIndex]?.gender)}
-            </Typography>
-            <Typography variant="h6" sx={CommonStyles.matchBreed}>
-              {shuffledMates[currentCardIndex]?.breed}
-            </Typography>
-            <Typography variant="body1" sx={CommonStyles.matchInfo}>
-              {shuffledMates[currentCardIndex]?.weight} kg |
-              {calculateAge(shuffledMates[currentCardIndex]?.dob)}
-            </Typography>
+            <Box
+              id={`card-${currentCardIndex}`}
+              className="card"
+              sx={{
+                ...CommonStyles.matchCard,
+                backgroundImage: `url(http://localhost:3001/${shuffledMates[currentCardIndex]?.profilePicture})`
+              }}
+            >
+              <Typography variant="h4" sx={CommonStyles.matchName}>
+                {shuffledMates[currentCardIndex]?.name}
+                {renderGenderIcon(shuffledMates[currentCardIndex]?.gender)}
+              </Typography>
+              <Typography variant="h6" sx={CommonStyles.matchBreed}>
+                {shuffledMates[currentCardIndex]?.breed}
+              </Typography>
+              <Typography variant="body1" sx={CommonStyles.matchInfo}>
+                {shuffledMates[currentCardIndex]?.weight} kg |
+                {calculateAge(shuffledMates[currentCardIndex]?.dob)}
+              </Typography>
+            </Box>
+          </TinderCard>
+        ) : (
+          <Box sx={{ textAlign: 'center', mt: 4 }}>
+            <Typography variant="h6">No potential mates found.</Typography>
+            <Button variant="contained" onClick={handleTryAgain} sx={{ mt: 4 }}>
+              Try Again
+            </Button>
           </Box>
-        </TinderCard>
-      ) : (
-        <Box sx={{ textAlign: 'center', mt: 4 }}>
-          <Typography variant="h6">No potential mates found.</Typography>
-          <Button variant="contained" onClick={handleTryAgain} sx={{ mt: 4 }}>
-            Try Again
+        )}
+
+        <Snackbar
+          open={showLastCardMessage}
+          autoHideDuration={3000}
+          onClose={handleCloseMessage}
+          message="No more cards available. You've reached the end."
+        />
+
+        <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
+          <Button variant="contained" onClick={handleSwipeLeft} sx={CommonStyles.matchButton}>
+            <CloseIcon fontSize="large" />
+          </Button>
+          <Button variant="contained" onClick={handleSwipeRight} sx={CommonStyles.matchButton}>
+            <FavoriteIcon fontSize="large" />
           </Button>
         </Box>
-      )}
-
-      <Snackbar
-        open={showLastCardMessage}
-        autoHideDuration={3000}
-        onClose={handleCloseMessage}
-        message="No more cards available. You've reached the end."
-      />
-      <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
-        <Button variant="contained" onClick={handleSwipeLeft} sx={CommonStyles.matchButton}>
-          <CloseIcon fontSize="large" />
-        </Button>
-        <Button variant="contained" onClick={handleSwipeRight} sx={CommonStyles.matchButton}>
-          <FavoriteIcon fontSize="large" />
-        </Button>
       </Box>
     </Box>
   );
