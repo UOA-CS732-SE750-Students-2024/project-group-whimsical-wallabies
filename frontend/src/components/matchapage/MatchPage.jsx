@@ -2,7 +2,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, Snackbar } from '@mui/material';
 import Hammer from 'hammerjs';
 import React, { useState, useEffect, useCallback } from 'react';
 import TinderCard from 'react-tinder-card';
@@ -13,11 +13,16 @@ const MatchPage = () => {
   const { data: potentialMates, isLoading, error, refetch } = useGetPotentialMates();
   const [shuffledMates, setShuffledMates] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [showLastCardMessage, setShowLastCardMessage] = useState(false);
 
   useEffect(() => {
     if (potentialMates && potentialMates.length > 0) {
       const shuffledArray = shuffleArray(potentialMates);
       setShuffledMates(shuffledArray);
+      setCurrentCardIndex(0);
+    } else {
+      setShuffledMates([]);
+      setCurrentCardIndex(0);
     }
   }, [potentialMates]);
 
@@ -32,16 +37,26 @@ const MatchPage = () => {
 
   const handleSwipe = useCallback(
     (direction) => {
-      const cardElement = document.getElementById(`card-${currentCardIndex}`);
-      if (cardElement) {
-        cardElement.classList.add(`swipe-${direction}`);
-        setTimeout(() => {
-          cardElement.classList.remove(`swipe-${direction}`);
-          setCurrentCardIndex((prevIndex) => {
-            const newIndex = prevIndex + 1;
-            return newIndex < (shuffledMates?.length || 0) ? newIndex : prevIndex;
-          });
-        }, 300);
+      if (shuffledMates && shuffledMates.length > 0) {
+        const nextIndex = currentCardIndex + 1;
+        const cardElement = document.getElementById(`card-${currentCardIndex}`);
+
+        if (cardElement) {
+          const rotation = direction === 'right' ? 10 : -10;
+          const opacity = direction === 'right' ? 0 : 1;
+
+          cardElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+          cardElement.style.transform = `translate(${direction === 'right' ? '100%' : '-100%'}, 0) rotate(${rotation}deg)`;
+          cardElement.style.opacity = opacity;
+
+          setTimeout(() => {
+            if (nextIndex >= shuffledMates.length) {
+              setShowLastCardMessage(true);
+            } else {
+              setCurrentCardIndex(nextIndex);
+            }
+          }, 300);
+        }
       }
     },
     [currentCardIndex, shuffledMates]
@@ -49,7 +64,10 @@ const MatchPage = () => {
 
   const handleTryAgain = () => {
     refetch();
-    setCurrentCardIndex(0);
+  };
+
+  const handleCloseMessage = () => {
+    setShowLastCardMessage(false);
   };
 
   useEffect(() => {
@@ -80,28 +98,32 @@ const MatchPage = () => {
   }, [currentCardIndex, handleSwipe]);
 
   const handleSwipeLeft = () => {
-    const cardElement = document.getElementById(`card-${currentCardIndex}`);
-    if (cardElement) {
-      cardElement.style.transition = 'transform 0.3s ease';
-      cardElement.style.transform = 'translate(-100%, 0) rotate(-10deg) scale(0.8)';
-      handleSwipe('left');
+    if (currentCardIndex < shuffledMates.length - 1) {
+      const cardElement = document.getElementById(`card-${currentCardIndex}`);
+      if (cardElement) {
+        cardElement.style.transition = 'transform 0.3s ease';
+        cardElement.style.transform = 'translate(-100%, 0) rotate(-10deg) scale(0.8)';
+        handleSwipe('left');
 
-      setTimeout(() => {
-        cardElement.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
-      }, 300);
+        setTimeout(() => {
+          cardElement.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
+        }, 300);
+      }
     }
   };
 
   const handleSwipeRight = () => {
-    const cardElement = document.getElementById(`card-${currentCardIndex}`);
-    if (cardElement) {
-      cardElement.style.transition = 'transform 0.3s ease';
-      cardElement.style.transform = 'translate(100%, 0) rotate(10deg) scale(0.8)';
-      handleSwipe('right');
+    if (currentCardIndex < shuffledMates.length - 1) {
+      const cardElement = document.getElementById(`card-${currentCardIndex}`);
+      if (cardElement) {
+        cardElement.style.transition = 'transform 0.3s ease';
+        cardElement.style.transform = 'translate(100%, 0) rotate(10deg) scale(0.8)';
+        handleSwipe('right');
 
-      setTimeout(() => {
-        cardElement.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
-      }, 300);
+        setTimeout(() => {
+          cardElement.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
+        }, 300);
+      }
     }
   };
 
@@ -159,19 +181,26 @@ const MatchPage = () => {
               {shuffledMates[currentCardIndex]?.breed}
             </Typography>
             <Typography variant="body1" sx={CommonStyles.matchInfo}>
-              {shuffledMates[currentCardIndex]?.weight} kg /
+              {shuffledMates[currentCardIndex]?.weight} kg |
               {calculateAge(shuffledMates[currentCardIndex]?.dob)}
             </Typography>
           </Box>
         </TinderCard>
       ) : (
-        <Box sx={{ textAlign: 'center' }}>
+        <Box sx={{ textAlign: 'center', mt: 4 }}>
           <Typography variant="h6">No potential mates found.</Typography>
           <Button variant="contained" onClick={handleTryAgain} sx={{ mt: 4 }}>
             Try Again
           </Button>
         </Box>
       )}
+
+      <Snackbar
+        open={showLastCardMessage}
+        autoHideDuration={3000}
+        onClose={handleCloseMessage}
+        message="No more cards available. You've reached the end."
+      />
       <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
         <Button variant="contained" onClick={handleSwipeLeft} sx={CommonStyles.matchButton}>
           <CloseIcon fontSize="large" />
