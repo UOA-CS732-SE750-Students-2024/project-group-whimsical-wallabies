@@ -9,7 +9,7 @@ import DogProfile from './components/dogProfile/DogProfile';
 import HomePage from './components/homepage/HomePage';
 import Header from './components/layout/Header';
 import Login from './components/login/Login';
-// import MatchPage from './components/matchapage/MatchPage';
+import MatchPage from './components/matchapage/MatchPage';
 import SignUp from './components/signup/SignUp';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
@@ -46,7 +46,14 @@ const App = () => {
                 <Route path="/" element={<HomePage />} />
                 <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
                 <Route path={APPLICATION_PATH.auth.signup} element={<SignUp />} />
-                {/*<Route path="/match" element={<MatchPage />} />*/}
+                <Route
+                  path="/match"
+                  element={
+                    <PrivateRoute>
+                      <MatchPage />
+                    </PrivateRoute>
+                  }
+                />
                 <Route
                   path={APPLICATION_PATH.dashboard}
                   element={
