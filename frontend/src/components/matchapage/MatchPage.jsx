@@ -190,7 +190,7 @@ const MatchPage = () => {
             threshold={100}
             sx={{
               ...CommonStyles.matchCard,
-              backgroundImage: `url(http://localhost:3001/${shuffledMates[currentCardIndex]?.profilePicture})`,
+              backgroundImage: `url(${process.env.REACT_APP_API_URL}/${shuffledMates[currentCardIndex]?.profilePicture})`,
               width: { xs: '100%', sm: '50%', md: '25%' },
               padding: { xs: 1, sm: 2, md: 3 }
             }}
@@ -200,7 +200,7 @@ const MatchPage = () => {
               className="card"
               sx={{
                 ...CommonStyles.matchCard,
-                backgroundImage: `url(http://localhost:3001/${shuffledMates[currentCardIndex]?.profilePicture})`
+                backgroundImage: `url(${process.env.REACT_APP_API_URL}/${shuffledMates[currentCardIndex]?.profilePicture})`
               }}
             >
               <Typography variant="h4" sx={CommonStyles.matchName}>

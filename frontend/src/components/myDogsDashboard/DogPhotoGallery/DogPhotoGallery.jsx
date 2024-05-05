@@ -122,7 +122,7 @@ export default function DogPhotoGallery({ id }) {
     } else if (isLargeMobile) {
       return 3; // Three columns for medium screens
     } else {
-      return 4; // Three columns for larger screens
+      return (photos.length <= 5 && photos.length) || 5; // Three columns for larger screens
     }
   };
 
@@ -204,11 +204,9 @@ export default function DogPhotoGallery({ id }) {
     return <Typography>Loading...</Typography>;
   }
 
-  console.log(getImageSize());
-
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h5" gutterBottom mt={2}>
         Photo Gallery
       </Typography>
       <ImageList
@@ -216,13 +214,14 @@ export default function DogPhotoGallery({ id }) {
           width: '100%',
           height: 'auto'
         }}
+        gap={4}
         cols={getCols()}
         rowHeight={getImageSize()} // Use getImageSize to set the rowHeight
       >
         {photos.map((photo) => (
           <ImageListItem key={photo.url}>
             <img
-              src={`http://localhost:3001/${photo.url}?w=${getImageSize()}&h=${getImageSize()}&fit=crop&auto=format`}
+              src={`${process.env.REACT_APP_API_URL}/${photo.url}?w=${getImageSize()}&h=${getImageSize()}&fit=crop&auto=format`}
               alt="Dog"
               loading="lazy"
               style={{
@@ -232,7 +231,7 @@ export default function DogPhotoGallery({ id }) {
                 aspectRatio: '1/1',
                 cursor: 'pointer'
               }}
-              onClick={() => handleOpenImageModal(`http://localhost:3001/${photo.url}`)} // Add click handler
+              onClick={() => handleOpenImageModal(`${process.env.REACT_APP_API_URL}/${photo.url}`)} // Add click handler
             />
             <Tooltip title="Delete">
               <IconButton
@@ -255,7 +254,7 @@ export default function DogPhotoGallery({ id }) {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            width="100%"
+            width={getImageSize()}
             height={getImageSize()}
             border="1px dashed gray"
             borderRadius="4px"
