@@ -5,19 +5,35 @@ import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import HomeIcon from '@mui/icons-material/Home';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { Button } from '@mui/material';
-import { TextField, InputAdornment, Box, Typography, CircularProgress, Grid } from '@mui/material';
+import {
+  TextField,
+  InputAdornment,
+  Box,
+  Typography,
+  CircularProgress,
+  Grid,
+  CardActions,
+  FormHelperText
+} from '@mui/material';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 import React, { useRef, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useAuth } from '../../context/AuthContext';
 import { useGetUser } from '../../context/AuthContext.queries';
+import { useUpdateUserMutation } from '../../queries/user.js';
+import { userDataStorage } from '../../utils/localStorageNames';
 import { CommonStyles } from '../common/CommonStyles';
 import { userProfileSchema } from './userProfile.validation';
 
 const libraries = ['places'];
 
 const UserProfile = () => {
-  const { currentUser, updateUserProfile } = useAuth();
+  const { mutate: updateUserProfile } = useUpdateUserMutation((userProfile) => {
+    userDataStorage.save(userProfile.data);
+    setUser(userProfile.data);
+  });
+
+  const { currentUser, setUser } = useAuth();
 
   const [userData, setUserData] = useState(null);
   const { data: currentUserData, isLoading } = useGetUser(currentUser?.username);
@@ -26,6 +42,7 @@ const UserProfile = () => {
 
   const {
     register,
+    control,
     handleSubmit,
     setValue,
     formState: { errors }
@@ -62,6 +79,7 @@ const UserProfile = () => {
         const lng = place.geometry.location.lng().toString();
         setLatitude(lat);
         setLongitude(lng);
+        setValue('address', place.formatted_address, { shouldValidate: true });
         setValue('latitude', lat); // add this
         setValue('longitude', lng); // add this
         setIsAddressValid(true);
@@ -115,106 +133,155 @@ const UserProfile = () => {
       </Box>
 
       <Box>
-        <TextField
-          id="username"
-          label="Username"
+        <Controller
           name="username"
-          margin="normal"
-          {...register('username')}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircle />
-              </InputAdornment>
-            ),
-            readOnly: true
-          }}
-          fullWidth
+          control={control}
           defaultValue={currentUserData.username}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <TextField
+                {...field}
+                id="username"
+                label="Username"
+                fullWidth
+                autoFocus
+                margin="normal"
+                error={!!error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircle />
+                    </InputAdornment>
+                  ),
+                  readOnly: true
+                }}
+              />
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
+            </>
+          )}
         />
 
-        <TextField
-          id="email"
+        <Controller
           name="email"
-          label="Email Address"
-          type="email"
-          margin="normal"
-          {...register('email')}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <ContactMailIcon />
-              </InputAdornment>
-            ),
-            readOnly: !edit
-          }}
-          fullWidth
+          control={control}
           defaultValue={currentUserData.email}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <TextField
+                {...field}
+                id="email"
+                name="email"
+                label="Email Address"
+                type="email"
+                margin="normal"
+                fullWidth
+                error={!!error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <ContactMailIcon />
+                    </InputAdornment>
+                  ),
+                  readOnly: !edit
+                }}
+              />
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
+            </>
+          )}
         />
-        <TextField
-          id="aboutMe"
+        <Controller
           name="aboutMe"
-          label="About Me"
-          margin="normal"
-          {...register('aboutMe')}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircle />
-              </InputAdornment>
-            ),
-            readOnly: !edit
-          }}
-          fullWidth
+          control={control}
           defaultValue={currentUserData.aboutMe}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <TextField
+                {...field}
+                id="aboutMe"
+                name="aboutMe"
+                label="About Me"
+                margin="normal"
+                fullWidth
+                error={!!error}
+                rows={4}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircle />
+                    </InputAdornment>
+                  ),
+                  readOnly: !edit
+                }}
+              />
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
+            </>
+          )}
         />
-
         {isLoaded ? (
           <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-            <TextField
-              id="address"
+            <Controller
               name="address"
-              label="Address"
-              type="text"
-              placeholder="Enter your address"
-              fullWidth
-              required
-              {...register('address')}
+              control={control}
               defaultValue={currentUserData.address}
-              error={Boolean(errors.address)}
-              helperText={errors.address ? errors.address.message : ''}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <HomeIcon />
-                  </InputAdornment>
-                ),
-                readOnly: !edit
-              }}
+              render={({ field, fieldState: { error } }) => (
+                <>
+                  <TextField
+                    {...field}
+                    id="address"
+                    name="address"
+                    label="Address"
+                    type="text"
+                    placeholder="Enter your address"
+                    fullWidth
+                    required
+                    error={Boolean(errors.address)}
+                    helperText={errors.address ? errors.address.message : ''}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <HomeIcon />
+                        </InputAdornment>
+                      ),
+                      readOnly: !edit
+                    }}
+                  />
+                  {error && <FormHelperText error>{error.message}</FormHelperText>}
+                </>
+              )}
             />
           </Autocomplete>
         ) : (
           <CircularProgress />
         )}
 
-        <TextField
-          id="phone"
+        <Controller
           name="phone"
-          label="Phone"
-          type="text"
-          margin="normal"
-          {...register('phone')}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <ContactPhoneIcon />
-              </InputAdornment>
-            ),
-            readOnly: !edit
-          }}
-          fullWidth
+          control={control}
           defaultValue={currentUserData.phone}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <TextField
+                {...field}
+                id="phone"
+                name="phone"
+                label="Phone"
+                type="text"
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <ContactPhoneIcon />
+                    </InputAdornment>
+                  ),
+                  readOnly: !edit
+                }}
+              />
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
+            </>
+          )}
         />
+
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
@@ -266,18 +333,29 @@ const UserProfile = () => {
             />
           </Grid>
         </Grid>
-        <Button variant="contained" color="primary" onClick={handleEdit} disabled={edit}>
-          Edit
-        </Button>
-        <Button
-          type="submit"
-          variant="contained"
-          color="secondary"
-          onClick={handleSave}
-          disabled={!edit}
-        >
-          Save
-        </Button>
+        <CardActions disableSpacing sx={CommonStyles.cardActions}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleEdit}
+            disabled={edit}
+            sx={CommonStyles.actionButton}
+          >
+            Edit
+          </Button>
+        </CardActions>
+        <CardActions disableSpacing sx={CommonStyles.cardActions}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="secondary"
+            onClick={handleSave}
+            disabled={!edit}
+            sx={CommonStyles.actionButton}
+          >
+            Save
+          </Button>
+        </CardActions>
       </Box>
     </Box>
   );
