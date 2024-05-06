@@ -15,12 +15,12 @@ const wrapper = ({ children }) => (
 describe('DogCreateUpdateDialog', () => {
   it('renders without crashing', () => {
     render(<DogCreateUpdateDialog />, { wrapper });
-    expect(screen.getByText(/Create Dog/i)).toBeInTheDocument();
+    expect(screen.getByText(/Add Dog/i)).toBeInTheDocument();
   });
 
   it('opens and closes the dialog when clicking chip and cancel buttons', async () => {
     render(<DogCreateUpdateDialog />, { wrapper });
-    fireEvent.click(screen.getByText(/Create Dog/i));
+    fireEvent.click(screen.getByText(/Add Dog/i));
     await waitFor(() => expect(screen.getByRole('dialog')).toBeInTheDocument());
     fireEvent.click(screen.getByText(/Cancel/i));
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
