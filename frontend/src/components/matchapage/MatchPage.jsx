@@ -7,10 +7,12 @@ import MaleIcon from '@mui/icons-material/Male';
 import { Box, Button, Typography, Snackbar, IconButton } from '@mui/material';
 import Hammer from 'hammerjs';
 import React, { useState, useEffect, useCallback } from 'react';
+import ReactCardFlip from 'react-card-flip';
 import TinderCard from 'react-tinder-card';
 import { useGetPotentialMates } from '../../queries/matches';
 import { CommonStyles } from '../common/CommonStyles';
 import Filter from './Filter';
+import FlipCardPhoto from './FlipCardPhoto';
 import FriendList from './FriendList';
 
 const MatchPage = () => {
@@ -20,6 +22,7 @@ const MatchPage = () => {
   const [showLastCardMessage, setShowLastCardMessage] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showFriendList, setShowFriendList] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const toggleFilter = () => {
     setShowFilter(!showFilter);
@@ -27,6 +30,11 @@ const MatchPage = () => {
 
   const toggleFriendList = () => {
     setShowFriendList(!showFriendList);
+  };
+
+  const flipCard = () => {
+    setIsFlipped(!isFlipped);
+    console.log('flip');
   };
 
   useEffect(() => {
@@ -164,6 +172,19 @@ const MatchPage = () => {
     }
   };
 
+  const simplyDob = (dob) => {
+    const birthDate = new Date(dob);
+    const year = birthDate.getFullYear();
+    const month = ('0' + (birthDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + birthDate.getDate()).slice(-2);
+
+    return `${year}-${month}-${day}`;
+  };
+
+  const getNeuteredStatus = (neutered) => {
+    return neutered ? 'Yes' : 'No';
+  };
+
   return (
     <Box>
       <IconButton onClick={toggleFilter} color="primary">
@@ -189,32 +210,69 @@ const MatchPage = () => {
             preventSwipe={['up', 'down']}
             threshold={100}
             sx={{
-              ...CommonStyles.matchCard,
-              backgroundImage: `url(${process.env.REACT_APP_API_URL}/${shuffledMates[currentCardIndex]?.profilePicture})`,
               width: { xs: '100%', sm: '50%', md: '25%' },
-              padding: { xs: 1, sm: 2, md: 3 }
+              padding: { xs: 1, sm: 2, md: 3 },
+              overflow: 'hidden',
+              maxHeight: '80vh'
             }}
           >
-            <Box
-              id={`card-${currentCardIndex}`}
-              className="card"
-              sx={{
-                ...CommonStyles.matchCard,
-                backgroundImage: `url(${process.env.REACT_APP_API_URL}/${shuffledMates[currentCardIndex]?.profilePicture})`
-              }}
-            >
-              <Typography variant="h4" sx={CommonStyles.matchName}>
-                {shuffledMates[currentCardIndex]?.name}
-                {renderGenderIcon(shuffledMates[currentCardIndex]?.gender)}
-              </Typography>
-              <Typography variant="h6" sx={CommonStyles.matchBreed}>
-                {shuffledMates[currentCardIndex]?.breed}
-              </Typography>
-              <Typography variant="body1" sx={CommonStyles.matchInfo}>
-                {shuffledMates[currentCardIndex]?.weight} kg |
-                {calculateAge(shuffledMates[currentCardIndex]?.dob)}
-              </Typography>
-            </Box>
+            <ReactCardFlip flipDirection="horizontal" isFlipped={isFlipped}>
+              <Box
+                id={`card-${currentCardIndex}`}
+                className="card"
+                sx={{
+                  ...CommonStyles.matchCardFront,
+                  backgroundImage: `url(${process.env.REACT_APP_API_URL}/${shuffledMates[currentCardIndex]?.profilePicture})`
+                }}
+                onClick={flipCard}
+              >
+                <Typography variant="h4" sx={CommonStyles.matchName}>
+                  {shuffledMates[currentCardIndex]?.name}
+                  {renderGenderIcon(shuffledMates[currentCardIndex]?.gender)}
+                </Typography>
+                <Typography variant="h6" sx={CommonStyles.matchBreed}>
+                  {shuffledMates[currentCardIndex]?.breed}
+                </Typography>
+                <Typography variant="body1" sx={CommonStyles.matchInfo}>
+                  {shuffledMates[currentCardIndex]?.weight} kg |
+                  {calculateAge(shuffledMates[currentCardIndex]?.dob)}
+                </Typography>
+              </Box>
+              <Box
+                id={`card-${currentCardIndex}`}
+                className="card"
+                sx={{
+                  ...CommonStyles.matchCardBack
+                }}
+                onClick={flipCard}
+              >
+                <Typography variant="h4" sx={CommonStyles.matchNameBack}>
+                  {shuffledMates[currentCardIndex]?.name}
+                  {renderGenderIcon(shuffledMates[currentCardIndex]?.gender)}
+                </Typography>
+                <Typography variant="h6" sx={CommonStyles.matchBreedBack}>
+                  {shuffledMates[currentCardIndex]?.breed}
+                </Typography>
+                <Typography variant="body1" sx={CommonStyles.matchWeightBack}>
+                  {shuffledMates[currentCardIndex]?.weight} kg
+                </Typography>
+                <Typography variant="h6" sx={CommonStyles.matchBirthBack}>
+                  {calculateAge(shuffledMates[currentCardIndex]?.dob)}
+                  <br />
+                  {simplyDob(shuffledMates[currentCardIndex]?.dob)}
+                </Typography>
+                <Typography variant="h6" sx={CommonStyles.matchBirthBack}>
+                  {shuffledMates[currentCardIndex]?.bio}
+                </Typography>
+                <Typography variant="h6" sx={CommonStyles.matchBirthBack}>
+                  {getNeuteredStatus(shuffledMates[currentCardIndex]?.neutered)}
+                </Typography>
+                <Typography variant="h6" sx={CommonStyles.matchBirthBack}>
+                  {shuffledMates[currentCardIndex]?.distance} km
+                </Typography>
+                <FlipCardPhoto id={shuffledMates[currentCardIndex]?._id} />
+              </Box>
+            </ReactCardFlip>
           </TinderCard>
         ) : (
           <Box sx={{ textAlign: 'center', mt: 4 }}>
@@ -239,8 +297,8 @@ const MatchPage = () => {
             sx={{
               ...CommonStyles.matchButton,
               '@media (max-width: 768px)': {
-                padding: '10px 20px', // Adjust padding for smaller screens
-                minWidth: '120px' // Adjust button width for smaller screens
+                padding: '10px 20px',
+                minWidth: '120px'
               }
             }}
           >
@@ -252,8 +310,8 @@ const MatchPage = () => {
             sx={{
               ...CommonStyles.matchButton,
               '@media (max-width: 768px)': {
-                padding: '10px 20px', // Adjust padding for smaller screens
-                minWidth: '120px' // Adjust button width for smaller screens
+                padding: '10px 20px',
+                minWidth: '120px'
               }
             }}
           >
