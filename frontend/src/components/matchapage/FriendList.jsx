@@ -18,27 +18,37 @@ import {
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-//import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useGetDogs } from '../../queries/dogs';
 import { useGetFriends } from '../../queries/friends';
-import { useGetUserProfile } from '../../queries/users';
+// import { useUnlikeDogMutation } from '../../queries/friends.js';
+import { useGetUser } from '../../queries/user.js';
 
 const FriendList = () => {
-  const { data: friends, isLoading, isError } = useGetFriends();
-  const { userId } = useParams();
-  const { data: userProfile } = useGetUserProfile(userId);
+  const { currentUser } = useAuth();
+  const { data: currentUserData, isLoading: isLoadingUser } = useGetUser(currentUser?.username);
+  const { data: dogs, isLoading: isLoadingDogs } = useGetDogs();
+  const { data: friends, isLoading: isLoadingFriends, isError } = useGetFriends();
   const [searchInput, setSearchInput] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
-  console.log(userId);
-  console.log('User profile data:', userProfile);
+
+  const randomDog = dogs ? dogs[Math.floor(Math.random() * dogs.length)] : null;
+
+  useEffect(() => {
+    if (!isLoadingDogs && dogs && dogs.length === 0) {
+      console.error('No dogs available');
+    }
+  }, [isLoadingDogs, dogs]);
+
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);
   };
 
   const handleFriendDelete = (friend) => {
-    // Implement friend deletion logic here
+    // useUnlikeDogMutation
     console.log('Deleting:', friend.username);
     // Close popover
     setAnchorEl(null);
@@ -59,7 +69,8 @@ const FriendList = () => {
     ? friends?.filter((friend) => friend.username.toLowerCase().includes(searchInput.toLowerCase()))
     : friends;
 
-  if (isLoading) return <Typography>Loading...</Typography>;
+  if (isLoadingFriends || isLoadingDogs || isLoadingUser)
+    return <Typography>Loading...</Typography>;
   if (isError) return <Typography>Error loading friends.</Typography>;
 
   const open = Boolean(anchorEl);
@@ -79,19 +90,19 @@ const FriendList = () => {
     >
       {/* Name card */}
       <Card>
-        <CardActionArea>
+        <CardActionArea component={Link} to="/profile">
           <CardMedia
             component="img"
-            height="140"
-            image={userProfile?.photoProfile}
+            height="300"
+            image={`${process.env.REACT_APP_API_URL}/${randomDog.profilePicture}`}
             alt="Dog Photo"
           />
           <CardContent>
             <Typography gutterBottom variant="h5">
-              {userProfile?.username}
+              {currentUserData?.username}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {userProfile?.aboutMe}
+              {currentUserData?.aboutMe}
             </Typography>
           </CardContent>
         </CardActionArea>

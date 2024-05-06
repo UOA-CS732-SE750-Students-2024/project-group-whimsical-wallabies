@@ -24,6 +24,6 @@ export const APPLICATION_PATH = {
   matching: '/matching',
   dashboard: '/dashboard',
   homepage: '/',
-  friendlist: '/friendlist:id',
+  friendlist: '/friendlist',
   filter: '/filter'
 };
