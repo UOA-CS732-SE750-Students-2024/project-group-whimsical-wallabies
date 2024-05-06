@@ -145,7 +145,7 @@ const DogCreateUpdateDialog = ({ dogId }) => {
   }
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)} fullScreen>
+    <Dialog open={open} onClose={() => setOpen(false)}>
       <Box component="form" onSubmit={handleSubmit(mutationFunction)}>
         <DialogTitle>{dogId ? 'Update Dog' : 'Add Dog'}</DialogTitle>
         <DialogContent>
