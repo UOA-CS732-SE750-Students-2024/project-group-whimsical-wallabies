@@ -5,7 +5,6 @@ import { USER_PATHS } from './paths.js';
 
 const router = express.Router();
 
-
 router.get(USER_PATHS.getUser, authenticate, getUser);
 router.put(USER_PATHS.updateUser, authenticate, updateUser);
 

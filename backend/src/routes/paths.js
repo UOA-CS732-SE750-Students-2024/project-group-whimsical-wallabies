@@ -46,7 +46,6 @@ export const USER_PATHS = {
   updateUser: '/:username'
 };
 
-
 export const MATCH_PATHS = {
   base: '/api/match',
   match: '/:dogId',
