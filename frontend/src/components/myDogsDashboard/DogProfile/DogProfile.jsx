@@ -1,3 +1,4 @@
+// DogProfile component displays the profile of a dog.
 import DeleteIcon from '@mui/icons-material/Delete';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -32,6 +33,7 @@ import { APPLICATION_PATH } from '../../../utils/urlRoutes';
 import DogCreateUpdateDialog from '../DogCreateUpdateDialog';
 import DogPhotoGallery from '../DogPhotoGallery/DogPhotoGallery';
 
+// Get age from date of birth
 const getAge = (dob) => {
   const today = new Date();
   const birthDate = new Date(dob);
@@ -44,6 +46,7 @@ const getAge = (dob) => {
   return `${ageInYears} years ${ageInMonths} months`;
 };
 
+// Dog attributes component for displaying dog attributes
 const DogAttributes = ({ breed, dob, weight, neutered, bio }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -61,6 +64,7 @@ const DogAttributes = ({ breed, dob, weight, neutered, bio }) => {
   );
 };
 
+// Dog attributes prop types
 DogAttributes.propTypes = {
   breed: PropTypes.string.isRequired,
   dob: PropTypes.string.isRequired,
@@ -69,6 +73,7 @@ DogAttributes.propTypes = {
   neutered: PropTypes.bool.isRequired
 };
 
+// Attribute component for displaying each attribute
 const Attribute = ({ icon, label }) => {
   return (
     <Box mt={2} display="flex" alignItems="center">
@@ -80,11 +85,13 @@ const Attribute = ({ icon, label }) => {
   );
 };
 
+// Attribute prop types
 Attribute.propTypes = {
   icon: PropTypes.element.isRequired,
   label: PropTypes.string.isRequired
 };
 
+// Delete confirmation dialog component for deleting dog profile
 const DeleteConfirmationDialog = ({ open, onClose, onDelete }) => {
   return (
     <Dialog open={open} onClose={onClose}>
@@ -102,29 +109,34 @@ const DeleteConfirmationDialog = ({ open, onClose, onDelete }) => {
   );
 };
 
+// Delete confirmation dialog prop types
 DeleteConfirmationDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 };
 
+// Dog profile component for displaying dog profile
 export default function DogProfile() {
   let navigate = useNavigate();
 
-  const { id } = useParams();
+  const { id } = useParams(); // Get dog id from URL
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  const { data: dog, isLoading, isError } = useGetDog(id);
-  const { mutate: deleteDog } = useDeleteDogMutation(id);
+  const { data: dog, isLoading, isError } = useGetDog(id); // Get dog profile data from dog id, using useGetDog hook
+  const { mutate: deleteDog } = useDeleteDogMutation(id); // Delete dog profile using useDeleteDogMutation hook
 
+  // Handle delete dialog open
   const handleDeleteOpen = () => {
     setOpenDeleteDialog(true);
   };
 
+  // Handle delete dialog close
   const handleDeleteClose = () => {
     setOpenDeleteDialog(false);
   };
 
+  // Handle delete dog profile, navigate to dashboard on success
   const handleDelete = () => {
     deleteDog(dog._id, {
       onSuccess: () => {
@@ -134,9 +146,10 @@ export default function DogProfile() {
       }
     });
   };
-
+  // If loading, display loading spinner
   if (isLoading) return <CircularProgress />;
 
+  // If error, display error message
   if (isError) {
     return <Typography variant="h6">Error loading dogs.</Typography>;
   }

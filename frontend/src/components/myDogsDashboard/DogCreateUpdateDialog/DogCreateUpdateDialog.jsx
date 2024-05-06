@@ -1,3 +1,4 @@
+// DogCreateUpdateDialog component for creating and updating dogs
 import { yupResolver } from '@hookform/resolvers/yup';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SaveIcon from '@mui/icons-material/Save';
@@ -26,6 +27,7 @@ import { CommonStyles } from '../../common/CommonStyles';
 import DogFormBase from '../DogFormBase';
 import { dogCreateSchema, dogUpdateSchema } from './DogCreateUpdate.validation';
 
+// Default values for dog form
 const defaultValues = {
   name: '',
   breed: '',
@@ -37,12 +39,16 @@ const defaultValues = {
   neutered: false
 };
 
+// Dog create update dialog component, used for creating and updating dogs
 const DogCreateUpdateDialog = ({ dogId }) => {
-  const queryClient = useQueryClient();
-  const [profilePicture, setProfilePicture] = useState(null);
+  const queryClient = useQueryClient(); // Query client for invalidating queries
+  const [profilePicture, setProfilePicture] = useState(null); // Profile picture state
 
+  // Handle image change
   const handleImageChange = (event) => {
+    // Get file from event
     const file = event.target.files[0];
+    // Check if file is image, set profile picture state, else set to null
     if (file && file.type.startsWith('image/')) {
       setProfilePicture(file);
     } else {
@@ -50,29 +56,39 @@ const DogCreateUpdateDialog = ({ dogId }) => {
     }
   };
 
+  // Form control, handle submit, reset and set error
   const { control, handleSubmit, reset, setError } = useForm({
     mode: 'onSubmit',
     defaultValues,
+    // Form validation schema
     resolver: yupResolver((dogId && dogUpdateSchema) || dogCreateSchema, {
       abortEarly: false,
       stripUnknown: true
     })
   });
+
+  // Open state for dialog
   const [open, setOpen] = useState(false);
 
+  // Toggle and invalidate function, used to close dialog and invalidate queries, used after create and update
   const toggleAndInvalidate = () => {
     setOpen(false);
     queryClient.invalidateQueries(['me', 'dogs']);
     if (dogId) queryClient.invalidateQueries(['dogs', dogId]);
   };
 
+  // Get dog by id query, enabled only if dog id is present
   const { data: dog, isLoading } = useGetDogById(dogId, { enabled: !!dogId });
+  // Mutation functions for create, update and upload dog profile picture
   const { mutate: mutateUploadDogProfilePicture } = useUploadDogProfilePictureMutation({
+    // On success, toggle and invalidate, set profile picture to null after upload
     onSuccess: () => {
       toggleAndInvalidate();
       setProfilePicture(null);
     }
   });
+
+  // Mutation functions for update dog, on success, if profile picture is present, upload profile picture, else toggle and invalidate
   const { mutate: mutateUpdateDog, error: mutateUpdateDogError } = useUpdateDogMutation(dogId, {
     onSuccess: () => {
       if (!profilePicture) return toggleAndInvalidate();
@@ -80,17 +96,23 @@ const DogCreateUpdateDialog = ({ dogId }) => {
     }
   });
 
+  // Mutation functions for create dog, on success, if profile picture is present, upload profile picture, else toggle and invalidate
   const { mutate: mutateCreateDog, error: mutateCreateDogError } = useCreateDogMutation({
     onSuccess: (newDog) => {
       if (!profilePicture) return toggleAndInvalidate();
       return mutateUploadDogProfilePicture({ dogId: newDog._id, profilePicture });
     }
   });
+
+  // Mutation error, used to set server errors
   const mutationError = mutateUpdateDogError || mutateCreateDogError;
+  // Mutation function, used to determine which mutation function to call
   const mutationFunction = (dogId && mutateUpdateDog) || mutateCreateDog;
 
+  // On form submit, call mutation function with form data
   useEffect(() => {
-    const serverErrors = mutationError?.response?.data?.fields;
+    const serverErrors = mutationError?.response?.data?.fields; // Server errors from response
+    // If server errors, set errors,  else reset form
     if (serverErrors) {
       Object.keys(serverErrors).forEach((fieldName) => {
         setError(fieldName, {
@@ -100,6 +122,8 @@ const DogCreateUpdateDialog = ({ dogId }) => {
       });
     }
   }, [mutationError, setError]);
+
+  // On open, reset form with dog data if present, else reset with default values
   useEffect(() => {
     if (dog) {
       reset(dog);
@@ -109,10 +133,11 @@ const DogCreateUpdateDialog = ({ dogId }) => {
     };
   }, [dog, reset]);
 
+  // If dialog is not open, return add dog or update dog chip button
   if (!open) {
     return (
       <Chip
-        label={dogId ? 'Update Dog' : 'Create Dog'}
+        label={dogId ? 'Update Dog' : 'Add Dog'}
         onClick={() => setOpen(true)}
         sx={CommonStyles.chipButton}
       />
@@ -122,7 +147,7 @@ const DogCreateUpdateDialog = ({ dogId }) => {
   return (
     <Dialog open={open} onClose={() => setOpen(false)} fullScreen>
       <Box component="form" onSubmit={handleSubmit(mutationFunction)}>
-        <DialogTitle>{dogId ? 'Update Dog' : 'Create Dog'}</DialogTitle>
+        <DialogTitle>{dogId ? 'Update Dog' : 'Add Dog'}</DialogTitle>
         <DialogContent>
           <DogFormBase
             isLoading={isLoading}
@@ -182,6 +207,7 @@ const DogCreateUpdateDialog = ({ dogId }) => {
   );
 };
 
+// Define prop types
 DogCreateUpdateDialog.propTypes = {
   dogId: PropTypes.string
 };
