@@ -222,6 +222,7 @@ export default function DogPhotoGallery({ id }) {
           <ImageListItem key={photo.url}>
             <img
               src={`${process.env.REACT_APP_API_URL}/${photo.url}?w=${getImageSize()}&h=${getImageSize()}&fit=crop&auto=format`}
+              name="add-photo"
               alt="Dog"
               loading="lazy"
               style={{
