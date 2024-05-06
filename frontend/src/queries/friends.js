@@ -12,6 +12,13 @@ export function useGetFriends() {
   });
 }
 
+export function useUnfriendMutation() {
+  return useMutation({
+    mutationKey: ['unfriend'],
+    mutation: async
+  });
+}
+
 export function useLikeDogMutation() {
   return useMutation({
     mutationKey: ['likeDog'],
