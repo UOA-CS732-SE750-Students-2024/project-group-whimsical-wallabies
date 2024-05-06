@@ -32,12 +32,12 @@ describe('Welcome Component', () => {
     render(<Welcome />);
 
     expect(screen.getByText('Welcome to Paw Mate!')).toBeInTheDocument();
-    expect(screen.getByText('MY DOGS')).toBeInTheDocument();
+    expect(screen.getByText('MY PETS')).toBeInTheDocument();
     expect(screen.getByText('FRIENDS')).toBeInTheDocument();
     expect(screen.getByText('MATCHING')).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Access all your dogs' information, where you can add, edit, review, or delete their details."
+        "Access all your pets' information, where you can add, edit, review, or delete their details."
       )
     ).toBeInTheDocument();
     expect(

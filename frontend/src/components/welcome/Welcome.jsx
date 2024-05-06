@@ -133,9 +133,9 @@ const Welcome = () => {
                     <PetsIcon />
                   </ListItemIcon>
                   <ListItemText
-                    primary="MY DOGS"
+                    primary="MY PETS"
                     primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to primary text
-                    secondary="Access all your dogs' information, where you can add, edit, review, or delete their details."
+                    secondary="Access all your pets' information, where you can add, edit, review, or delete their details."
                     secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to secondary text
                   />
                 </ListItem>
