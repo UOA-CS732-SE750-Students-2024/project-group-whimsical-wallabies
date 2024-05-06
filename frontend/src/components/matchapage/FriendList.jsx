@@ -63,9 +63,9 @@ const FriendList = () => {
     setSelectedFriend(null);
   };
 
-  const filteredFriends = searchInput
-    ? friends?.filter((friend) => friend.username.toLowerCase().includes(searchInput.toLowerCase()))
-    : friends;
+  const filteredFriends = friends
+    ?.filter((friend) => friend.username.toLowerCase().includes(searchInput.toLowerCase()))
+    .sort((a, b) => a.username.localeCompare(b.username));
 
   if (isLoadingFriends || isLoadingDogs || isLoadingUser || isLoadingUnfriend)
     return <Typography>Loading...</Typography>;
