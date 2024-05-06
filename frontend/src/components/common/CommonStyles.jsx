@@ -244,5 +244,14 @@ export const CommonStyles = {
       transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
     }
   },
-  dogDashboardCard: { maxWidth: 330, m: 1, mt: 2, boxShadow: 3, width: 350, height: 500 }
+  dogDashboardCard: {
+    maxWidth: 330,
+    m: 1,
+    mt: 2,
+    boxShadow: 3,
+    width: 350,
+    height: 500,
+    borderRadius: 2,
+    backgroundColor: '#fafcfd'
+  }
 };
