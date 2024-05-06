@@ -1,12 +1,7 @@
 import User from '../models/User.js';
-import {
-  createDog,
-  getDogs,
-  getDog,
-  updateDog,
-  deleteDog,
-  getAllDogsExceptUser
-} from '../services/dogService.js';
+
+import { createDog, getDogs, getDog, updateDog, deleteDog } from '../services/dogService.js';
+import { getMatchingDogs } from '../services/matchService.js';
 import { calculateDistance } from '../utils/common.js';
 
 export const create = async (req, res) => {
@@ -58,9 +53,10 @@ export const remove = async (req, res) => {
 export const getAllOthers = async (req, res) => {
   try {
     const currentUser = await User.findById(req.user._id);
-    const dogs = await getAllDogsExceptUser(req.user._id);
+    const uniqueMatches = await getMatchingDogs(currentUser);
+
     const dogsWithDistance = await Promise.all(
-      dogs.map(async (dog) => {
+      uniqueMatches.map(async (dog) => {
         const owner = await User.findById(dog.owner);
         const distance = calculateDistance(
           currentUser.latitude,
