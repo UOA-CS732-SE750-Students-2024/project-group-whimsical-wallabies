@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import SignUp from './SignUp';
 
 // Mock necessary imports
-jest.mock('../../context/AuthContext', () => ({
+jest.mock('../../../context/AuthContext', () => ({
   useAuth: () => ({
     signup: jest.fn(),
     signupErrors: null,

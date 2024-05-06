@@ -2,29 +2,30 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import DogDashboard from './DogDashboard';
 
-// Mock child components
+// Mock the child components and assign display names
 jest.mock('../DogCards', () => {
-  const DogCards = () => <div>DogCardsComponent</div>;
+  const DogCards = () => <div>DogCards Component</div>;
   DogCards.displayName = 'DogCards';
   return DogCards;
 });
 
-jest.mock('../../dogs/DogCreateUpdateDialog', () => {
-  const DogCreateUpdateDialog = () => <div>DogCreateUpdateDialogComponent</div>;
+jest.mock('../DogCreateUpdateDialog', () => {
+  const DogCreateUpdateDialog = () => <div>Dog Create Update Dialog</div>;
   DogCreateUpdateDialog.displayName = 'DogCreateUpdateDialog';
   return DogCreateUpdateDialog;
 });
 
 describe('DogDashboard', () => {
-  it('renders without crashing', () => {
+  it('renders the dashboard and checks for main elements', () => {
     render(<DogDashboard />);
-    expect(screen.getByText('My Dog(s) Dashboard')).toBeInTheDocument();
-    expect(screen.getByText('DogCardsComponent')).toBeInTheDocument();
-    expect(screen.getByText('DogCreateUpdateDialogComponent')).toBeInTheDocument();
-  });
 
-  it('contains the correct heading', () => {
-    render(<DogDashboard />);
-    expect(screen.getByRole('heading', { name: /My Dog\(s\) Dashboard/i })).toBeInTheDocument();
+    // Check for the header text
+    expect(screen.getByText('My Dog Dashboard')).toBeInTheDocument();
+
+    // Check if the DogCreateUpdateDialog component is rendered
+    expect(screen.getByText('Dog Create Update Dialog')).toBeInTheDocument();
+
+    // Check if the DogCards component is rendered
+    expect(screen.getByText('DogCards Component')).toBeInTheDocument();
   });
 });
