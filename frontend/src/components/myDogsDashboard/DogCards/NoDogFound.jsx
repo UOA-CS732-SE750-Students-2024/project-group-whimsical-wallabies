@@ -1,6 +1,8 @@
+// NoDogsFound component is displayed when there are no dogs in the database.
 import PetsIcon from '@mui/icons-material/Pets';
 import { Box, Typography } from '@mui/material';
 import React from 'react';
+
 const NoDogsFound = () => {
   return (
     <Box

@@ -1,3 +1,4 @@
+// DogPhotoGallery component to display the photo gallery of a dog
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
@@ -26,6 +27,7 @@ import {
   useDeletePhotoMutation
 } from '../../../queries/photos';
 
+// Upload dialog component, to upload photos
 function UploadDialog({
   open,
   onClose,
@@ -70,6 +72,7 @@ function UploadDialog({
   );
 }
 
+// Delete dialog component, to delete photos
 function DeleteDialog({ open, onClose, onDelete }) {
   return (
     <Dialog open={open} onClose={onClose}>
@@ -87,6 +90,7 @@ function DeleteDialog({ open, onClose, onDelete }) {
   );
 }
 
+// Dog photo gallery component, to display the photo gallery of a dog
 export default function DogPhotoGallery({ id }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -104,16 +108,19 @@ export default function DogPhotoGallery({ id }) {
   const isSmallMobile = useMediaQuery(theme.breakpoints.down('xs')); // Extra small screen breakpoint
   const isLargeMobile = useMediaQuery(theme.breakpoints.down('md')); // Breakpoint for large mobile devices
 
+  // Open the image modal with the selected photo
   const handleOpenImageModal = (photoUrl) => {
     setSelectedImage(photoUrl);
     setOpenImageModal(true);
   };
 
+  // Close the image modal
   const handleCloseImageModal = () => {
     setOpenImageModal(false);
     setSelectedImage(null);
   };
 
+  // Get the number of columns based on the screen size
   const getCols = () => {
     if (isSmallMobile) {
       return 1; // Single column for extra small screens
@@ -122,36 +129,41 @@ export default function DogPhotoGallery({ id }) {
     } else if (isLargeMobile) {
       return 3; // Three columns for medium screens
     } else {
-      return (photos.length <= 5 && photos.length) || 5; // Three columns for larger screens
+      return (photos.length <= 5 && photos.length) || 5; // Five columns for large screens
     }
   };
 
+  // Get the image size based on the screen size
   const getImageSize = () => {
     if (isMobile) {
-      return 342; // 50% of the viewport width for mobile devices
+      return 342; // Fixed width of 342px for small screens
     } else {
       return 200; // Fixed width of 200px for larger screens
     }
   };
 
+  // Create photo mutation, to create a new photo
   const { mutate: createPhoto } = useCreatePhotoMutation(id, {
     onSuccess: refetch
   });
+
+  // Delete photo mutation, to delete a photo
   const { mutate: deletePhoto } = useDeletePhotoMutation(id, selectedPhoto?._id, {
     onSuccess: refetch
   });
-
+  // Open the delete dialog with the selected photo
   const handleDeleteOpen = (photo) => {
     setSelectedPhoto(photo);
     setOpenDeleteDialog(true);
   };
 
+  // Close the delete dialog
   const handleDeleteClose = () => {
     setOpenDeleteDialog(false);
     setSelectedPhoto(null);
     refetch();
   };
-
+  // Handle delete photo, to delete the selected photo
   const handleDelete = () => {
     if (selectedPhoto) {
       deletePhoto(
@@ -167,10 +179,12 @@ export default function DogPhotoGallery({ id }) {
     }
   };
 
+  // Open the upload dialog
   const handleUploadOpen = () => {
     setOpenUploadDialog(true);
   };
 
+  // Close the upload dialog
   const handleUploadClose = () => {
     setOpenUploadDialog(false);
     setFile(null);
@@ -179,12 +193,14 @@ export default function DogPhotoGallery({ id }) {
     refetch();
   };
 
+  // Handle file change, to set the selected file and preview the image
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
     setPreviewUrl(URL.createObjectURL(selectedFile));
   };
 
+  // Handle upload, to upload the selected file
   const handleUpload = async () => {
     try {
       const formData = new FormData();
@@ -200,6 +216,7 @@ export default function DogPhotoGallery({ id }) {
     }
   };
 
+  // Loading state
   if (isLoading) {
     return <Typography>Loading...</Typography>;
   }
@@ -313,10 +330,12 @@ export default function DogPhotoGallery({ id }) {
   );
 }
 
+// Define prop types for DogPhotoGallery component
 DogPhotoGallery.propTypes = {
   id: PropTypes.string.isRequired
 };
 
+// Define prop types for UploadDialog
 UploadDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
@@ -327,6 +346,7 @@ UploadDialog.propTypes = {
   fileName: PropTypes.string
 };
 
+// Define prop types for DeleteDialog
 DeleteDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,

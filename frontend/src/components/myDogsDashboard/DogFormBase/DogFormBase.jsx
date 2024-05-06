@@ -1,3 +1,4 @@
+// DogFormBase component, is used in DogCreateUpdateDialog component. To display the form fields for creating and updating a dog.
 import {
   Autocomplete,
   Grid,
@@ -15,6 +16,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { CommonStyles } from '../../common/CommonStyles';
 
+// Dog breeds list
 const dogBreeds = [
   'Labrador Retriever',
   'German Shepherd',
@@ -123,6 +125,7 @@ const dogBreeds = [
   'Greyhound'
 ].sort();
 
+// Dog form base component for dog form fields
 const DogFormBase = ({ control, isLoading, handleImageChange }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -306,6 +309,7 @@ const DogFormBase = ({ control, isLoading, handleImageChange }) => {
   );
 };
 
+// Define prop types
 DogFormBase.propTypes = {
   handleImageChange: PropTypes.func.isRequired,
   control: PropTypes.any.isRequired,
