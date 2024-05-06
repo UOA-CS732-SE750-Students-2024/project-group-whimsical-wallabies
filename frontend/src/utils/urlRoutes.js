@@ -13,12 +13,13 @@ export const APPLICATION_PATH = {
     login: '/login',
     signup: '/signup'
   },
+  user: {
+    profile: '/profile',
+    friends: '/dashboard'
+  },
   dog: {
     dashboard: '/my-dogs',
     profile: '/dog/:id'
-  },
-  user: {
-    friends: '/dashboard'
   },
   matching: '/matching',
   dashboard: '/dashboard',

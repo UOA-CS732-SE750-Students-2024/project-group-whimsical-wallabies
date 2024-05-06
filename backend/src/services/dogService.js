@@ -55,11 +55,3 @@ export const deleteDog = async (id, owner) => {
 
   return dog;
 };
-
-export const getAllDogsExceptUser = async (currentUserId) => {
-  const user = await User.findById(currentUserId);
-  if (!user) throw new Error('User not found');
-  const friendsIds = user.friends.map(({ _id }) => _id);
-  const excludeOwners = [currentUserId, ...friendsIds];
-  return await Dog.find({ owner: { $nin: excludeOwners } });
-};

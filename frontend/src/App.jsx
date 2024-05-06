@@ -4,17 +4,19 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import DogDashboard from './components/dashboard/dogDashboard';
-import DogProfile from './components/dogProfile/DogProfile';
 
+import Login from './components/auth/LogIn';
+import SignUp from './components/auth/SignUp';
 import HomePage from './components/homepage/HomePage';
 import Header from './components/layout/Header';
-import Login from './components/login/Login';
 import Filter from './components/matchapage/Filter';
 import FriendList from './components/matchapage/FriendList';
 import MatchPage from './components/matchapage/MatchPage';
-import SignUp from './components/signup/SignUp';
+import DogDashboard from './components/myDogsDashboard/DogDashboard';
+import DogProfile from './components/myDogsDashboard/DogProfile/DogProfile';
+import UserProfile from './components/userProfile/userProfile';
 import Welcome from './components/welcome/Welcome';
+
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 import theme from './theme';
@@ -80,6 +82,14 @@ const App = () => {
                   element={
                     <PrivateRoute>
                       <DogProfile />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path={APPLICATION_PATH.user.profile}
+                  element={
+                    <PrivateRoute>
+                      <UserProfile />
                     </PrivateRoute>
                   }
                 />

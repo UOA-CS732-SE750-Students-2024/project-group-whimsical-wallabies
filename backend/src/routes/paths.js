@@ -13,11 +13,6 @@ export const AUTH_PATHS = {
   profile: '/profile'
 };
 
-export const USER_PATHS = {
-  base: '/api/user',
-  profile: '/:id/profile'
-};
-
 export const THIRD_PARTY_APIS = {
   base: '/api/external',
   getWeather: '/get-weather',
@@ -43,6 +38,12 @@ export const PHOTO_PATHS = {
   create: '/',
   getAll: '/',
   remove: ':photoId'
+};
+
+export const USER_PATHS = {
+  base: '/api/user',
+  getUser: '/:username',
+  updateUser: '/:username'
 };
 
 export const MATCH_PATHS = {
