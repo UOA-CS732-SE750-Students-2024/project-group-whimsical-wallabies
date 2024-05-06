@@ -105,3 +105,15 @@ export const getMatchingDogs = async (currentUser) => {
     flatMatches.find((dog) => dog._id.toString() === id)
   );
 };
+
+export const unfriendUser = async (currentUserId, friendId) => {
+  const currentUser = await User.findById(currentUserId);
+  if (!currentUser) throw new Error('Current user not found');
+  const friend = await User.findById(friendId);
+  if (!friend) throw new Error('Friend user not found');
+  currentUser.friends.pull(friendId);
+  await currentUser.save();
+  friend.friends.pull(currentUserId);
+  await friend.save();
+  return { message: 'Friend removed successfully' };
+};
