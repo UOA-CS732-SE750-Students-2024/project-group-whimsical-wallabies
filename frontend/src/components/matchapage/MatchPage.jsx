@@ -14,12 +14,25 @@ import Filter from './Filter';
 import FriendList from './FriendList';
 
 const MatchPage = () => {
+  const [filters, setFilters] = useState({
+    breeds: [],
+    gender: [],
+    age: [],
+    neutered: []
+  });
+  console.log(filters);
+
   const { data: potentialMates, isLoading, error, refetch } = useGetPotentialMates();
   const [shuffledMates, setShuffledMates] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showLastCardMessage, setShowLastCardMessage] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showFriendList, setShowFriendList] = useState(false);
+
+  const applyFilters = (newFilters) => {
+    setFilters(newFilters);
+    refetch();
+  };
 
   const toggleFilter = () => {
     setShowFilter(!showFilter);
@@ -173,7 +186,7 @@ const MatchPage = () => {
         <Diversity1RoundedIcon />
       </IconButton>
       <Box className="dashboard" sx={CommonStyles.matchDashboard}>
-        {showFilter && <Filter />}
+        {showFilter && <Filter applyFilters={applyFilters} />}
         {showFriendList && <FriendList />}
 
         {isLoading ? (

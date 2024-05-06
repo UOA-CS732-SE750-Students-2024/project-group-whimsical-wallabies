@@ -1,51 +1,117 @@
 import { Box, Typography, Checkbox, FormControlLabel, Button } from '@mui/material';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-const Filter = () => {
-  const db = [
-    {
-      name: 'Cyrus',
-      url: 'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*',
-      breed: 'Golden Retriever',
-      weight: '5',
-      dob: '2023-12-11T00:00:00.000Z',
-      gender: 'female'
-    },
-    {
-      name: 'Maddie',
-      url: 'https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg',
-      breed: 'German Shepherd',
-      weight: '30',
-      dob: '2015-06-15T00:00:00.000Z',
-      gender: 'female'
-    },
-    {
-      name: 'Leo',
-      url: 'https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/advisor/wp-content/uploads/2023/07/top-20-small-dog-breeds.jpeg.jpg',
-      breed: 'Bichon',
-      weight: '15',
-      dob: '2019-03-18T00:00:00.000Z',
-      gender: 'male'
-    },
-    {
-      name: 'Daniel',
-      url: 'https://images.pexels.com/photos/1805164/pexels-photo-1805164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      breed: 'Shiba Inu',
-      weight: '20',
-      dob: '2018-07-20T00:00:00.000Z',
-      gender: 'male'
-    },
-    {
-      name: 'Dobby',
-      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUvo1ANKIUkgA9CBkgsKYAbPaFHfqTIKTtjsZOV0CgwA&s',
-      breed: 'Great Dane',
-      weight: '40',
-      dob: '2015-02-23T00:00:00.000Z',
-      gender: 'male'
-    }
-  ];
+const dogBreeds = [
+  'Labrador Retriever',
+  'German Shepherd',
+  'Golden Retriever',
+  'French Bulldog',
+  'Bulldog',
+  'Poodle',
+  'Beagle',
+  'Rottweiler',
+  'Yorkshire Terrier',
+  'Boxer',
+  'Dachshund',
+  'Pembroke Welsh Corgi',
+  'Siberian Husky',
+  'Australian Shepherd',
+  'Great Dane',
+  'Doberman Pinscher',
+  'Cavalier King Charles Spaniel',
+  'Shih Tzu',
+  'Miniature Schnauzer',
+  'Boston Terrier',
+  'Bernese Mountain Dog',
+  'Havanese',
+  'Shetland Sheepdog',
+  'English Springer Spaniel',
+  'Brittany',
+  'Pug',
+  'Mastiff',
+  'Chihuahua',
+  'Vizsla',
+  'Cane Corso',
+  'Border Collie',
+  'Maltese',
+  'Bichon Frise',
+  'West Highland White Terrier',
+  'Papillon',
+  'Collie',
+  'Weimaraner',
+  'Newfoundland',
+  'Basset Hound',
+  'Rhodesian Ridgeback',
+  'Bull Terrier',
+  'Akita',
+  'Standard Schnauzer',
+  'Staffordshire Bull Terrier',
+  'American Cocker Spaniel',
+  'Whippet',
+  'Belgian Malinois',
+  'St. Bernard',
+  'Bullmastiff',
+  'Australian Cattle Dog',
+  'Scottish Terrier',
+  'Portuguese Water Dog',
+  'Airedale Terrier',
+  'Dalmatian',
+  'Soft Coated Wheaten Terrier',
+  'Irish Setter',
+  'Chow Chow',
+  'German Shorthaired Pointer',
+  'Samoyed',
+  'Blue Heeler',
+  'Miniature American Shepherd',
+  'Italian Greyhound',
+  'Chinese Shar-Pei',
+  'Cairn Terrier',
+  'English Cocker Spaniel',
+  'Bloodhound',
+  'Alaskan Malamute',
+  'Pekingese',
+  'Basenji',
+  'Bouviers des Flandres',
+  'American Bulldog',
+  'Fox Terrier',
+  'Russian Toy',
+  'Toy Fox Terrier',
+  'Norwegian Elkhound',
+  'Old English Sheepdog',
+  'Jack Russell Terrier',
+  'Pointer',
+  'American Staffordshire Terrier',
+  'Saluki',
+  'Irish Wolfhound',
+  'Afghan Hound',
+  'Brittany Spaniel',
+  'Field Spaniel',
+  'Finnish Spitz',
+  'Leonberger',
+  'Neapolitan Mastiff',
+  'Newfoundland and Labrador Retriever',
+  'Nova Scotia Duck Tolling Retriever',
+  'Anatolian Shepherd Dog',
+  'Black and Tan Coonhound',
+  'American Water Spaniel',
+  'Australian Terrier',
+  'Bedlington Terrier',
+  'Belgian Tervuren',
+  'Bluetick Coonhound',
+  'Boykin Spaniel',
+  'Bracco Italiano',
+  'Briard',
+  'Cesky Terrier',
+  'Clumber Spaniel',
+  'Curly-Coated Retriever',
+  'Dandie Dinmont Terrier',
+  'Flat-Coated Retriever',
+  'Greyhound'
+].sort();
 
-  const [filters, setFilters] = useState({
+const Filter = ({ applyFilters }) => {
+  const [localFilters, setlocalFilters] = useState({
     breeds: [],
     gender: [],
     age: [],
@@ -53,16 +119,16 @@ const Filter = () => {
   });
 
   const handleCheckboxChange = (category, value) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [category]: prevFilters[category].includes(value)
-        ? prevFilters[category].filter((item) => item !== value)
-        : [...prevFilters[category], value]
+    setlocalFilters((prev) => ({
+      ...prev,
+      [category]: prev[category].includes(value)
+        ? prev[category].filter((item) => item !== value)
+        : [...prev[category], value]
     }));
   };
 
   const handleSubmit = () => {
-    console.log('Filtering with:', filters);
+    applyFilters(localFilters);
   };
 
   return (
@@ -84,16 +150,16 @@ const Filter = () => {
           <Typography variant="h6" gutterBottom>
             Dog Breeds
           </Typography>
-          {db.map((dog, index) => (
+          {dogBreeds.map((breed, index) => (
             <FormControlLabel
-              key={index} // Assign a unique key based on the array index
+              key={index}
               control={
                 <Checkbox
-                  onChange={() => handleCheckboxChange('breeds', dog.breed)}
-                  checked={filters.breeds.includes(dog.breed)}
+                  onChange={() => handleCheckboxChange('breeds', breed)}
+                  checked={localFilters.breeds.includes(breed)}
                 />
               }
-              label={dog.breed} // Use dog breed as the label
+              label={breed}
             />
           ))}
           <Typography variant="h6" gutterBottom mt={2}>
@@ -103,7 +169,7 @@ const Filter = () => {
             control={
               <Checkbox
                 onChange={() => handleCheckboxChange('gender', 'male')}
-                checked={filters.gender.includes('male')}
+                checked={localFilters.gender.includes('male')}
               />
             }
             label="Male"
@@ -112,7 +178,7 @@ const Filter = () => {
             control={
               <Checkbox
                 onChange={() => handleCheckboxChange('gender', 'female')}
-                checked={filters.gender.includes('female')}
+                checked={localFilters.gender.includes('female')}
               />
             }
             label="Female"
@@ -124,7 +190,7 @@ const Filter = () => {
             control={
               <Checkbox
                 onChange={() => handleCheckboxChange('age', '1yr')}
-                checked={filters.age.includes('1yr')}
+                checked={localFilters.age.includes('1yr')}
               />
             }
             label="1 yr"
@@ -133,7 +199,7 @@ const Filter = () => {
             control={
               <Checkbox
                 onChange={() => handleCheckboxChange('age', '1-3yrs')}
-                checked={filters.age.includes('1-3yrs')}
+                checked={localFilters.age.includes('1-3yrs')}
               />
             }
             label="1-3 yrs"
@@ -142,7 +208,7 @@ const Filter = () => {
             control={
               <Checkbox
                 onChange={() => handleCheckboxChange('age', '3-7yrs')}
-                checked={filters.age.includes('3-7yrs')}
+                checked={localFilters.age.includes('3-7yrs')}
               />
             }
             label="3-7 yrs"
@@ -151,7 +217,7 @@ const Filter = () => {
             control={
               <Checkbox
                 onChange={() => handleCheckboxChange('age', '7+yrs')}
-                checked={filters.age.includes('7+yrs')}
+                checked={localFilters.age.includes('7+yrs')}
               />
             }
             label="7+ yrs"
@@ -163,7 +229,7 @@ const Filter = () => {
             control={
               <Checkbox
                 onChange={() => handleCheckboxChange('neutered', 'yes')}
-                checked={filters.neutered.includes('yes')}
+                checked={localFilters.neutered.includes('yes')}
               />
             }
             label="Yes"
@@ -172,14 +238,14 @@ const Filter = () => {
             control={
               <Checkbox
                 onChange={() => handleCheckboxChange('neutered', 'no')}
-                checked={filters.neutered.includes('no')}
+                checked={localFilters.neutered.includes('no')}
               />
             }
             label="No"
           />
           <Box mt={2}>
             <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Submit
+              Apply Filters
             </Button>
           </Box>
         </Box>
@@ -188,4 +254,7 @@ const Filter = () => {
   );
 };
 
+Filter.propTypes = {
+  applyFilters: PropTypes.func.isRequired
+};
 export default Filter;
