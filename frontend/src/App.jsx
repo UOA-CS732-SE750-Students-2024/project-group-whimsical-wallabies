@@ -14,7 +14,7 @@ import FriendList from './components/matchapage/FriendList';
 import MatchPage from './components/matchapage/MatchPage';
 import DogDashboard from './components/myDogsDashboard/DogDashboard';
 import DogProfile from './components/myDogsDashboard/DogProfile/DogProfile';
-import UserProfile from './components/userProfile/userProfile';
+import UserProfile from './components/UserProfile/UserProfile';
 import Welcome from './components/welcome/Welcome';
 
 import { AuthProvider, useAuth } from './context/AuthContext';

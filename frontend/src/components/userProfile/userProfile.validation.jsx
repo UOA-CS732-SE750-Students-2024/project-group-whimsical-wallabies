@@ -5,7 +5,7 @@ export const userProfileSchema = Joi.object({
   email: Joi.string().email({ tlds: false }).required(),
   address: Joi.string().required(),
   phone: Joi.string().allow('', null).optional(),
-  longitude: Joi.string().required(),
-  latitude: Joi.string().required(),
+  latitude: Joi.number().precision(8).required(),
+  longitude: Joi.number().precision(8).required(),
   aboutMe: Joi.string().required()
 });
