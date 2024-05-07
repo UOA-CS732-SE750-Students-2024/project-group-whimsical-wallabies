@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import multer from 'multer';
-import { create, getAll, getOne, update, remove } from '../controllers/dogController.js';
+import { create, getAll, getOne, update, remove, getOthers } from '../controllers/dogController.js';
 import { authenticate } from '../middlewares/authMiddleware.js';
 import schemaValidator from '../middlewares/schemaValidator.js';
 import { buildPathWithBase, DOG_PATHS } from './paths.js';
@@ -35,5 +35,6 @@ router.put(
   update
 );
 router.delete(DOG_PATHS.remove, authenticate, remove);
+router.get(DOG_PATHS.getOthers, authenticate, getOthers);
 
 export default router;

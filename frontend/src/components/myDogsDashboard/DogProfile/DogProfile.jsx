@@ -49,7 +49,7 @@ const getAge = (dob) => {
 // Dog attributes component for displaying dog attributes
 const DogAttributes = ({ breed, dob, weight, neutered, bio }) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: -1 }}>
       <Attribute icon={<PetsIcon />} label={breed} />
       <Attribute icon={<EmojiEventsIcon />} label={`Age: ${getAge(dob)}`} />
       <Attribute icon={<FitnessCenterIcon />} label={`Weight: ${weight} kg`} />
@@ -158,7 +158,16 @@ export default function DogProfile() {
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
       {dog ? (
         <>
-          <Card sx={{ maxWidth: 630, width: '100%', height: '100%' }}>
+          <Card
+            sx={{
+              maxWidth: 630,
+              width: '100%',
+              height: '100%',
+              backgroundColor: '#fafcfd',
+              borderRadius: '16px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+            }}
+          >
             <CardMedia
               component="img"
               height="400"
@@ -166,15 +175,24 @@ export default function DogProfile() {
               alt={dog.name}
             />
             <CardContent>
-              <Typography
-                gutterBottom
-                variant="h5"
-                component="div"
-                sx={{
-                  fontWeight: 'bold'
-                }}
-              >
-                {dog.name}
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Typography
+                  gutterBottom
+                  variant="h3"
+                  component="div"
+                  sx={{
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    color: '#2a2a2a',
+                    ml: 5
+                  }}
+                >
+                  {dog.name}
+                </Typography>
+
                 {dog.gender === 'Male' ? (
                   <MaleIcon
                     fontSize="small"
@@ -188,8 +206,7 @@ export default function DogProfile() {
                     style={{ color: '#ff99cc' }}
                   />
                 )}
-              </Typography>
-
+              </Box>
               <DogAttributes
                 bio={dog.bio}
                 breed={dog.breed}
@@ -209,7 +226,7 @@ export default function DogProfile() {
             </CardContent>
           </Card>
 
-          <Box display="flex" justifyContent="center" alignItems="center">
+          <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 4 }}>
             <DogPhotoGallery id={dog._id} />
           </Box>
         </>

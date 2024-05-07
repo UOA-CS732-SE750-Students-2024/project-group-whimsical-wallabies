@@ -1,6 +1,7 @@
 // DogPhotoGallery component to display the photo gallery of a dog
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PetsIcon from '@mui/icons-material/Pets';
 import {
   Box,
   IconButton,
@@ -223,8 +224,19 @@ export default function DogPhotoGallery({ id }) {
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom mt={2}>
-        Photo Gallery
+      <Typography
+        variant="h3"
+        gutterBottom
+        mt={2}
+        sx={{
+          fontWeight: 'bold',
+          fontFamily: 'Raleway',
+          color: '#2a2a2a'
+        }}
+      >
+        <PetsIcon fontSize="large" sx={{ color: '#aad5dc', opacity: 0.5 }} />
+        <span style={{ marginLeft: 12, marginRight: 1 }}>Gallery </span>
+        <PetsIcon fontSize="large" sx={{ color: '#aad5dc', opacity: 0.5 }} />
       </Typography>
       <ImageList
         sx={{
@@ -267,21 +279,21 @@ export default function DogPhotoGallery({ id }) {
             </Tooltip>
           </ImageListItem>
         ))}
-        <ImageListItem>
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            width={getImageSize()}
-            height={getImageSize()}
-            border="1px dashed gray"
-            borderRadius="4px"
-            onClick={handleUploadOpen}
-            style={{ cursor: 'pointer' }}
-          >
-            <AddCircleOutlineIcon fontSize={isMobile ? 'large' : 'large'} color="action" />
-          </Box>
-        </ImageListItem>
+
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          width={getImageSize()}
+          height={getImageSize()}
+          border="1px dashed gray"
+          borderRadius="8px"
+          onClick={handleUploadOpen}
+          style={{ cursor: 'pointer' }}
+          sx={{ backgroundColor: '#fafcfd' }}
+        >
+          <AddCircleOutlineIcon fontSize={isMobile ? 'large' : 'large'} color="action" />
+        </Box>
       </ImageList>
       <DeleteDialog open={openDeleteDialog} onClose={handleDeleteClose} onDelete={handleDelete} />
       <UploadDialog

@@ -1,134 +1,52 @@
-import { Box, Typography, Checkbox, FormControlLabel, Button } from '@mui/material';
+import {
+  Box,
+  FormControlLabel,
+  Button,
+  Autocomplete,
+  TextField,
+  Chip,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
+  Typography,
+  Divider
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { dogBreeds } from '../../data/dogBreeds';
 
-const dogBreeds = [
-  'Labrador Retriever',
-  'German Shepherd',
-  'Golden Retriever',
-  'French Bulldog',
-  'Bulldog',
-  'Poodle',
-  'Beagle',
-  'Rottweiler',
-  'Yorkshire Terrier',
-  'Boxer',
-  'Dachshund',
-  'Pembroke Welsh Corgi',
-  'Siberian Husky',
-  'Australian Shepherd',
-  'Great Dane',
-  'Doberman Pinscher',
-  'Cavalier King Charles Spaniel',
-  'Shih Tzu',
-  'Miniature Schnauzer',
-  'Boston Terrier',
-  'Bernese Mountain Dog',
-  'Havanese',
-  'Shetland Sheepdog',
-  'English Springer Spaniel',
-  'Brittany',
-  'Pug',
-  'Mastiff',
-  'Chihuahua',
-  'Vizsla',
-  'Cane Corso',
-  'Border Collie',
-  'Maltese',
-  'Bichon Frise',
-  'West Highland White Terrier',
-  'Papillon',
-  'Collie',
-  'Weimaraner',
-  'Newfoundland',
-  'Basset Hound',
-  'Rhodesian Ridgeback',
-  'Bull Terrier',
-  'Akita',
-  'Standard Schnauzer',
-  'Staffordshire Bull Terrier',
-  'American Cocker Spaniel',
-  'Whippet',
-  'Belgian Malinois',
-  'St. Bernard',
-  'Bullmastiff',
-  'Australian Cattle Dog',
-  'Scottish Terrier',
-  'Portuguese Water Dog',
-  'Airedale Terrier',
-  'Dalmatian',
-  'Soft Coated Wheaten Terrier',
-  'Irish Setter',
-  'Chow Chow',
-  'German Shorthaired Pointer',
-  'Samoyed',
-  'Blue Heeler',
-  'Miniature American Shepherd',
-  'Italian Greyhound',
-  'Chinese Shar-Pei',
-  'Cairn Terrier',
-  'English Cocker Spaniel',
-  'Bloodhound',
-  'Alaskan Malamute',
-  'Pekingese',
-  'Basenji',
-  'Bouviers des Flandres',
-  'American Bulldog',
-  'Fox Terrier',
-  'Russian Toy',
-  'Toy Fox Terrier',
-  'Norwegian Elkhound',
-  'Old English Sheepdog',
-  'Jack Russell Terrier',
-  'Pointer',
-  'American Staffordshire Terrier',
-  'Saluki',
-  'Irish Wolfhound',
-  'Afghan Hound',
-  'Brittany Spaniel',
-  'Field Spaniel',
-  'Finnish Spitz',
-  'Leonberger',
-  'Neapolitan Mastiff',
-  'Newfoundland and Labrador Retriever',
-  'Nova Scotia Duck Tolling Retriever',
-  'Anatolian Shepherd Dog',
-  'Black and Tan Coonhound',
-  'American Water Spaniel',
-  'Australian Terrier',
-  'Bedlington Terrier',
-  'Belgian Tervuren',
-  'Bluetick Coonhound',
-  'Boykin Spaniel',
-  'Bracco Italiano',
-  'Briard',
-  'Cesky Terrier',
-  'Clumber Spaniel',
-  'Curly-Coated Retriever',
-  'Dandie Dinmont Terrier',
-  'Flat-Coated Retriever',
-  'Greyhound'
-].sort();
+const filterInitialState = {
+  manualMatch: false,
+  breeds: [],
+  gender: 'all',
+  age: {
+    min: 0,
+    max: 100
+  },
+  neutered: 'all'
+};
 
-const Filter = ({ applyFilters }) => {
-  const [localFilters, setlocalFilters] = useState({
-    breeds: [],
-    gender: [],
-    age: [],
-    neutered: []
-  });
-
-  const handleCheckboxChange = (category, value) => {
-    setlocalFilters((prev) => ({
-      ...prev,
-      [category]: prev[category].includes(value)
-        ? prev[category].filter((item) => item !== value)
-        : [...prev[category], value]
-    }));
+const Filter = ({ setTinderFilters }) => {
+  const [filters, setFilters] = useState(filterInitialState);
+  const handleChange = (prop) => (event) => {
+    setFilters({ ...filters, age: { ...filters.age, [prop]: event.target.value } });
   };
 
   const handleSubmit = () => {
-    applyFilters(localFilters);
+    setTinderFilters(filters, { manualMatch: true });
+  };
+  const handleAutoMatch = () => {
+    setFilters({ ...filterInitialState, manualMatch: false });
+    setTinderFilters(filters);
+  };
+  const handleManualMatch = () => {
+    setFilters({ ...filterInitialState, manualMatch: true });
+    setTinderFilters(filters);
+  };
+
+  const handleRadioChange = (key, value) => {
+    setFilters({ ...filters, [key]: value });
   };
 
   return (
@@ -147,106 +65,145 @@ const Filter = ({ applyFilters }) => {
             padding: '16px'
           }}
         >
-          <Typography variant="h6" gutterBottom>
-            Dog Breeds
+          <Typography variant="h5">
+            {(filters.manualMatch && 'Manual Match') || 'Auto Match'}
           </Typography>
-          {dogBreeds.map((breed, index) => (
-            <FormControlLabel
-              key={index}
-              control={
-                <Checkbox
-                  onChange={() => handleCheckboxChange('breeds', breed)}
-                  checked={localFilters.breeds.includes(breed)}
-                />
-              }
-              label={breed}
-            />
-          ))}
-          <Typography variant="h6" gutterBottom mt={2}>
-            Gender
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            {filters.manualMatch ? (
+              <Typography variant="body1">
+                Prefer a more hands-on approach? Select Manual Match to personally filter and select
+                potential mates based on specific criteria that you value. This option gives you the
+                flexibility to fine-tune the search based on your preferences.
+              </Typography>
+            ) : (
+              <Typography variant="body1">
+                Our system automatically finds potential mates whose profiles closely align with
+                your dog’s characteristics. This option is designed for effortless matches, ensuring
+                compatibility based on our comprehensive profile analysis.
+              </Typography>
+            )}
           </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('gender', 'male')}
-                checked={localFilters.gender.includes('male')}
-              />
-            }
-            label="Male"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('gender', 'female')}
-                checked={localFilters.gender.includes('female')}
-              />
-            }
-            label="Female"
-          />
-          <Typography variant="h6" gutterBottom mt={2}>
-            Age
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('age', '1yr')}
-                checked={localFilters.age.includes('1yr')}
-              />
-            }
-            label="1 yr"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('age', '1-3yrs')}
-                checked={localFilters.age.includes('1-3yrs')}
-              />
-            }
-            label="1-3 yrs"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('age', '3-7yrs')}
-                checked={localFilters.age.includes('3-7yrs')}
-              />
-            }
-            label="3-7 yrs"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('age', '7+yrs')}
-                checked={localFilters.age.includes('7+yrs')}
-              />
-            }
-            label="7+ yrs"
-          />
-          <Typography variant="h6" gutterBottom mt={2}>
-            Neutered
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('neutered', 'yes')}
-                checked={localFilters.neutered.includes('yes')}
-              />
-            }
-            label="Yes"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('neutered', 'no')}
-                checked={localFilters.neutered.includes('no')}
-              />
-            }
-            label="No"
-          />
-          <Box mt={2}>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Apply Filters
-            </Button>
+          {filters.manualMatch && (
+            <>
+              <Box>
+                <FormControl fullWidth>
+                  <FormLabel>Dog Breeds</FormLabel>
+                  <Autocomplete
+                    multiple
+                    id="tags-outlined"
+                    options={dogBreeds}
+                    onChange={(_, breeds) => setFilters({ ...filters, breeds })}
+                    filterSelectedOptions
+                    value={filters.breeds}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Filter Breeds" placeholder="Breeds" />
+                    )}
+                    renderTags={(tagValue, getTagProps) => {
+                      return tagValue.map((option, index) => {
+                        const { key, ...restProps } = getTagProps({ index });
+                        return <Chip {...restProps} key={option + '-' + key} label={option} />;
+                      });
+                    }}
+                  />
+                </FormControl>
+              </Box>
+              <Divider />
+              <Box>
+                <FormControl>
+                  <FormLabel>Gender</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    value={filters.gender}
+                    onChange={(event) => handleRadioChange('gender', event.target.value)}
+                  >
+                    <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                    <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                    <FormControlLabel value="all" control={<Radio />} label="All" />
+                  </RadioGroup>
+                </FormControl>
+              </Box>
+              <Divider />
+              <Box>
+                <FormControl>
+                  <FormLabel>Age</FormLabel>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: '16px'
+                    }}
+                  >
+                    <TextField
+                      label="Min Age"
+                      variant="outlined"
+                      type="number"
+                      value={filters.age.min}
+                      onChange={handleChange('min')}
+                      inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Optional: enhances mobile usability
+                    />
+                    <TextField
+                      label="Max Age"
+                      variant="outlined"
+                      type="number"
+                      value={filters.age.max}
+                      onChange={handleChange('max')}
+                      inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Optional: enhances mobile usability
+                    />
+                  </Box>
+                </FormControl>
+              </Box>
+              <Divider />
+              <FormControl>
+                <FormLabel>Neutered</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  value={filters.neutered}
+                  onChange={(event) => handleRadioChange('neutered', event.target.value)}
+                >
+                  <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                  <FormControlLabel value="false" control={<Radio />} label="No" />
+                  <FormControlLabel value="all" control={<Radio />} label="All" />
+                </RadioGroup>
+              </FormControl>
+              <Divider />
+            </>
+          )}
+          <Box
+            mt={2}
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '16px'
+            }}
+          >
+            {filters.manualMatch && (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleSubmit}
+                disabled={filters === filterInitialState}
+              >
+                Filter
+              </Button>
+            )}
+            {!filters.manualMatch && (
+              <Button variant="contained" color="primary" onClick={handleManualMatch}>
+                Manual Match
+              </Button>
+            )}
+            {filters.manualMatch && (
+              <Button variant="contained" color="primary" onClick={handleAutoMatch}>
+                Auto Match
+              </Button>
+            )}
           </Box>
         </Box>
       )}
@@ -255,6 +212,7 @@ const Filter = ({ applyFilters }) => {
 };
 
 Filter.propTypes = {
-  applyFilters: PropTypes.func.isRequired
+  setTinderFilters: PropTypes.func.isRequired
 };
+
 export default Filter;

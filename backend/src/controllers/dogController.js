@@ -1,3 +1,4 @@
+import Dog from '../models/Dog.js';
 import User from '../models/User.js';
 
 import { createDog, getDogs, getDog, updateDog, deleteDog } from '../services/dogService.js';
@@ -52,8 +53,9 @@ export const remove = async (req, res) => {
 
 export const getAllOthers = async (req, res) => {
   try {
+    const manualMatch = (req.query?.manualMatch?.toLowerCase() || 'false') === 'true' || false;
     const currentUser = await User.findById(req.user._id);
-    const uniqueMatches = await getMatchingDogs(currentUser);
+    const uniqueMatches = await getMatchingDogs(currentUser, manualMatch);
 
     const dogsWithDistance = await Promise.all(
       uniqueMatches.map(async (dog) => {
@@ -68,6 +70,21 @@ export const getAllOthers = async (req, res) => {
       })
     );
     res.status(200).json(dogsWithDistance);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const getOthers = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const dogs = await Dog.find({ owner: userId });
+    res.status(200).json(dogs);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

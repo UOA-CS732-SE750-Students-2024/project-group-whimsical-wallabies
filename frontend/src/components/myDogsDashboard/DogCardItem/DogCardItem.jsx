@@ -40,7 +40,12 @@ const DogCardItem = ({ id, image, name, gender, aboutMe }) => {
         />
         {/* Card content for dog details */}
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{ fontWeight: 'bold', color: '#2a2a2a' }}
+          >
             {name}
           </Typography>
           {gender === 'Male' ? (

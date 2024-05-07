@@ -1,38 +1,90 @@
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import BadgeIcon from '@mui/icons-material/Badge';
+import CakeIcon from '@mui/icons-material/Cake';
 import CloseIcon from '@mui/icons-material/Close';
 import Diversity1RoundedIcon from '@mui/icons-material/Diversity1Rounded';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FemaleIcon from '@mui/icons-material/Female';
 import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MaleIcon from '@mui/icons-material/Male';
+import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
+import PetsIcon from '@mui/icons-material/Pets';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import { Box, Button, Typography, Snackbar, IconButton } from '@mui/material';
 import Hammer from 'hammerjs';
+import PropTypes from 'prop-types';
 import React, { useState, useEffect, useCallback } from 'react';
+import ReactCardFlip from 'react-card-flip';
 import TinderCard from 'react-tinder-card';
 import { useGetPotentialMates } from '../../queries/matches';
 import { CommonStyles } from '../common/CommonStyles';
 import Filter from './Filter';
+import FlipCardPhoto from './FlipCardPhoto';
 import FriendList from './FriendList';
+
+const getDogAge = (dob) => {
+  const today = new Date();
+  const birthDate = new Date(dob);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+};
+
+const calculateAge = (dob) => {
+  const today = new Date();
+  const birthDate = new Date(dob);
+  const monthsDiff =
+    (today.getFullYear() - birthDate.getFullYear()) * 12 +
+    (today.getMonth() - birthDate.getMonth());
+  const years = Math.floor(monthsDiff / 12);
+  const months = monthsDiff % 12;
+  if (years === 0) {
+    return `${months} months`;
+  } else {
+    return `${years} years ${months} months`;
+  }
+};
+
+const filterDogs = (dogs, { breeds, gender, age, neutered }) => {
+  return dogs.filter((dog) => {
+    const ageInYears = getDogAge(dog.dob);
+    return (
+      (breeds.length === 0 || breeds.includes(dog.breed)) &&
+      ((gender === 'all' && true) || gender === dog.gender) &&
+      ((neutered === 'all' && true) || neutered === dog.neutered.toString()) &&
+      (age.min <= ageInYears || age.max >= ageInYears)
+    );
+  });
+};
 
 const MatchPage = () => {
   const [filters, setFilters] = useState({
+    manualMatch: false,
     breeds: [],
-    gender: [],
-    age: [],
-    neutered: []
+    gender: 'all',
+    age: {
+      min: 0,
+      max: 100
+    },
+    neutered: 'all'
   });
-  console.log(filters);
-
-  const { data: potentialMates, isLoading, error, refetch } = useGetPotentialMates();
+  const {
+    data: potentialMates,
+    isLoading,
+    error,
+    refetch
+  } = useGetPotentialMates(filters.manualMatch);
   const [shuffledMates, setShuffledMates] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showLastCardMessage, setShowLastCardMessage] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showFriendList, setShowFriendList] = useState(false);
-
-  const applyFilters = (newFilters) => {
-    setFilters(newFilters);
-    refetch();
-  };
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const toggleFilter = () => {
     setShowFilter(!showFilter);
@@ -42,16 +94,21 @@ const MatchPage = () => {
     setShowFriendList(!showFriendList);
   };
 
+  const flipCard = () => {
+    setIsFlipped(!isFlipped);
+    console.log('flip');
+  };
+
   useEffect(() => {
     if (potentialMates && potentialMates.length > 0) {
-      const shuffledArray = shuffleArray(potentialMates);
+      const shuffledArray = shuffleArray(filterDogs(potentialMates, filters));
       setShuffledMates(shuffledArray);
       setCurrentCardIndex(0);
     } else {
       setShuffledMates([]);
       setCurrentCardIndex(0);
     }
-  }, [potentialMates]);
+  }, [filters, potentialMates]);
 
   const shuffleArray = (array) => {
     const shuffledArray = [...array];
@@ -155,27 +212,49 @@ const MatchPage = () => {
   };
 
   const renderGenderIcon = (gender) => {
-    return gender === 'female' ? <FemaleIcon /> : <MaleIcon />;
+    return gender === 'Female' ? <FemaleIcon /> : <MaleIcon />;
   };
 
-  const outOfFrame = (name) => {
-    console.log(`${name} left the screen!`);
-  };
-
-  const calculateAge = (dob) => {
-    const today = new Date();
-    const birthDate = new Date(dob);
-    const monthsDiff =
-      (today.getFullYear() - birthDate.getFullYear()) * 12 +
-      (today.getMonth() - birthDate.getMonth());
-    const years = Math.floor(monthsDiff / 12);
-    const months = monthsDiff % 12;
-    if (years === 0) {
-      return `${months} months`;
-    } else {
-      return `${years} years ${months} months`;
+  const outOfFrame = (name, direction) => {
+    if (direction === 'right') {
+      // Add the call to match useMatchMutation API here that you must create
+      console.log(`${name} was swiped right!`);
     }
   };
+
+  const simplyDob = (dob) => {
+    const birthDate = new Date(dob);
+    const year = birthDate.getFullYear();
+    const month = ('0' + (birthDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + birthDate.getDate()).slice(-2);
+
+    return `${year}-${month}-${day}`;
+  };
+
+  const getNeuteredStatus = (neutered) => {
+    return neutered ? 'Yes' : 'No';
+  };
+
+  const MatchInfoLine = ({ icon: Icon, label, value }) => (
+    <Typography
+      variant="h4"
+      sx={{
+        ...CommonStyles.matchNameBack,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '300px'
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Icon />
+        <span style={{ fontWeight: 'normal', marginLeft: '20px' }}>{label}</span>:
+      </Box>
+      <Box ml={1} fontWeight="bold" flex="1">
+        {value}
+      </Box>
+    </Typography>
+  );
 
   return (
     <Box>
@@ -186,7 +265,9 @@ const MatchPage = () => {
         <Diversity1RoundedIcon />
       </IconButton>
       <Box className="dashboard" sx={CommonStyles.matchDashboard}>
-        {showFilter && <Filter applyFilters={applyFilters} />}
+        {showFilter && (
+          <Filter setIsManualMatch={filters.manualMatch} setTinderFilters={setFilters} />
+        )}
         {showFriendList && <FriendList />}
 
         {isLoading ? (
@@ -198,36 +279,93 @@ const MatchPage = () => {
         ) : shuffledMates && shuffledMates.length > 0 ? (
           <TinderCard
             key={shuffledMates[currentCardIndex]?.name}
-            onCardLeftScreen={() => outOfFrame(shuffledMates[currentCardIndex]?.name)}
+            onCardLeftScreen={(direction) =>
+              outOfFrame(shuffledMates[currentCardIndex]?.name, direction)
+            }
             preventSwipe={['up', 'down']}
             threshold={100}
             sx={{
-              ...CommonStyles.matchCard,
-              backgroundImage: `url(${process.env.REACT_APP_API_URL}/${shuffledMates[currentCardIndex]?.profilePicture})`,
               width: { xs: '100%', sm: '50%', md: '25%' },
-              padding: { xs: 1, sm: 2, md: 3 }
+              padding: { xs: 1, sm: 2, md: 3 },
+              overflow: 'hidden',
+              maxHeight: '80vh'
             }}
           >
-            <Box
-              id={`card-${currentCardIndex}`}
-              className="card"
-              sx={{
-                ...CommonStyles.matchCard,
-                backgroundImage: `url(${process.env.REACT_APP_API_URL}/${shuffledMates[currentCardIndex]?.profilePicture})`
-              }}
-            >
-              <Typography variant="h4" sx={CommonStyles.matchName}>
-                {shuffledMates[currentCardIndex]?.name}
-                {renderGenderIcon(shuffledMates[currentCardIndex]?.gender)}
-              </Typography>
-              <Typography variant="h6" sx={CommonStyles.matchBreed}>
-                {shuffledMates[currentCardIndex]?.breed}
-              </Typography>
-              <Typography variant="body1" sx={CommonStyles.matchInfo}>
-                {shuffledMates[currentCardIndex]?.weight} kg |
-                {calculateAge(shuffledMates[currentCardIndex]?.dob)}
-              </Typography>
-            </Box>
+            <ReactCardFlip flipDirection="horizontal" isFlipped={isFlipped}>
+              <Box
+                id={`card-${currentCardIndex}`}
+                className="card"
+                sx={{
+                  ...CommonStyles.matchCardFront,
+                  backgroundImage: `url(${process.env.REACT_APP_API_URL}/${shuffledMates[currentCardIndex]?.profilePicture})`
+                }}
+                onClick={flipCard}
+              >
+                <Typography variant="h4" sx={CommonStyles.matchName}>
+                  {shuffledMates[currentCardIndex]?.name}
+                  {renderGenderIcon(shuffledMates[currentCardIndex]?.gender)}
+                </Typography>
+                <Typography variant="h6" sx={CommonStyles.matchBreed}>
+                  {shuffledMates[currentCardIndex]?.breed}
+                </Typography>
+                <Typography variant="body1" sx={CommonStyles.matchInfo}>
+                  {shuffledMates[currentCardIndex]?.weight} kg |{' '}
+                  {calculateAge(shuffledMates[currentCardIndex]?.dob)}
+                </Typography>
+              </Box>
+              <Box
+                id={`card-${currentCardIndex}`}
+                className="card"
+                sx={{
+                  ...CommonStyles.matchCardBack
+                }}
+                onClick={flipCard}
+              >
+                <MatchInfoLine
+                  icon={AutoAwesomeIcon}
+                  label="Name"
+                  value={shuffledMates[currentCardIndex]?.name}
+                />
+                <MatchInfoLine
+                  icon={PetsIcon}
+                  label="Breed"
+                  value={shuffledMates[currentCardIndex]?.breed}
+                />
+                <MatchInfoLine
+                  icon={MonitorWeightIcon}
+                  label="Weight"
+                  value={`${shuffledMates[currentCardIndex]?.weight} kg`}
+                />
+                <MatchInfoLine
+                  icon={BadgeIcon}
+                  label="Age"
+                  value={calculateAge(shuffledMates[currentCardIndex]?.dob)}
+                />
+                <MatchInfoLine
+                  icon={CakeIcon}
+                  label="Birthday"
+                  value={simplyDob(shuffledMates[currentCardIndex]?.dob)}
+                />
+                <MatchInfoLine
+                  icon={FavoriteBorderIcon}
+                  label="Neutered"
+                  value={getNeuteredStatus(shuffledMates[currentCardIndex]?.neutered)}
+                />
+                <MatchInfoLine
+                  icon={LocationOnIcon}
+                  label="Distance"
+                  value={`${shuffledMates[currentCardIndex]?.distance} km`}
+                />
+                <Typography variant="h4" sx={CommonStyles.matchBio}>
+                  <SentimentSatisfiedAltIcon />
+                  <span> </span>
+                  <span style={{ fontWeight: 'normal' }}>About Me: </span>
+                  <br />
+                  {shuffledMates[currentCardIndex]?.bio}
+                </Typography>
+                <FlipCardPhoto id={shuffledMates[currentCardIndex]?._id} />
+              </Box>
+            </ReactCardFlip>
           </TinderCard>
         ) : (
           <Box sx={{ textAlign: 'center', mt: 4 }}>
@@ -252,8 +390,8 @@ const MatchPage = () => {
             sx={{
               ...CommonStyles.matchButton,
               '@media (max-width: 768px)': {
-                padding: '10px 20px', // Adjust padding for smaller screens
-                minWidth: '120px' // Adjust button width for smaller screens
+                padding: '10px 20px',
+                minWidth: '120px'
               }
             }}
           >
@@ -265,8 +403,8 @@ const MatchPage = () => {
             sx={{
               ...CommonStyles.matchButton,
               '@media (max-width: 768px)': {
-                padding: '10px 20px', // Adjust padding for smaller screens
-                minWidth: '120px' // Adjust button width for smaller screens
+                padding: '10px 20px',
+                minWidth: '120px'
               }
             }}
           >
@@ -276,6 +414,12 @@ const MatchPage = () => {
       </Box>
     </Box>
   );
+};
+
+MatchPage.propTypes = {
+  icon: PropTypes.elementType.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
 };
 
 export default MatchPage;

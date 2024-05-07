@@ -122,7 +122,7 @@ export const CommonStyles = {
     height: '100vh',
     padding: '20px'
   },
-  matchCard: {
+  matchCardFront: {
     borderRadius: '20px',
     boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.5)',
     display: 'flex',
@@ -135,8 +135,39 @@ export const CommonStyles = {
     color: 'white',
     textAlign: 'center',
     marginTop: '-20vh',
+    overflow: 'hidden',
+    overflowY: 'auto',
     width: {
-      xs: '100%',
+      xs: '400px',
+      sm: '500px',
+      md: '600px',
+      lg: '700px'
+    },
+    height: {
+      xs: '500px',
+      sm: '500px',
+      md: '500px',
+      lg: '500px'
+    }
+  },
+  matchCardBack: {
+    borderRadius: '20px',
+    boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: '10px',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundColor: '#aad5dc',
+    color: 'black',
+    textAlign: 'center',
+    marginTop: '-20vh',
+    overflow: 'hidden',
+    overflowY: 'auto',
+    width: {
+      xs: '400px',
       sm: '500px',
       md: '600px',
       lg: '700px'
@@ -155,15 +186,45 @@ export const CommonStyles = {
     marginBottom: '10px',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'
   },
+  matchNameBack: {
+    fontWeight: 'bold',
+    color: 'Black',
+    fontSize: '18px',
+    marginBottom: '5px'
+  },
   matchBreed: {
     fontSize: '18px',
     marginBottom: '10px',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 1)'
   },
+  matchBreedBack: {
+    fontWeight: 'bold',
+    fontSize: '18px',
+    marginBottom: '5px'
+  },
   matchInfo: {
     fontSize: '16px',
     opacity: 0.8,
     textShadow: '2px 2px 4px rgba(0, 0, 0, 1)'
+  },
+  matchWeightBack: {
+    fontWeight: 'bold',
+    fontSize: '18px',
+    opacity: 0.8,
+    marginBottom: '5px'
+  },
+  matchBirthBack: {
+    fontWeight: 'bold',
+    fontSize: '18px',
+    opacity: 0.8,
+    marginBottom: '5px'
+  },
+  matchBio: {
+    fontWeight: 'bold',
+    fontSize: '18px',
+    opacity: 0.8,
+    marginBottom: '5px',
+    width: '400px'
   },
   matchButton: {
     backgroundColor: '#aad5dc',
@@ -195,5 +256,16 @@ export const CommonStyles = {
       transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
     }
   },
-  dogDashboardCard: { maxWidth: 330, m: 1, mt: 2, boxShadow: 3, width: 350, height: 500 }
+  dogDashboardCard: {
+    maxWidth: 330,
+    m: 1,
+    mt: 2,
+    boxShadow: 3,
+    width: 350,
+    height: 500,
+    overflow: 'hidden',
+    overflowY: 'auto',
+    borderRadius: 2,
+    backgroundColor: '#fafcfd'
+  }
 };
