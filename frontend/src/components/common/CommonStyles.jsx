@@ -263,8 +263,6 @@ export const CommonStyles = {
     boxShadow: 3,
     width: 350,
     height: 500,
-    overflow: 'hidden',
-    overflowY: 'auto',
     borderRadius: 2,
     backgroundColor: '#fafcfd'
   }
