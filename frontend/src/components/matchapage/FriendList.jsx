@@ -29,7 +29,9 @@ const FriendList = () => {
   const { currentUser } = useAuth();
   const { data: currentUserData, isLoading: isLoadingUser } = useGetUser(currentUser?.username);
   const { data: dogs, isLoading: isLoadingDogs } = useGetDogs();
-  const { data: friends, isLoading: isLoadingFriends, isError } = useGetFriends();
+  const { data: friendsData, isLoading: isLoadingFriends, isError } = useGetFriends();
+  const { mutate: unfriend, isLoading: isLoadingUnfriend } = useUnfriendMutation();
+  const [friends, setFriends] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
@@ -39,7 +41,11 @@ const FriendList = () => {
     if (!isLoadingDogs && dogs && dogs.length === 0) {
       console.error('No dogs available');
     }
-  }, [isLoadingDogs, dogs]);
+    if (friendsData) {
+      const sortedFriends = [...friendsData].sort((a, b) => a.username.localeCompare(b.username));
+      setFriends(sortedFriends);
+    }
+  }, [isLoadingDogs, dogs, friendsData]);
 
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);
@@ -71,7 +77,9 @@ const FriendList = () => {
   };
 
   const filteredFriends = searchInput
-    ? friends?.filter((friend) => friend.username.toLowerCase().includes(searchInput.toLowerCase()))
+    ? friends
+        ?.filter((friend) => friend.username.toLowerCase().includes(searchInput.toLowerCase()))
+        .sort((a, b) => a.username.localeCompare(b.username))
     : friends;
 
   if (isLoadingFriends || isLoadingDogs || isLoadingUser || isLoadingUnfriend)
@@ -130,6 +138,9 @@ const FriendList = () => {
           variant="outlined"
           sx={{ m: 2 }}
         />
+        <IconButton onClick={handleSearchChange}>
+          <ManageSearchRoundedIcon />
+        </IconButton>
         <IconButton onClick={handleSearchChange}>
           <ManageSearchRoundedIcon />
         </IconButton>
