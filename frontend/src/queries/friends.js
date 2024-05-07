@@ -12,6 +12,22 @@ export function useGetFriends() {
   });
 }
 
+export function useUnfriendMutation() {
+  return useMutation({
+    mutationKey: ['unfriend'],
+    mutationFn: async ({ currentUserId, friendId }) => {
+      const { data } = await axiosApiInstance.delete(`/api/match/${currentUserId}/${friendId}`);
+      return data;
+    },
+    onSuccess: () => {
+      console.log('Friend removed successfully.');
+    },
+    onError: (error) => {
+      console.error('Error removing the friend:', error);
+    }
+  });
+}
+
 export function useLikeDogMutation() {
   return useMutation({
     mutationKey: ['likeDog'],
@@ -20,11 +36,9 @@ export function useLikeDogMutation() {
       return data;
     },
     onSuccess: () => {
-      // Handle any actions upon success, e.g., showing a notification
       console.log('Dog liked successfully.');
     },
     onError: (error) => {
-      // Handle any errors
       console.error('Error liking the dog:', error);
     }
   });
