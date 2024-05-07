@@ -18,6 +18,7 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect, useCallback } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import TinderCard from 'react-tinder-card';
+import { useLikeDogMutation } from '../../queries/friends';
 import { useGetPotentialMates } from '../../queries/matches';
 import { CommonStyles } from '../common/CommonStyles';
 import Filter from './Filter';
@@ -63,6 +64,7 @@ const filterDogs = (dogs, { breeds, gender, age, neutered }) => {
 };
 
 const MatchPage = () => {
+  const { mutate: likeDog } = useLikeDogMutation();
   const [filters, setFilters] = useState({
     manualMatch: false,
     breeds: [],
@@ -197,6 +199,7 @@ const MatchPage = () => {
   };
 
   const handleSwipeRight = () => {
+    likeDog(shuffledMates[currentCardIndex]?._id);
     if (currentCardIndex < shuffledMates.length - 1) {
       const cardElement = document.getElementById(`card-${currentCardIndex}`);
       if (cardElement) {
@@ -217,8 +220,7 @@ const MatchPage = () => {
 
   const outOfFrame = (name, direction) => {
     if (direction === 'right') {
-      // Add the call to match useMatchMutation API here that you must create
-      console.log(`${name} was swiped right!`);
+      likeDog(shuffledMates[currentCardIndex]?._id);
     }
   };
 
