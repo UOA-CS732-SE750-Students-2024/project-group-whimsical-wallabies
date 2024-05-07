@@ -141,6 +141,9 @@ const FriendList = () => {
         <IconButton onClick={handleSearchChange}>
           <ManageSearchRoundedIcon />
         </IconButton>
+        <IconButton onClick={handleSearchChange}>
+          <ManageSearchRoundedIcon />
+        </IconButton>
       </Box>
 
       {/* Friends list */}
