@@ -22,7 +22,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useGetDogs } from '../../queries/dogs';
-import { useGetFriends, useUnfriendMutation } from '../../queries/friends';
+import { useGetFriends } from '../../queries/friends';
+// import { useUnlikeDogMutation } from '../../queries/friends.js';
 import { useGetUser } from '../../queries/user.js';
 
 const FriendList = () => {
@@ -35,6 +36,7 @@ const FriendList = () => {
   const [searchInput, setSearchInput] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
+
   const randomDog = dogs ? dogs[Math.floor(Math.random() * dogs.length)] : null;
 
   useEffect(() => {
@@ -50,7 +52,6 @@ const FriendList = () => {
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);
   };
-
   const handleUnFriend = () => {
     if (selectedFriend && currentUserData) {
       unfriend(
@@ -66,7 +67,7 @@ const FriendList = () => {
     }
   };
 
-  const handleClickDelete = (event, friend) => {
+  const handleClickDelete = (friend) => (event) => {
     setAnchorEl(event.currentTarget);
     setSelectedFriend(friend);
   };
@@ -82,7 +83,7 @@ const FriendList = () => {
         .sort((a, b) => a.username.localeCompare(b.username))
     : friends;
 
-  if (isLoadingFriends || isLoadingDogs || isLoadingUser || isLoadingUnfriend)
+  if (isLoadingFriends || isLoadingDogs || isLoadingUser)
     return <Typography>Loading...</Typography>;
   if (isError) return <Typography>Error loading friends.</Typography>;
 
@@ -152,13 +153,14 @@ const FriendList = () => {
             </ListItemAvatar>
             <ListItemText primary={friend.username} secondary={friend.aboutMe} />
             <ListItemSecondaryAction>
-              <IconButton onClick={() => handleClickDelete(event, friend)}>
+              <IconButton onClick={(event) => handleClickDelete(event, friend)}>
                 <DeleteOutlineRoundedIcon />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
         ))}
       </List>
+      {/* Friends list */}
 
       {/* Popover */}
       <Popover
@@ -176,10 +178,10 @@ const FriendList = () => {
       >
         <Box p={2}>
           <Typography variant="body1">
-            {selectedFriend && `Are you sure to unfriend ${selectedFriend?.username}?`}
+            {selectedFriend && `Are you sure to unfriend ${selectedFriend.username}?`}
           </Typography>
           <Box mt={2} display="flex" justifyContent="space-between">
-            <Button onClick={handleUnFriend} variant="contained">
+            <Button onClick={() => handleFriendDelete(selectedFriend)} variant="contained">
               Yes
             </Button>
             <Button onClick={handleClosePopover} variant="contained">
