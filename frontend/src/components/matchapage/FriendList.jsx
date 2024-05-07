@@ -22,8 +22,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useGetDogs } from '../../queries/dogs';
-import { useGetFriends } from '../../queries/friends';
-// import { useUnlikeDogMutation } from '../../queries/friends.js';
+import { useGetFriends, useUnfriendMutation } from '../../queries/friends';
 import { useGetUser } from '../../queries/user.js';
 
 const FriendList = () => {
@@ -34,7 +33,6 @@ const FriendList = () => {
   const [searchInput, setSearchInput] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
-
   const randomDog = dogs ? dogs[Math.floor(Math.random() * dogs.length)] : null;
 
   useEffect(() => {
@@ -47,15 +45,22 @@ const FriendList = () => {
     setSearchInput(event.target.value);
   };
 
-  const handleFriendDelete = (friend) => {
-    // useUnlikeDogMutation
-    console.log('Deleting:', friend.username);
-    // Close popover
-    setAnchorEl(null);
-    setSelectedFriend(null);
+  const handleUnFriend = () => {
+    if (selectedFriend && currentUserData) {
+      unfriend(
+        { currentUserId: currentUserData._id, friendId: selectedFriend._id },
+        {
+          onSuccess: () => {
+            const updatedFriends = friends.filter((friend) => friend._id !== selectedFriend._id);
+            setFriends(updatedFriends);
+            handleClosePopover();
+          }
+        }
+      );
+    }
   };
 
-  const handleClickDelete = (friend) => (event) => {
+  const handleClickDelete = (event, friend) => {
     setAnchorEl(event.currentTarget);
     setSelectedFriend(friend);
   };
@@ -69,7 +74,7 @@ const FriendList = () => {
     ? friends?.filter((friend) => friend.username.toLowerCase().includes(searchInput.toLowerCase()))
     : friends;
 
-  if (isLoadingFriends || isLoadingDogs || isLoadingUser)
+  if (isLoadingFriends || isLoadingDogs || isLoadingUser || isLoadingUnfriend)
     return <Typography>Loading...</Typography>;
   if (isError) return <Typography>Error loading friends.</Typography>;
 
@@ -139,14 +144,13 @@ const FriendList = () => {
             </ListItemAvatar>
             <ListItemText primary={friend.username} secondary={friend.aboutMe} />
             <ListItemSecondaryAction>
-              <IconButton onClick={(event) => handleClickDelete(event, friend)}>
+              <IconButton onClick={() => handleClickDelete(event, friend)}>
                 <DeleteOutlineRoundedIcon />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
         ))}
       </List>
-      {/* Friends list */}
 
       {/* Popover */}
       <Popover
@@ -164,10 +168,10 @@ const FriendList = () => {
       >
         <Box p={2}>
           <Typography variant="body1">
-            {selectedFriend && `Are you sure to unfriend ${selectedFriend.username}?`}
+            {selectedFriend && `Are you sure to unfriend ${selectedFriend?.username}?`}
           </Typography>
           <Box mt={2} display="flex" justifyContent="space-between">
-            <Button onClick={() => handleFriendDelete(selectedFriend)} variant="contained">
+            <Button onClick={handleUnFriend} variant="contained">
               Yes
             </Button>
             <Button onClick={handleClosePopover} variant="contained">
