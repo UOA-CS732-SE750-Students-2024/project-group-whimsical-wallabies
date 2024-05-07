@@ -264,6 +264,8 @@ export const CommonStyles = {
     width: 350,
     height: 500,
     overflow: 'hidden',
-    overflowY: 'auto'
+    overflowY: 'auto',
+    borderRadius: 2,
+    backgroundColor: '#fafcfd'
   }
 };

@@ -1,9 +1,10 @@
 import { joiResolver } from '@hookform/resolvers/joi';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
-import EditIcon from '@mui/icons-material/Edit';
 import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import SaveIcon from '@mui/icons-material/Save';
 import { Button } from '@mui/material';
@@ -18,13 +19,15 @@ import {
   FormHelperText
 } from '@mui/material';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useCallback, useRef, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext.jsx';
 import { useUpdateUserMutation, useGetUser } from '../../queries/user.js';
-import { userDataStorage } from '../../utils/localStorageNames';
-import { CommonStyles } from '../common/CommonStyles';
-import { userProfileSchema } from './userProfile.validation';
+import { userDataStorage } from '../../utils/localStorageNames.js';
+import { APPLICATION_PATH } from '../../utils/urlRoutes';
+import { CommonStyles } from '../common/CommonStyles.jsx';
+import { userProfileSchema } from './UserProfile.validation.jsx';
 
 const libraries = ['places'];
 
@@ -39,7 +42,7 @@ const UserProfile = () => {
   const [userData, setUserData] = useState(null);
   const { data: currentUserData, isLoading } = useGetUser(currentUser?.username);
 
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(true);
 
   const {
     register,
@@ -52,6 +55,7 @@ const UserProfile = () => {
   });
 
   const [address, setAddress] = useState('');
+  const [addressError, setAddressError] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [isAddressValid, setIsAddressValid] = useState(false);
@@ -62,6 +66,7 @@ const UserProfile = () => {
   });
 
   const autocompleteRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     register('address');
@@ -76,31 +81,65 @@ const UserProfile = () => {
       const place = autocompleteRef.current.getPlace();
       if (place && place.formatted_address && place.geometry) {
         setAddress(place.formatted_address);
-        const lat = place.geometry.location.lat().toString();
-        const lng = place.geometry.location.lng().toString();
-        setLatitude(lat);
-        setLongitude(lng);
         setValue('address', place.formatted_address, { shouldValidate: true });
-        setValue('latitude', lat); // add this
-        setValue('longitude', lng); // add this
+        setValue('latitude', place.geometry.location.lat().toString(), { shouldValidate: false });
+        setValue('longitude', place.geometry.location.lng().toString(), { shouldValidate: false });
+        setAddressError('');
         setIsAddressValid(true);
       } else {
         setIsAddressValid(false);
+        setAddressError('Please select a valid street address from the dropdown.');
       }
     }
     console.log(isAddressValid);
   };
 
-  const handleEdit = () => {
+  const handleSave = () => {
     setEdit(true);
+    handleSubmit(updateUserProfile)();
+  };
+  const handleCancel = () => {
+    navigate(APPLICATION_PATH.homepage);
   };
 
-  const handleSave = () => {
-    currentUserData.address = address;
-    currentUserData.latitude = latitude;
-    currentUserData.longitude = longitude;
-    setEdit(false);
-    handleSubmit(updateUserProfile)();
+  const handleAddressBlur = () => {
+    if (!isAddressValid) {
+      setAddressError('Please select a valid address from the dropdown.');
+      setValue('latitude', '', { shouldValidate: false });
+      setValue('longitude', '', { shouldValidate: false });
+    }
+  };
+  const debounce = (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        func.apply(this, args);
+      }, wait);
+    };
+  };
+
+  const debouncedSearch = useCallback((value) => {
+    const debounced = debounce((value) => {
+      if (autocompleteRef.current) {
+        autocompleteRef.current.set('input', value);
+      }
+    }, 500);
+    debounced(value);
+  }, []);
+
+  const handleAddressChange = (event) => {
+    const newAddress = event.target.value;
+    setAddress(newAddress);
+    setIsAddressValid(false);
+
+    if (!newAddress || newAddress.length < 3) {
+      setValue('latitude', '', { shouldValidate: false });
+      setValue('longitude', '', { shouldValidate: false });
+      setAddressError('Address is too short.');
+    } else {
+      debouncedSearch(newAddress);
+    }
   };
 
   useEffect(() => {
@@ -148,6 +187,7 @@ const UserProfile = () => {
                 autoFocus
                 margin="normal"
                 error={!!error}
+                disabled={true}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -190,34 +230,6 @@ const UserProfile = () => {
             </>
           )}
         />
-        <Controller
-          name="aboutMe"
-          control={control}
-          defaultValue={currentUserData.aboutMe}
-          render={({ field, fieldState: { error } }) => (
-            <>
-              <TextField
-                {...field}
-                id="aboutMe"
-                name="aboutMe"
-                label="About Me"
-                margin="normal"
-                fullWidth
-                error={!!error}
-                rows={4}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AccountCircle />
-                    </InputAdornment>
-                  ),
-                  readOnly: !edit
-                }}
-              />
-              {error && <FormHelperText error>{error.message}</FormHelperText>}
-            </>
-          )}
-        />
         {isLoaded ? (
           <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
             <Controller
@@ -228,15 +240,14 @@ const UserProfile = () => {
                 <>
                   <TextField
                     {...field}
-                    id="address"
-                    name="address"
                     label="Address"
-                    type="text"
-                    placeholder="Enter your address"
                     fullWidth
-                    required
-                    error={Boolean(errors.address)}
-                    helperText={errors.address ? errors.address.message : ''}
+                    margin="normal"
+                    value={address}
+                    onChange={handleAddressChange}
+                    onBlur={handleAddressBlur} // Add onBlur event handler here
+                    error={!!error || addressError !== ''}
+                    helperText={error?.message || addressError}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -282,7 +293,35 @@ const UserProfile = () => {
             </>
           )}
         />
-
+        <Controller
+          name="aboutMe"
+          control={control}
+          defaultValue={currentUserData.aboutMe}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <TextField
+                {...field}
+                id="aboutMe"
+                name="aboutMe"
+                label="About Me"
+                margin="normal"
+                fullWidth
+                error={!!error}
+                multiline
+                rows={4}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <InfoIcon />
+                    </InputAdornment>
+                  ),
+                  readOnly: !edit
+                }}
+              />
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
+            </>
+          )}
+        />
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
@@ -290,6 +329,7 @@ const UserProfile = () => {
               name="latitude"
               label="Latitude"
               type="text"
+              disabled={true}
               {...register('latitude')}
               InputProps={{
                 startAdornment: (
@@ -314,6 +354,7 @@ const UserProfile = () => {
               name="longitude"
               label="Longitude"
               type="text"
+              disabled={true}
               {...register('latitude')}
               InputProps={{
                 startAdornment: (
@@ -336,27 +377,29 @@ const UserProfile = () => {
         </Grid>
         <CardActions disableSpacing sx={CommonStyles.cardActions}>
           <Button
-            variant="contained"
-            color="primary"
-            onClick={handleEdit}
-            disabled={edit}
-            sx={CommonStyles.actionButton}
-            startIcon={<EditIcon />}
-          >
-            Edit
-          </Button>
-        </CardActions>
-        <CardActions disableSpacing sx={CommonStyles.cardActions}>
-          <Button
             type="submit"
             variant="contained"
             color="secondary"
             onClick={handleSave}
-            disabled={!edit}
+            disabled={!isAddressValid}
             sx={CommonStyles.actionButton}
             startIcon={<SaveIcon />}
           >
             Save
+          </Button>
+        </CardActions>
+
+        <CardActions disableSpacing sx={CommonStyles.cardActions}>
+          <Button
+            type="button"
+            variant="outlined"
+            color="success"
+            onClick={handleCancel}
+            disabled={!edit}
+            sx={CommonStyles.actionButton}
+            startIcon={<CancelIcon />}
+          >
+            Cancel
           </Button>
         </CardActions>
       </Box>
