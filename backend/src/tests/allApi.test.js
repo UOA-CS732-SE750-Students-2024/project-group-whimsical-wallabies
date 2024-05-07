@@ -9,6 +9,7 @@ describe('API Tests', () => {
   let mongoServer;
   let token; // Token to be used for authenticated requests
   let createdDogId; // To store a created dog's ID for retrieval and deletion
+  let username = 'testuser';// Username to be used for user profile tests
 
   before(async function () {
     process.env.JWT_SECRET = process.env.JWT_SECRET || 'w4ll4b13s732c0mpsc12024';
@@ -88,6 +89,37 @@ describe('API Tests', () => {
       });
   });
 
+
+  // Update a user profile
+  it('should update a user', (done) => {
+    request(app)
+      .put(`/api/user/${username}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        username: username,
+        email: 'testupdate@example.com',
+        aboutMe: 'I am a test user.',
+        address: '123 Test St',
+        latitude: 40.7128,
+        longitude: -74.006,
+        phone: '123-456-7890'
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err || res.status !== 200) {
+          console.error('User API failed:', res.body);
+          return done(new Error('Failed to update a user profile'));
+        }
+        expect(res.body).to.have.property('username', username);
+        expect(res.body).to.have.property('email', 'testupdate@example.com');
+        expect(res.body).to.have.property('aboutMe', 'I am a test user.');
+        expect(res.body).to.have.property('address', '123 Test St');
+        expect(res.body).to.have.property('latitude', 40.7128);
+        expect(res.body).to.have.property('longitude', -74.006);
+        expect(res.body).to.have.property('phone', '123-456-7890');
+        done(err);
+      });
+  });
   // Create a new dog
   it('should create a new dog', (done) => {
     request(app)

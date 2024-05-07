@@ -38,8 +38,6 @@ const UserProfile = () => {
   });
 
   const { currentUser, setUser } = useAuth();
-
-  const [userData, setUserData] = useState(null);
   const { data: currentUserData, isLoading } = useGetUser(currentUser?.username);
 
   const [edit, setEdit] = useState(true);
@@ -144,14 +142,13 @@ const UserProfile = () => {
 
   useEffect(() => {
     if (!isLoading && currentUserData) {
-      setUserData(currentUserData);
       setAddress(currentUserData.address);
       setLatitude(currentUserData.latitude);
       setLongitude(currentUserData.longitude);
     }
   }, [isLoading, currentUserData]);
 
-  if (!userData) {
+  if (!currentUserData) {
     return <Typography variant="h6">Loading...</Typography>;
   }
 
