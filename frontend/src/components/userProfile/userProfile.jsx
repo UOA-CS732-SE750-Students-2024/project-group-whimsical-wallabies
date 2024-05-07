@@ -27,7 +27,7 @@ import { useUpdateUserMutation, useGetUser } from '../../queries/user.js';
 import { userDataStorage } from '../../utils/localStorageNames.js';
 import { APPLICATION_PATH } from '../../utils/urlRoutes';
 import { CommonStyles } from '../common/CommonStyles.jsx';
-import { userProfileSchema } from './userProfile.validation.jsx';
+import { userProfileSchema } from './UserProfile.validation.jsx';
 
 const libraries = ['places'];
 
