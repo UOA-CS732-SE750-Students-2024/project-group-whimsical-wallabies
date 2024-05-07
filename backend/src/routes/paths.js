@@ -50,5 +50,6 @@ export const USER_PATHS = {
 export const MATCH_PATHS = {
   base: '/api/match',
   match: '/:dogId',
-  friends: '/'
+  friends: '/',
+  unfriend: '/:currentUserId/:friendId'
 };
