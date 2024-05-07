@@ -19,11 +19,15 @@ export const friends = async (req, res) => {
 };
 
 export const unfriend = async (req, res) => {
+  console.log('Unfriend controller hit');
   try {
     const { currentUserId, friendId } = req.params;
+    console.log(currentUserId, friendId);
     const result = await unfriendUser(currentUserId, friendId);
+    console.log('Result:', result);
     res.status(200).json(result);
   } catch (error) {
+    console.log('Error:', error);
     res.status(400).json({ message: error.message });
   }
 };
