@@ -1,3 +1,4 @@
+import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import { Box, Typography, ImageList, ImageListItem } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -20,7 +21,11 @@ const FlipCardPhoto = ({ id }) => {
 
   return (
     <Box mt={2}>
-      <Typography variant="h5">Dog Photos</Typography>
+      <Typography variant="h6">
+        <PhotoLibraryIcon />
+        <span> </span>
+        Dog Photos
+      </Typography>
       {photos && photos.length > 0 ? (
         <ImageList gap={4} sx={{ width: '100%', height: 'auto' }}>
           {photos.map((photo) => (
