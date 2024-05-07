@@ -1,68 +1,52 @@
-import { Box, Typography, Checkbox, FormControlLabel, Button } from '@mui/material';
+import {
+  Box,
+  FormControlLabel,
+  Button,
+  Autocomplete,
+  TextField,
+  Chip,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
+  Typography,
+  Divider
+} from '@mui/material';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { dogBreeds } from '../../data/dogBreeds';
 
-const Filter = () => {
-  const db = [
-    {
-      name: 'Cyrus',
-      url: 'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*',
-      breed: 'Golden Retriever',
-      weight: '5',
-      dob: '2023-12-11T00:00:00.000Z',
-      gender: 'female'
-    },
-    {
-      name: 'Maddie',
-      url: 'https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg',
-      breed: 'German Shepherd',
-      weight: '30',
-      dob: '2015-06-15T00:00:00.000Z',
-      gender: 'female'
-    },
-    {
-      name: 'Leo',
-      url: 'https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/advisor/wp-content/uploads/2023/07/top-20-small-dog-breeds.jpeg.jpg',
-      breed: 'Bichon',
-      weight: '15',
-      dob: '2019-03-18T00:00:00.000Z',
-      gender: 'male'
-    },
-    {
-      name: 'Daniel',
-      url: 'https://images.pexels.com/photos/1805164/pexels-photo-1805164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      breed: 'Shiba Inu',
-      weight: '20',
-      dob: '2018-07-20T00:00:00.000Z',
-      gender: 'male'
-    },
-    {
-      name: 'Dobby',
-      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUvo1ANKIUkgA9CBkgsKYAbPaFHfqTIKTtjsZOV0CgwA&s',
-      breed: 'Great Dane',
-      weight: '40',
-      dob: '2015-02-23T00:00:00.000Z',
-      gender: 'male'
-    }
-  ];
+const filterInitialState = {
+  manualMatch: false,
+  breeds: [],
+  gender: 'all',
+  age: {
+    min: 0,
+    max: 100
+  },
+  neutered: 'all'
+};
 
-  const [filters, setFilters] = useState({
-    breeds: [],
-    gender: [],
-    age: [],
-    neutered: []
-  });
-
-  const handleCheckboxChange = (category, value) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [category]: prevFilters[category].includes(value)
-        ? prevFilters[category].filter((item) => item !== value)
-        : [...prevFilters[category], value]
-    }));
+const Filter = ({ setTinderFilters }) => {
+  const [filters, setFilters] = useState(filterInitialState);
+  const handleChange = (prop) => (event) => {
+    setFilters({ ...filters, age: { ...filters.age, [prop]: event.target.value } });
   };
 
   const handleSubmit = () => {
-    console.log('Filtering with:', filters);
+    setTinderFilters(filters, { manualMatch: true });
+  };
+  const handleAutoMatch = () => {
+    setFilters({ ...filterInitialState, manualMatch: false });
+    setTinderFilters(filters);
+  };
+  const handleManualMatch = () => {
+    setFilters({ ...filterInitialState, manualMatch: true });
+    setTinderFilters(filters);
+  };
+
+  const handleRadioChange = (key, value) => {
+    setFilters({ ...filters, [key]: value });
   };
 
   return (
@@ -81,111 +65,154 @@ const Filter = () => {
             padding: '16px'
           }}
         >
-          <Typography variant="h6" gutterBottom>
-            Dog Breeds
+          <Typography variant="h5">
+            {(filters.manualMatch && 'Manual Match') || 'Auto Match'}
           </Typography>
-          {db.map((dog, index) => (
-            <FormControlLabel
-              key={index} // Assign a unique key based on the array index
-              control={
-                <Checkbox
-                  onChange={() => handleCheckboxChange('breeds', dog.breed)}
-                  checked={filters.breeds.includes(dog.breed)}
-                />
-              }
-              label={dog.breed} // Use dog breed as the label
-            />
-          ))}
-          <Typography variant="h6" gutterBottom mt={2}>
-            Gender
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            {filters.manualMatch ? (
+              <Typography variant="body1">
+                Prefer a more hands-on approach? Select Manual Match to personally filter and select
+                potential mates based on specific criteria that you value. This option gives you the
+                flexibility to fine-tune the search based on your preferences.
+              </Typography>
+            ) : (
+              <Typography variant="body1">
+                Our system automatically finds potential mates whose profiles closely align with
+                your dog’s characteristics. This option is designed for effortless matches, ensuring
+                compatibility based on our comprehensive profile analysis.
+              </Typography>
+            )}
           </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('gender', 'male')}
-                checked={filters.gender.includes('male')}
-              />
-            }
-            label="Male"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('gender', 'female')}
-                checked={filters.gender.includes('female')}
-              />
-            }
-            label="Female"
-          />
-          <Typography variant="h6" gutterBottom mt={2}>
-            Age
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('age', '1yr')}
-                checked={filters.age.includes('1yr')}
-              />
-            }
-            label="1 yr"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('age', '1-3yrs')}
-                checked={filters.age.includes('1-3yrs')}
-              />
-            }
-            label="1-3 yrs"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('age', '3-7yrs')}
-                checked={filters.age.includes('3-7yrs')}
-              />
-            }
-            label="3-7 yrs"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('age', '7+yrs')}
-                checked={filters.age.includes('7+yrs')}
-              />
-            }
-            label="7+ yrs"
-          />
-          <Typography variant="h6" gutterBottom mt={2}>
-            Neutered
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('neutered', 'yes')}
-                checked={filters.neutered.includes('yes')}
-              />
-            }
-            label="Yes"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={() => handleCheckboxChange('neutered', 'no')}
-                checked={filters.neutered.includes('no')}
-              />
-            }
-            label="No"
-          />
-          <Box mt={2}>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Submit
-            </Button>
+          {filters.manualMatch && (
+            <>
+              <Box>
+                <FormControl fullWidth>
+                  <FormLabel>Dog Breeds</FormLabel>
+                  <Autocomplete
+                    multiple
+                    id="tags-outlined"
+                    options={dogBreeds}
+                    onChange={(_, breeds) => setFilters({ ...filters, breeds })}
+                    filterSelectedOptions
+                    value={filters.breeds}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Filter Breeds" placeholder="Breeds" />
+                    )}
+                    renderTags={(tagValue, getTagProps) => {
+                      return tagValue.map((option, index) => {
+                        const { key, ...restProps } = getTagProps({ index });
+                        return <Chip {...restProps} key={option + '-' + key} label={option} />;
+                      });
+                    }}
+                  />
+                </FormControl>
+              </Box>
+              <Divider />
+              <Box>
+                <FormControl>
+                  <FormLabel>Gender</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    value={filters.gender}
+                    onChange={(event) => handleRadioChange('gender', event.target.value)}
+                  >
+                    <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                    <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                    <FormControlLabel value="all" control={<Radio />} label="All" />
+                  </RadioGroup>
+                </FormControl>
+              </Box>
+              <Divider />
+              <Box>
+                <FormControl>
+                  <FormLabel>Age</FormLabel>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: '16px'
+                    }}
+                  >
+                    <TextField
+                      label="Min Age"
+                      variant="outlined"
+                      type="number"
+                      value={filters.age.min}
+                      onChange={handleChange('min')}
+                      inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Optional: enhances mobile usability
+                    />
+                    <TextField
+                      label="Max Age"
+                      variant="outlined"
+                      type="number"
+                      value={filters.age.max}
+                      onChange={handleChange('max')}
+                      inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Optional: enhances mobile usability
+                    />
+                  </Box>
+                </FormControl>
+              </Box>
+              <Divider />
+              <FormControl>
+                <FormLabel>Neutered</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  value={filters.neutered}
+                  onChange={(event) => handleRadioChange('neutered', event.target.value)}
+                >
+                  <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                  <FormControlLabel value="false" control={<Radio />} label="No" />
+                  <FormControlLabel value="all" control={<Radio />} label="All" />
+                </RadioGroup>
+              </FormControl>
+              <Divider />
+            </>
+          )}
+          <Box
+            mt={2}
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '16px'
+            }}
+          >
+            {filters.manualMatch && (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleSubmit}
+                disabled={filters === filterInitialState}
+              >
+                Filter
+              </Button>
+            )}
+            {!filters.manualMatch && (
+              <Button variant="contained" color="primary" onClick={handleManualMatch}>
+                Manual Match
+              </Button>
+            )}
+            {filters.manualMatch && (
+              <Button variant="contained" color="primary" onClick={handleAutoMatch}>
+                Auto Match
+              </Button>
+            )}
           </Box>
         </Box>
       )}
     </>
   );
+};
+
+Filter.propTypes = {
+  setTinderFilters: PropTypes.func.isRequired
 };
 
 export default Filter;

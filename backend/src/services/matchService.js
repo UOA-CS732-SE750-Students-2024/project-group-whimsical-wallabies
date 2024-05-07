@@ -71,7 +71,7 @@ function findGroupByBreed(breed, groups) {
   return null;
 }
 
-export const getMatchingDogs = async (currentUser) => {
+export const getMatchingDogs = async (currentUser, manualMatch = false) => {
   const userDogs = await Dog.find({ owner: currentUser._id });
   const allOtherDogs = await getAllDogsExceptUser(currentUser._id);
 
@@ -86,20 +86,21 @@ export const getMatchingDogs = async (currentUser) => {
     return dogGroupCache.get(dog._id.toString());
   };
 
-  let matchesForUserDogs = userDogs.map((userDog) => {
-    const { sizeGroup: userSizeGroup, temperamentGroup: userTempGroup } = getDogGroups(userDog);
+  const flatMatches = (manualMatch && allOtherDogs) || [];
+  if (!manualMatch) {
+    let matchesForUserDogs = userDogs.map((userDog) => {
+      const { sizeGroup: userSizeGroup, temperamentGroup: userTempGroup } = getDogGroups(userDog);
 
-    const matches = allOtherDogs.filter((otherDog) => {
-      const { sizeGroup: otherSizeGroup, temperamentGroup: otherTempGroup } =
-        getDogGroups(otherDog);
-      return userSizeGroup === otherSizeGroup && userTempGroup === otherTempGroup;
+      const matches = allOtherDogs.filter((otherDog) => {
+        const { sizeGroup: otherSizeGroup, temperamentGroup: otherTempGroup } =
+          getDogGroups(otherDog);
+        return userSizeGroup === otherSizeGroup && userTempGroup === otherTempGroup;
+      });
+
+      return { dog: userDog, matches };
     });
-
-    return { dog: userDog, matches };
-  });
-
-  const flatMatches = [];
-  matchesForUserDogs.forEach((item) => flatMatches.push(...item.matches));
+    matchesForUserDogs.forEach((item) => flatMatches.push(...item.matches));
+  }
 
   return Array.from(new Set(flatMatches.map((dog) => dog._id.toString()))).map((id) =>
     flatMatches.find((dog) => dog._id.toString() === id)

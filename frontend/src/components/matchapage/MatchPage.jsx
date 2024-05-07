@@ -15,8 +15,61 @@ import Filter from './Filter';
 import FlipCardPhoto from './FlipCardPhoto';
 import FriendList from './FriendList';
 
+const getDogAge = (dob) => {
+  const today = new Date();
+  const birthDate = new Date(dob);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+};
+
+const calculateAge = (dob) => {
+  const today = new Date();
+  const birthDate = new Date(dob);
+  const monthsDiff =
+    (today.getFullYear() - birthDate.getFullYear()) * 12 +
+    (today.getMonth() - birthDate.getMonth());
+  const years = Math.floor(monthsDiff / 12);
+  const months = monthsDiff % 12;
+  if (years === 0) {
+    return `${months} months`;
+  } else {
+    return `${years} years ${months} months`;
+  }
+};
+
+const filterDogs = (dogs, { breeds, gender, age, neutered }) => {
+  return dogs.filter((dog) => {
+    const ageInYears = getDogAge(dog.dob);
+    return (
+      (breeds.length === 0 || breeds.includes(dog.breed)) &&
+      ((gender === 'all' && true) || gender === dog.gender) &&
+      ((neutered === 'all' && true) || neutered === dog.neutered.toString()) &&
+      (age.min <= ageInYears || age.max >= ageInYears)
+    );
+  });
+};
+
 const MatchPage = () => {
-  const { data: potentialMates, isLoading, error, refetch } = useGetPotentialMates();
+  const [filters, setFilters] = useState({
+    manualMatch: false,
+    breeds: [],
+    gender: 'all',
+    age: {
+      min: 0,
+      max: 100
+    },
+    neutered: 'all'
+  });
+  const {
+    data: potentialMates,
+    isLoading,
+    error,
+    refetch
+  } = useGetPotentialMates(filters.manualMatch);
   const [shuffledMates, setShuffledMates] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showLastCardMessage, setShowLastCardMessage] = useState(false);
@@ -39,14 +92,14 @@ const MatchPage = () => {
 
   useEffect(() => {
     if (potentialMates && potentialMates.length > 0) {
-      const shuffledArray = shuffleArray(potentialMates);
+      const shuffledArray = shuffleArray(filterDogs(potentialMates, filters));
       setShuffledMates(shuffledArray);
       setCurrentCardIndex(0);
     } else {
       setShuffledMates([]);
       setCurrentCardIndex(0);
     }
-  }, [potentialMates]);
+  }, [filters, potentialMates]);
 
   const shuffleArray = (array) => {
     const shuffledArray = [...array];
@@ -150,25 +203,13 @@ const MatchPage = () => {
   };
 
   const renderGenderIcon = (gender) => {
-    return gender === 'female' ? <FemaleIcon /> : <MaleIcon />;
+    return gender === 'Female' ? <FemaleIcon /> : <MaleIcon />;
   };
 
-  const outOfFrame = (name) => {
-    console.log(`${name} left the screen!`);
-  };
-
-  const calculateAge = (dob) => {
-    const today = new Date();
-    const birthDate = new Date(dob);
-    const monthsDiff =
-      (today.getFullYear() - birthDate.getFullYear()) * 12 +
-      (today.getMonth() - birthDate.getMonth());
-    const years = Math.floor(monthsDiff / 12);
-    const months = monthsDiff % 12;
-    if (years === 0) {
-      return `${months} months`;
-    } else {
-      return `${years} years ${months} months`;
+  const outOfFrame = (name, direction) => {
+    if (direction === 'right') {
+      // Add the call to match useMatchMutation API here that you must create
+      console.log(`${name} was swiped right!`);
     }
   };
 
@@ -194,7 +235,9 @@ const MatchPage = () => {
         <Diversity1RoundedIcon />
       </IconButton>
       <Box className="dashboard" sx={CommonStyles.matchDashboard}>
-        {showFilter && <Filter />}
+        {showFilter && (
+          <Filter setIsManualMatch={filters.manualMatch} setTinderFilters={setFilters} />
+        )}
         {showFriendList && <FriendList />}
 
         {isLoading ? (
@@ -206,7 +249,9 @@ const MatchPage = () => {
         ) : shuffledMates && shuffledMates.length > 0 ? (
           <TinderCard
             key={shuffledMates[currentCardIndex]?.name}
-            onCardLeftScreen={() => outOfFrame(shuffledMates[currentCardIndex]?.name)}
+            onCardLeftScreen={(direction) =>
+              outOfFrame(shuffledMates[currentCardIndex]?.name, direction)
+            }
             preventSwipe={['up', 'down']}
             threshold={100}
             sx={{
@@ -234,7 +279,7 @@ const MatchPage = () => {
                   {shuffledMates[currentCardIndex]?.breed}
                 </Typography>
                 <Typography variant="body1" sx={CommonStyles.matchInfo}>
-                  {shuffledMates[currentCardIndex]?.weight} kg |
+                  {shuffledMates[currentCardIndex]?.weight} kg |{' '}
                   {calculateAge(shuffledMates[currentCardIndex]?.dob)}
                 </Typography>
               </Box>

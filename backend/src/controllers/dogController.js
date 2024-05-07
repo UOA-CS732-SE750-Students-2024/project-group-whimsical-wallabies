@@ -52,8 +52,9 @@ export const remove = async (req, res) => {
 
 export const getAllOthers = async (req, res) => {
   try {
+    const manualMatch = (req.query?.manualMatch?.toLowerCase() || 'false') === 'true' || false;
     const currentUser = await User.findById(req.user._id);
-    const uniqueMatches = await getMatchingDogs(currentUser);
+    const uniqueMatches = await getMatchingDogs(currentUser, manualMatch);
 
     const dogsWithDistance = await Promise.all(
       uniqueMatches.map(async (dog) => {
