@@ -1,11 +1,20 @@
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import BadgeIcon from '@mui/icons-material/Badge';
+import CakeIcon from '@mui/icons-material/Cake';
 import CloseIcon from '@mui/icons-material/Close';
 import Diversity1RoundedIcon from '@mui/icons-material/Diversity1Rounded';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FemaleIcon from '@mui/icons-material/Female';
 import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MaleIcon from '@mui/icons-material/Male';
+import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
+import PetsIcon from '@mui/icons-material/Pets';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import { Box, Button, Typography, Snackbar, IconButton } from '@mui/material';
 import Hammer from 'hammerjs';
+import PropTypes from 'prop-types';
 import React, { useState, useEffect, useCallback } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import TinderCard from 'react-tinder-card';
@@ -185,6 +194,27 @@ const MatchPage = () => {
     return neutered ? 'Yes' : 'No';
   };
 
+  const MatchInfoLine = ({ icon: Icon, label, value }) => (
+    <Typography
+      variant="h4"
+      sx={{
+        ...CommonStyles.matchNameBack,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '300px'
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Icon />
+        <span style={{ fontWeight: 'normal', marginLeft: '20px' }}>{label}</span>:
+      </Box>
+      <Box ml={1} fontWeight="bold" flex="1">
+        {value}
+      </Box>
+    </Typography>
+  );
+
   return (
     <Box>
       <IconButton onClick={toggleFilter} color="primary">
@@ -246,29 +276,47 @@ const MatchPage = () => {
                 }}
                 onClick={flipCard}
               >
-                <Typography variant="h4" sx={CommonStyles.matchNameBack}>
-                  {shuffledMates[currentCardIndex]?.name}
-                  {renderGenderIcon(shuffledMates[currentCardIndex]?.gender)}
-                </Typography>
-                <Typography variant="h6" sx={CommonStyles.matchBreedBack}>
-                  {shuffledMates[currentCardIndex]?.breed}
-                </Typography>
-                <Typography variant="body1" sx={CommonStyles.matchWeightBack}>
-                  {shuffledMates[currentCardIndex]?.weight} kg
-                </Typography>
-                <Typography variant="h6" sx={CommonStyles.matchBirthBack}>
-                  {calculateAge(shuffledMates[currentCardIndex]?.dob)}
+                <MatchInfoLine
+                  icon={AutoAwesomeIcon}
+                  label="Name"
+                  value={shuffledMates[currentCardIndex]?.name}
+                />
+                <MatchInfoLine
+                  icon={PetsIcon}
+                  label="Breed"
+                  value={shuffledMates[currentCardIndex]?.breed}
+                />
+                <MatchInfoLine
+                  icon={MonitorWeightIcon}
+                  label="Weight"
+                  value={`${shuffledMates[currentCardIndex]?.weight} kg`}
+                />
+                <MatchInfoLine
+                  icon={BadgeIcon}
+                  label="Age"
+                  value={calculateAge(shuffledMates[currentCardIndex]?.dob)}
+                />
+                <MatchInfoLine
+                  icon={CakeIcon}
+                  label="Birthday"
+                  value={simplyDob(shuffledMates[currentCardIndex]?.dob)}
+                />
+                <MatchInfoLine
+                  icon={FavoriteBorderIcon}
+                  label="Neutered"
+                  value={getNeuteredStatus(shuffledMates[currentCardIndex]?.neutered)}
+                />
+                <MatchInfoLine
+                  icon={LocationOnIcon}
+                  label="Distance"
+                  value={`${shuffledMates[currentCardIndex]?.distance} km`}
+                />
+                <Typography variant="h4" sx={CommonStyles.matchBio}>
+                  <SentimentSatisfiedAltIcon />
+                  <span> </span>
+                  <span style={{ fontWeight: 'normal' }}>About Me: </span>
                   <br />
-                  {simplyDob(shuffledMates[currentCardIndex]?.dob)}
-                </Typography>
-                <Typography variant="h6" sx={CommonStyles.matchBirthBack}>
                   {shuffledMates[currentCardIndex]?.bio}
-                </Typography>
-                <Typography variant="h6" sx={CommonStyles.matchBirthBack}>
-                  {getNeuteredStatus(shuffledMates[currentCardIndex]?.neutered)}
-                </Typography>
-                <Typography variant="h6" sx={CommonStyles.matchBirthBack}>
-                  {shuffledMates[currentCardIndex]?.distance} km
                 </Typography>
                 <FlipCardPhoto id={shuffledMates[currentCardIndex]?._id} />
               </Box>
@@ -321,6 +369,12 @@ const MatchPage = () => {
       </Box>
     </Box>
   );
+};
+
+MatchPage.propTypes = {
+  icon: PropTypes.elementType.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
 };
 
 export default MatchPage;

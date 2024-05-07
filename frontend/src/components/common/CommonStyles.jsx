@@ -189,8 +189,8 @@ export const CommonStyles = {
   matchNameBack: {
     fontWeight: 'bold',
     color: 'Black',
-    fontSize: '28px',
-    marginBottom: '10px'
+    fontSize: '18px',
+    marginBottom: '5px'
   },
   matchBreed: {
     fontSize: '18px',
@@ -198,8 +198,9 @@ export const CommonStyles = {
     textShadow: '2px 2px 4px rgba(0, 0, 0, 1)'
   },
   matchBreedBack: {
+    fontWeight: 'bold',
     fontSize: '18px',
-    marginBottom: '10px'
+    marginBottom: '5px'
   },
   matchInfo: {
     fontSize: '16px',
@@ -207,12 +208,23 @@ export const CommonStyles = {
     textShadow: '2px 2px 4px rgba(0, 0, 0, 1)'
   },
   matchWeightBack: {
-    fontSize: '16px',
-    opacity: 0.8
+    fontWeight: 'bold',
+    fontSize: '18px',
+    opacity: 0.8,
+    marginBottom: '5px'
   },
   matchBirthBack: {
-    fontSize: '16px',
-    opacity: 0.8
+    fontWeight: 'bold',
+    fontSize: '18px',
+    opacity: 0.8,
+    marginBottom: '5px'
+  },
+  matchBio: {
+    fontWeight: 'bold',
+    fontSize: '18px',
+    opacity: 0.8,
+    marginBottom: '5px',
+    width: '400px'
   },
   matchButton: {
     backgroundColor: '#aad5dc',
@@ -244,5 +256,14 @@ export const CommonStyles = {
       transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
     }
   },
-  dogDashboardCard: { maxWidth: 330, m: 1, mt: 2, boxShadow: 3, width: 350, height: 500 }
+  dogDashboardCard: {
+    maxWidth: 330,
+    m: 1,
+    mt: 2,
+    boxShadow: 3,
+    width: 350,
+    height: 500,
+    overflow: 'hidden',
+    overflowY: 'auto'
+  }
 };

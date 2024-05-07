@@ -134,9 +134,9 @@ const Welcome = () => {
                   </ListItemIcon>
                   <ListItemText
                     primary="MY PETS"
-                    primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to primary text
+                    primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }}
                     secondary="Access all your pets' information, where you can add, edit, review, or delete their details."
-                    secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to secondary text
+                    secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }}
                   />
                 </ListItem>
                 <ListItem>
@@ -145,9 +145,9 @@ const Welcome = () => {
                   </ListItemIcon>
                   <ListItemText
                     primary="FRIENDS"
-                    primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to primary text
+                    primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }}
                     secondary="View your friend list, see who has matched with you, and explore potential playdates for your pets."
-                    secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to secondary text
+                    secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }}
                   />
                 </ListItem>
                 <ListItem>
@@ -156,9 +156,9 @@ const Welcome = () => {
                   </ListItemIcon>
                   <ListItemText
                     primary="MATCHING"
-                    primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to primary text
+                    primaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }}
                     secondary="Engage in matching with other users' dogs to find compatible playmates for your furry companions."
-                    secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }} // Apply dark font color to secondary text
+                    secondaryTypographyProps={{ fontWeight: 'bold', color: 'darkslategray' }}
                   />
                 </ListItem>
               </List>
