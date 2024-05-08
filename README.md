@@ -161,6 +161,12 @@ To ensure that these code style guidelines are consistently applied, we use Husk
 
 Contributions to this project are welcome! Please refer to `CONTRIBUTING.md` for more details on how to contribute, including code of conduct and the process for submitting pull requests.
 
+## Project Wiki
+
+### Accessing the Wiki
+To access the wiki, navigate to the Wiki tab on our GitHub repository:
+[Project Wiki Link](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki)
+
 ## License
 
 This project is licensed under the MIT License - see the `LICENSE.md` file for details.
