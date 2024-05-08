@@ -38,9 +38,11 @@ const UserProfile = () => {
   });
 
   const { currentUser, setUser } = useAuth();
+
+  const [userData, setUserData] = useState(null);
   const { data: currentUserData, isLoading } = useGetUser(currentUser?.username);
 
-  const [edit, setEdit] = useState(true);
+  const [edit, setEdit] = useState(false);
 
   const {
     register,
@@ -93,8 +95,8 @@ const UserProfile = () => {
   };
 
   const handleSave = () => {
-    setEdit(true);
     handleSubmit(updateUserProfile)();
+    setEdit(false);
   };
   const handleCancel = () => {
     navigate(APPLICATION_PATH.homepage);
@@ -142,13 +144,17 @@ const UserProfile = () => {
 
   useEffect(() => {
     if (!isLoading && currentUserData) {
-      setAddress(currentUserData.address);
+      setUserData(currentUserData);
       setLatitude(currentUserData.latitude);
       setLongitude(currentUserData.longitude);
+      setAddress(currentUserData.address);
+      setValue('address', currentUserData.address, { shouldValidate: false });
+      setValue('latitude', currentUserData.latitude, { shouldValidate: false });
+      setValue('longitude', currentUserData.longitude, { shouldValidate: false });
     }
-  }, [isLoading, currentUserData]);
+  }, [isLoading, currentUserData, setValue]);
 
-  if (!currentUserData) {
+  if (!userData) {
     return <Typography variant="h6">Loading...</Typography>;
   }
 
@@ -214,13 +220,16 @@ const UserProfile = () => {
                 margin="normal"
                 fullWidth
                 error={!!error}
+                onChange={(e) => {
+                  field.onChange(e);
+                  setEdit(true);
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <ContactMailIcon />
                     </InputAdornment>
-                  ),
-                  readOnly: !edit
+                  )
                 }}
               />
               {error && <FormHelperText error>{error.message}</FormHelperText>}
@@ -250,8 +259,7 @@ const UserProfile = () => {
                         <InputAdornment position="start">
                           <HomeIcon />
                         </InputAdornment>
-                      ),
-                      readOnly: !edit
+                      )
                     }}
                   />
                   {error && <FormHelperText error>{error.message}</FormHelperText>}
@@ -277,13 +285,16 @@ const UserProfile = () => {
                 type="text"
                 fullWidth
                 margin="normal"
+                onChange={(e) => {
+                  field.onChange(e);
+                  setEdit(true);
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <ContactPhoneIcon />
                     </InputAdornment>
-                  ),
-                  readOnly: !edit
+                  )
                 }}
               />
               {error && <FormHelperText error>{error.message}</FormHelperText>}
@@ -306,13 +317,16 @@ const UserProfile = () => {
                 error={!!error}
                 multiline
                 rows={4}
+                onChange={(e) => {
+                  field.onChange(e);
+                  setEdit(true);
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <InfoIcon />
                     </InputAdornment>
-                  ),
-                  readOnly: !edit
+                  )
                 }}
               />
               {error && <FormHelperText error>{error.message}</FormHelperText>}
@@ -378,8 +392,8 @@ const UserProfile = () => {
             variant="contained"
             color="secondary"
             onClick={handleSave}
-            disabled={!isAddressValid}
             sx={CommonStyles.actionButton}
+            disabled={!isAddressValid && !edit}
             startIcon={<SaveIcon />}
           >
             Save
@@ -392,7 +406,6 @@ const UserProfile = () => {
             variant="outlined"
             color="success"
             onClick={handleCancel}
-            disabled={!edit}
             sx={CommonStyles.actionButton}
             startIcon={<CancelIcon />}
           >
