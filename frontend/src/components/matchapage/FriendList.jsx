@@ -20,11 +20,12 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useGetDogs } from '../../queries/dogs';
 import { useGetFriends } from '../../queries/friends';
-// import { useUnlikeDogMutation } from '../../queries/friends.js';
-import { useGetUser } from '../../queries/user.js';
+import { useGetUser } from '../../queries/user';
+//import axiosApiInstance from '../../utils/axiosApiInstance';
 
 const FriendList = () => {
   const { currentUser } = useAuth();
@@ -34,6 +35,7 @@ const FriendList = () => {
   const [searchInput, setSearchInput] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
+  const navigate = useNavigate();
 
   const randomDog = dogs ? dogs[Math.floor(Math.random() * dogs.length)] : null;
 
@@ -47,8 +49,16 @@ const FriendList = () => {
     setSearchInput(event.target.value);
   };
 
+  const handleFriendClick = async (friend) => {
+    try {
+      const friendId = friend._id;
+      navigate(`/friends/${friendId}`);
+    } catch (error) {
+      console.error('Error navigating to DogsByFriendPage:', error);
+    }
+  };
+
   const handleFriendDelete = (friend) => {
-    // useUnlikeDogMutation
     console.log('Deleting:', friend.username);
     // Close popover
     setAnchorEl(null);
@@ -133,7 +143,11 @@ const FriendList = () => {
       {/* Friends list */}
       <List>
         {filteredFriends.map((friend) => (
-          <ListItem key={friend._id} sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' } }}>
+          <ListItem
+            key={friend._id}
+            sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' } }}
+            onClick={() => handleFriendClick(friend)} // Trigger onClick
+          >
             <ListItemAvatar>
               <Avatar src={friend.photoProfile || 'default_friend.jpg'} />
             </ListItemAvatar>
@@ -146,7 +160,6 @@ const FriendList = () => {
           </ListItem>
         ))}
       </List>
-      {/* Friends list */}
 
       {/* Popover */}
       <Popover

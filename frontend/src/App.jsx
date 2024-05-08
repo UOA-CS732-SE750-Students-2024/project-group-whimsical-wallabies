@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 import Login from './components/auth/LogIn';
 import SignUp from './components/auth/SignUp';
+import FriendDogProfile from './components/friendpage/FriendDogProfile';
+import FriendPage from './components/friendpage/FriendPage';
 import HomePage from './components/homepage/HomePage';
 import Header from './components/layout/Header';
 import FriendList from './components/matchapage/FriendList';
@@ -51,11 +53,29 @@ const App = () => {
                 <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
                 <Route path={APPLICATION_PATH.auth.signup} element={<SignUp />} />
                 <Route path={APPLICATION_PATH.friendList} element={<FriendList />} />
+                {/* <Route path="/friends/:friendId" element={<FriendPage />} /> */}
+                {/* <Route path="/dog/:userId/:dogId" element={<FriendDogProfile />} /> */}
                 <Route
                   path={APPLICATION_PATH.matching}
                   element={
                     <PrivateRoute>
                       <MatchPage />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/friends/:friendId"
+                  element={
+                    <PrivateRoute>
+                      <FriendPage />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/dog/:userId/:dogId"
+                  element={
+                    <PrivateRoute>
+                      <FriendDogProfile />
                     </PrivateRoute>
                   }
                 />

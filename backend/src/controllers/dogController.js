@@ -89,3 +89,26 @@ export const getOthers = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+export const getOneOther = async (req, res) => {
+  try {
+    const userId = req.params.userId; // ID of the user who owns the dog
+    const dogId = req.params.dogId; // ID of the dog to retrieve
+
+    // Check if the specified user (dog owner) exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find the dog by ID
+    const dog = await Dog.findById(dogId);
+    if (!dog) {
+      return res.status(404).json({ message: 'Dog not found' });
+    }
+
+    res.status(200).json(dog);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
