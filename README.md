@@ -36,8 +36,8 @@ This repository contains the code for a full-stack application, including a Reac
    ```
 2. **Install the Dependencies**
 
-   - **Frontend:** [Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#install-dependencies-1)
-   - **Backend:** [Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#install-dependencies)
+   - **Frontend:** [Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#frontend)
+   - **Backend:** [Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies#backend)
 
 4. **Environment Setup**
 
