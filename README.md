@@ -191,7 +191,3 @@ Welcome to the PawMate App, a MERN stack application for connecting dog owners. 
 12. **Credits and Acknowledgements**: Recognition of those who have contributed to the project.
 
 For detailed documentation, visit our [Project Wiki Link](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki)
-
-## License
-
-This project is licensed under the MIT License - see the `LICENSE.md` file for details.
