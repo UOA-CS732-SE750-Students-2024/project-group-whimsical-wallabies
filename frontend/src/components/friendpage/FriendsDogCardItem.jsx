@@ -58,7 +58,15 @@ const FriendsDogCardItem = ({ id, image, name, gender, aboutMe, userId, dogId })
               <FemaleIcon fontSize="small" style={{ color: '#ff99cc' }} />
             )}
             {/* Dog description */}
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
+              }}
+            >
               {aboutMe}
             </Typography>
           </CardContent>
