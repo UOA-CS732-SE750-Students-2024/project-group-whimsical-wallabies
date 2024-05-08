@@ -121,22 +121,27 @@ const MatchPage = () => {
   // Logic to update shuffledMates based on filters and potential mates
   useEffect(() => {
     if (potentialMates && potentialMates.length > 0) {
-      const shuffledArray = shuffleArray(filterDogs(potentialMates, filters));
-      if (JSON.stringify(shuffledMates) !== JSON.stringify(shuffledArray)) {
+      const filteredArray = filterDogs(potentialMates, filters);
+      const shuffledArray = shuffleArray(filteredArray);
+      // Only update state if shuffledMates or currentCardIndex are different
+      if (!arraysEqual(shuffledArray, shuffledMates)) {
         setShuffledMates(shuffledArray);
-      }
-      if (currentCardIndex !== 0) {
         setCurrentCardIndex(0);
       }
     } else {
-      if (shuffledMates.length !== 0) {
-        setShuffledMates([]);
-      }
-      if (currentCardIndex !== 0) {
-        setCurrentCardIndex(0);
-      }
+      setShuffledMates([]);
+      setCurrentCardIndex(0);
     }
-  }, [filters, potentialMates, shuffledMates, currentCardIndex]);
+  }, [filters, potentialMates]);
+
+  // Utility function to compare arrays
+  function arraysEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) return false;
+    }
+    return true;
+  }
 
   // Helper function to shuffle array
   // Shuffle array
