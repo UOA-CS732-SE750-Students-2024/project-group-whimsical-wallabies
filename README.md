@@ -173,11 +173,23 @@ Contributing to our project is straightforward. Here's a brief overview of the p
 For a detailed step-by-step guide on how to contribute, please refer to our [project wiki](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/11.-Contribution-Guidlines)
 
 
-## Project Wiki
+## Project Documentation
 
-### Accessing the Wiki
-To access the wiki, navigate to the Wiki tab on our GitHub repository:
-[Project Wiki Link](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki)
+Welcome to the PawMate App, a MERN stack application designed for connecting dog owners. Below is a summary of the resources available in our project wiki:
+
+1. **Introduction**: Overview of the project and its objectives.
+2. **Getting Started**: Steps to get up and running with the application.
+3. **System Requirements**: Hardware and software needed to use and develop the app.
+4. **Installation Guide**: Detailed instructions for setting up the application.
+5. **Feature Documentation**: In-depth coverage of the application's features.
+6. **API Documentation**: Information on the application's APIs and how to use them.
+7. **Code Style and Guidelines**: Coding standards and practices to follow.
+8. **Testing**: Testing strategies and frameworks used.
+9. **Deployment**: Guidelines for deploying the application.
+10. **User Manual**: Instructions for end-users on how to use the application.
+11. **Credits and Acknowledgements**: Recognition of those who have contributed to the project.
+
+For detailed documentation, visit our [Project Wiki Link](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki)
 
 ## License
 
