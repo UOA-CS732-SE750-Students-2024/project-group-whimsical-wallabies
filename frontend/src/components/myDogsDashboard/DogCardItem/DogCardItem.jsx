@@ -53,7 +53,15 @@ const DogCardItem = ({ id, image, name, gender, aboutMe }) => {
           ) : (
             <FemaleIcon fontSize="small" style={{ color: '#ff99cc' }} />
           )}
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}
+          >
             {aboutMe}
           </Typography>
         </CardContent>

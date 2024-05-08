@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { tokenStorage, userDataStorage } from '../utils/localStorageNames';
 import { useLoginMutation, useSignupMutation } from './AuthContext.queries';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!tokenStorage.get());
