@@ -424,7 +424,7 @@ const MatchPage = () => {
                 <MatchInfoLine
                   icon={LocationOnIcon}
                   label="Distance"
-                  value={`${shuffledMates[currentCardIndex]?.distance} km`}
+                  value={`${shuffledMates[currentCardIndex]?.distance.toFixed(3)} km`}
                 />
                 <Typography variant="h4" sx={CommonStyles.matchBio}>
                   <SentimentSatisfiedAltIcon />
