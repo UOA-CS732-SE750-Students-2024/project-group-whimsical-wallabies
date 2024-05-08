@@ -36,13 +36,13 @@ This repository contains the code for a full-stack application, including a Reac
    ```
 2. **Install the Dependencies**
 
-   - **Frontend:** [Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#frontend)
-   - **Backend:** [Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies#backend)
+   - **Frontend:** [Install Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#install-dependencies-1)
+   - **Backend:** [Install Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies#install-dependencies)
 
 4. **Environment Setup**
 
-   - **Frontend:** [Environment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#environment-setup-1)
-   - **Backend:** [Environment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/edit/main/README.md#environment-setup)
+   - **Frontend:** [Environment Setup](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#environment-setup-1)
+   - **Backend:** [Environment Setup](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#environment-setup)
 
 5. **Clone the Repository**
 From the root of the project, run:
