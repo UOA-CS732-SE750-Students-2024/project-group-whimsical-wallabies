@@ -138,7 +138,7 @@ export const CommonStyles = {
     overflow: 'hidden',
     overflowY: 'auto',
     width: {
-      xs: '400px',
+      xs: '300px',
       sm: '500px',
       md: '600px',
       lg: '700px'
