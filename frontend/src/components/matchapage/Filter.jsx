@@ -15,7 +15,7 @@ import {
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { dogBreeds } from '../../data/dogBreeds';
-
+// Define the initial state of the filter
 const filterInitialState = {
   manualMatch: false,
   breeds: [],
@@ -31,23 +31,23 @@ const Filter = ({ setTinderFilters }) => {
   const [filters, setFilters] = useState(filterInitialState);
   const handleChange = (prop) => (event) => {
     setFilters({ ...filters, age: { ...filters.age, [prop]: event.target.value } });
-  };
+  }; // Define the functions to handle the form submission and radio button changes
 
   const handleSubmit = () => {
     setTinderFilters(filters, { manualMatch: true });
-  };
+  }; // Define the functions to handle the auto and manual match buttons
   const handleAutoMatch = () => {
     setFilters({ ...filterInitialState, manualMatch: false });
     setTinderFilters(filters);
-  };
+  }; // Define the functions to handle the manual match button
   const handleManualMatch = () => {
     setFilters({ ...filterInitialState, manualMatch: true });
     setTinderFilters(filters);
-  };
+  }; // Define the function to handle the radio button changes
 
   const handleRadioChange = (key, value) => {
     setFilters({ ...filters, [key]: value });
-  };
+  }; // Render the filter component
 
   return (
     <>

@@ -3,7 +3,8 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext.jsx';
 import UserProfile from './UserProfile';
-
+// Mock the 'useQuery' function from '@tanstack/react-query' for testing.
+// It returns a predefined object simulating a successful query with specific user data.
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
   useQuery: () => ({
