@@ -26,7 +26,8 @@ export const DOG_PATHS = {
   getOne: '/:id',
   update: '/:id',
   remove: '/:id',
-  getOthers: '/user/:userId'
+  getOthers: '/user/:userId',
+  getOneOther: '/:userId/:dogId'
 };
 
 export const DOG_POTENTIAL_MATES_PATHS = {

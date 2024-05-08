@@ -20,10 +20,12 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useGetDogs } from '../../queries/dogs';
 import { useGetFriends, useUnfriendMutation } from '../../queries/friends';
-import { useGetUser } from '../../queries/user.js';
+import { useGetUser } from '../../queries/user';
+
 
 const FriendList = () => {
   const { currentUser } = useAuth();
@@ -35,6 +37,8 @@ const FriendList = () => {
   const [searchInput, setSearchInput] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
+  const navigate = useNavigate();
+  
   const randomDog = dogs ? dogs[Math.floor(Math.random() * dogs.length)] : null;
 
   useEffect(() => {
@@ -49,6 +53,16 @@ const FriendList = () => {
 
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);
+  };
+
+
+  const handleFriendClick = async (friend) => {
+    try {
+      const friendId = friend._id;
+      navigate(`/friends/${friendId}`);
+    } catch (error) {
+      console.error('Error navigating to DogsByFriendPage:', error);
+    }
   };
 
   const handleUnFriend = () => {
@@ -149,7 +163,11 @@ const FriendList = () => {
       {/* Friends list */}
       <List>
         {filteredFriends.map((friend) => (
-          <ListItem key={friend._id} sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' } }}>
+          <ListItem
+            key={friend._id}
+            sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' } }}
+            onClick={() => handleFriendClick(friend)} // Trigger onClick
+          >
             <ListItemAvatar>
               <Avatar src={friend.photoProfile || 'default_friend.jpg'} />
             </ListItemAvatar>
