@@ -27,11 +27,14 @@ import { useGetFriends, useUnfriendMutation } from '../../queries/friends';
 import { useGetUser } from '../../queries/user';
 
 const FriendList = () => {
+  // Authentication and data fetching hooks
   const { currentUser } = useAuth();
   const { data: currentUserData, isLoading: isLoadingUser } = useGetUser(currentUser?.username);
   const { data: dogs, isLoading: isLoadingDogs } = useGetDogs();
   const { data: friendsData, isLoading: isLoadingFriends, isError } = useGetFriends();
   const { mutate: unfriend, isLoading: isLoadingUnfriend } = useUnfriendMutation();
+
+  // State management
   const [friends, setFriends] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
@@ -39,6 +42,7 @@ const FriendList = () => {
   const navigate = useNavigate();
   const randomDog = dogs ? dogs[Math.floor(Math.random() * dogs.length)] : null;
 
+  // Effect for sorting friends when data changes
   useEffect(() => {
     if (!isLoadingDogs && dogs && dogs.length === 0) {
       console.error('No dogs available');
@@ -49,10 +53,12 @@ const FriendList = () => {
     }
   }, [isLoadingDogs, dogs, friendsData]);
 
+  // Handle search input change
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);
   };
 
+  // Handle clicking on a friend item
   const handleFriendClick = async (friend) => {
     try {
       const friendId = friend._id;
@@ -62,6 +68,7 @@ const FriendList = () => {
     }
   };
 
+  // Handle unfriending a friend
   const handleUnFriend = () => {
     if (selectedFriend && currentUserData) {
       unfriend(
@@ -77,26 +84,31 @@ const FriendList = () => {
     }
   };
 
+  // Handle clicking delete icon to open popover
   const handleClickDelete = (event, friend) => {
     setAnchorEl(event.currentTarget);
     setSelectedFriend(friend);
   };
 
+  // Handle closing the popover
   const handleClosePopover = () => {
     setAnchorEl(null);
     setSelectedFriend(null);
   };
 
+  // Filter friends based on search input
   const filteredFriends = searchInput
     ? friends
         ?.filter((friend) => friend.username.toLowerCase().includes(searchInput.toLowerCase()))
         .sort((a, b) => a.username.localeCompare(b.username))
     : friends;
 
+  // Render loading state
   if (isLoadingFriends || isLoadingDogs || isLoadingUser || isLoadingUnfriend)
     return <Typography>Loading...</Typography>;
   if (isError) return <Typography>Error loading friends.</Typography>;
 
+  // Boolean to check if popover is open
   const open = Boolean(anchorEl);
 
   return (
@@ -112,7 +124,7 @@ const FriendList = () => {
         backgroundColor: 'white'
       }}
     >
-      {/* Name card */}
+      {/* User profile card */}
       <Card>
         <CardActionArea component={Link} to="/profile">
           <CardMedia
@@ -132,7 +144,7 @@ const FriendList = () => {
         </CardActionArea>
       </Card>
 
-      {/* Search */}
+      {/* Search input */}
       <Box
         sx={{
           display: 'flex',
@@ -160,13 +172,14 @@ const FriendList = () => {
           <ListItem
             key={friend._id}
             sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' } }}
-            onClick={() => handleFriendClick(friend)} // Trigger onClick
+            onClick={() => handleFriendClick(friend)}
           >
             <ListItemAvatar>
               <Avatar src={friend.photoProfile || 'default_friend.jpg'} />
             </ListItemAvatar>
             <ListItemText primary={friend.username} secondary={friend.aboutMe} />
             <ListItemSecondaryAction>
+              {/* Delete friend button */}
               <IconButton onClick={() => handleClickDelete(event, friend)}>
                 <DeleteOutlineRoundedIcon />
               </IconButton>
@@ -175,7 +188,7 @@ const FriendList = () => {
         ))}
       </List>
 
-      {/* Popover */}
+      {/* Popover for confirmation */}
       <Popover
         open={open}
         anchorEl={anchorEl}
@@ -194,6 +207,7 @@ const FriendList = () => {
             {selectedFriend && `Are you sure to unfriend ${selectedFriend?.username}?`}
           </Typography>
           <Box mt={2} display="flex" justifyContent="space-between">
+            {/* Confirm and cancel buttons */}
             <Button onClick={handleUnFriend} variant="contained">
               Yes
             </Button>
