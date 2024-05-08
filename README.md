@@ -161,9 +161,17 @@ We enforce a strict coding style to maintain the quality and consistency of our 
 
 For detailed guidelines, configurations, and more information, please refer to our [Project Wiki](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/07.-Code-Style-and-Guidelines).
 
-## Contributing
+## Contribution Guidelines
 
-Contributions to this project are welcome! Please refer to `CONTRIBUTING.md` for more details on how to contribute, including code of conduct and the process for submitting pull requests.
+Contributing to our project is straightforward. Here's a brief overview of the process:
+
+1. **Find an Issue**: Visit our project on Jira to find and select an issue that matches your skills.
+2. **Fork & Clone**: Fork the repository on GitHub and clone it locally to start making changes.
+3. **Commit & Push**: Work on your changes in a new branch, commit them, and push the branch to your fork.
+4. **Create a Pull Request**: Submit a pull request to the main repository for review.
+
+For a detailed step-by-step guide on how to contribute, please refer to our [project wiki](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/11.-Contribution-Guidlines)
+
 
 ## Project Wiki
 
