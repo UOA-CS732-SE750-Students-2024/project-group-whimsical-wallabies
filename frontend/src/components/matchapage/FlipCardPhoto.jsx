@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useGetPhotos } from '../../queries/photos';
 
+// Styled dialog with transparent background
 const TransparentDialog = styled(Dialog)(() => ({
   '& .MuiDialog-paper': {
     backgroundColor: 'transparent',
@@ -25,26 +26,30 @@ const TransparentDialog = styled(Dialog)(() => ({
   }
 }));
 
+// FlipCardPhoto component definition
 const FlipCardPhoto = ({ id }) => {
+  // State for selected photo and fetching photos from API
   const { data: photos, isLoading, error } = useGetPhotos(id);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
+  // Handle opening a photo in a dialog
   const handleOpenPhoto = (photo, event) => {
-    // Prevent parent click event (flipCard) from being triggered
-    event.stopPropagation();
+    event.stopPropagation(); // Prevent event bubbling
     setSelectedPhoto(photo);
   };
 
+  // Handle closing the photo dialog
   const handleClosePhoto = (event) => {
-    // Prevent propagation of the click event to parent elements
-    event.stopPropagation();
+    event.stopPropagation(); // Prevent event bubbling
     setSelectedPhoto(null);
   };
 
+  // Render loading state while fetching photos
   if (isLoading) {
     return <Typography>Loading...</Typography>;
   }
 
+  // Render error message if there's an error fetching photos
   if (error) {
     return (
       <Typography variant="body1" color="error">
@@ -53,17 +58,22 @@ const FlipCardPhoto = ({ id }) => {
     );
   }
 
+  // Render component with dog photos or a message if no photos are found
   return (
     <Box mt={2}>
+      {/* Section title with photo library icon */}
       <Typography variant="h6">
         <PhotoLibraryIcon />
         <span> </span>
         Dog Photos
       </Typography>
+
+      {/* Render dog photos in an ImageList */}
       {photos && photos.length > 0 ? (
         <ImageList gap={4} sx={{ width: '100%', height: 'auto' }}>
           {photos.map((photo) => (
             <ImageListItem key={photo.url} onClick={(e) => handleOpenPhoto(photo, e)}>
+              {/* Display image thumbnail with click handler */}
               <img
                 src={`${process.env.REACT_APP_API_URL}/${photo.url}`}
                 alt="Dog"
@@ -71,7 +81,7 @@ const FlipCardPhoto = ({ id }) => {
                   width: '100%',
                   height: '100%',
                   aspectRatio: '1/1',
-                  cursor: 'pointer' // Make cursor change to pointer on hover
+                  cursor: 'pointer'
                 }}
               />
             </ImageListItem>
@@ -81,14 +91,15 @@ const FlipCardPhoto = ({ id }) => {
         <Typography variant="body1">No photos found for this dog.</Typography>
       )}
 
-      {/* Dialog to display selected photo */}
+      {/* Dialog for displaying selected photo in full view */}
       <TransparentDialog
-        open={selectedPhoto !== null}
-        onClose={handleClosePhoto}
+        open={selectedPhoto !== null} // Open dialog if a photo is selected
+        onClose={handleClosePhoto} // Close dialog handler
         maxWidth="md"
         fullWidth
       >
         <DialogContent sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
+          {/* Close button in the dialog */}
           <IconButton
             aria-label="close"
             onClick={(e) => handleClosePhoto(e)}
@@ -96,6 +107,7 @@ const FlipCardPhoto = ({ id }) => {
           >
             <CloseIcon />
           </IconButton>
+          {/* Display selected photo in the dialog */}
           <img
             src={`${process.env.REACT_APP_API_URL}/${selectedPhoto?.url}`}
             alt="Dog"
@@ -107,8 +119,9 @@ const FlipCardPhoto = ({ id }) => {
   );
 };
 
+// PropTypes for the FlipCardPhoto component
 FlipCardPhoto.propTypes = {
-  id: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired // Requires an ID prop of type string
 };
 
 export default FlipCardPhoto;
