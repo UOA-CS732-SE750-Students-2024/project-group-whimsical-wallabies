@@ -26,7 +26,6 @@ import { useGetDogs } from '../../queries/dogs';
 import { useGetFriends, useUnfriendMutation } from '../../queries/friends';
 import { useGetUser } from '../../queries/user';
 
-
 const FriendList = () => {
   const { currentUser } = useAuth();
   const { data: currentUserData, isLoading: isLoadingUser } = useGetUser(currentUser?.username);
@@ -38,7 +37,6 @@ const FriendList = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
   const navigate = useNavigate();
-  
   const randomDog = dogs ? dogs[Math.floor(Math.random() * dogs.length)] : null;
 
   useEffect(() => {
@@ -54,7 +52,6 @@ const FriendList = () => {
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);
   };
-
 
   const handleFriendClick = async (friend) => {
     try {
