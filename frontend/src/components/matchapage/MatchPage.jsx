@@ -100,21 +100,24 @@ const MatchPage = () => {
     setIsIconClose(!isIconClose);
   };
 
-  const flipCard = () => {
-    setIsFlipped(!isFlipped);
-    console.log('flip');
-  };
-
   useEffect(() => {
     if (potentialMates && potentialMates.length > 0) {
       const shuffledArray = shuffleArray(filterDogs(potentialMates, filters));
-      setShuffledMates(shuffledArray);
-      setCurrentCardIndex(0);
+      if (JSON.stringify(shuffledMates) !== JSON.stringify(shuffledArray)) {
+        setShuffledMates(shuffledArray);
+      }
+      if (currentCardIndex !== 0) {
+        setCurrentCardIndex(0);
+      }
     } else {
-      setShuffledMates([]);
-      setCurrentCardIndex(0);
+      if (shuffledMates.length !== 0) {
+        setShuffledMates([]);
+      }
+      if (currentCardIndex !== 0) {
+        setCurrentCardIndex(0);
+      }
     }
-  }, [filters, potentialMates]);
+  }, [filters, potentialMates, shuffledMates, currentCardIndex]);
 
   const shuffleArray = (array) => {
     const shuffledArray = [...array];
@@ -129,21 +132,31 @@ const MatchPage = () => {
     (direction) => {
       if (shuffledMates && shuffledMates.length > 0) {
         const nextIndex = currentCardIndex + 1;
-        const cardElement = document.getElementById(`card-${currentCardIndex}`);
 
-        if (cardElement) {
+        const frontCardId = `card-${currentCardIndex}`;
+        const backCardId = `card-${currentCardIndex}-back`;
+        const frontCardElement = document.getElementById(frontCardId);
+        const backCardElement = document.getElementById(backCardId);
+        const isFlipped = backCardElement && backCardElement.style.display !== 'none';
+        const swipeElement = isFlipped ? backCardElement : frontCardElement;
+
+        if (swipeElement) {
           const rotation = direction === 'right' ? 10 : -10;
           const opacity = direction === 'right' ? 0 : 1;
 
-          cardElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-          cardElement.style.transform = `translate(${direction === 'right' ? '100%' : '-100%'}, 0) rotate(${rotation}deg)`;
-          cardElement.style.opacity = opacity;
+          swipeElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+          swipeElement.style.transform = `translate(${direction === 'right' ? '100%' : '-100%'}, 0) rotate(${rotation}deg)`;
+          swipeElement.style.opacity = opacity;
 
           setTimeout(() => {
             if (nextIndex >= shuffledMates.length) {
               setShowLastCardMessage(true);
             } else {
               setCurrentCardIndex(nextIndex);
+              setIsFlipped(false);
+              swipeElement.style.transition = '';
+              swipeElement.style.transform = '';
+              swipeElement.style.opacity = '';
             }
           }, 300);
         }
@@ -305,7 +318,7 @@ const MatchPage = () => {
                   ...CommonStyles.matchCardFront,
                   backgroundImage: `url(${process.env.REACT_APP_API_URL}/${shuffledMates[currentCardIndex]?.profilePicture})`
                 }}
-                onClick={flipCard}
+                onClick={() => setIsFlipped(true)}
               >
                 <Typography variant="h4" sx={CommonStyles.matchName}>
                   {shuffledMates[currentCardIndex]?.name}
@@ -320,12 +333,12 @@ const MatchPage = () => {
                 </Typography>
               </Box>
               <Box
-                id={`card-${currentCardIndex}`}
+                id={`card-${currentCardIndex}-back`}
                 className="card"
                 sx={{
                   ...CommonStyles.matchCardBack
                 }}
-                onClick={flipCard}
+                onClick={() => setIsFlipped(false)}
               >
                 <MatchInfoLine
                   icon={AutoAwesomeIcon}
