@@ -175,7 +175,7 @@ For a detailed step-by-step guide on how to contribute, please refer to our [pro
 
 ## Project Documentation
 
-Welcome to the PawMate App, a MERN stack application designed for connecting dog owners. Below is a summary of the resources available in our project wiki:
+Welcome to the PawMate App, a MERN stack application for connecting dog owners. Below is a summary of the resources available in our project wiki:
 
 1. **Introduction**: Overview of the project and its objectives.
 2. **Getting Started**: Steps to get up and running with the application.
@@ -187,7 +187,8 @@ Welcome to the PawMate App, a MERN stack application designed for connecting dog
 8. **Testing**: Testing strategies and frameworks used.
 9. **Deployment**: Guidelines for deploying the application.
 10. **User Manual**: Instructions for end-users on how to use the application.
-11. **Credits and Acknowledgements**: Recognition of those who have contributed to the project.
+11. **Contribution Guidelines**: Information on how to contribute to the project.
+12. **Credits and Acknowledgements**: Recognition of those who have contributed to the project.
 
 For detailed documentation, visit our [Project Wiki Link](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki)
 
