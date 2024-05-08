@@ -87,13 +87,17 @@ const MatchPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [showFriendList, setShowFriendList] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isIconClose, setIsIconClose] = useState(false);
+  const [isClose, setIsClose] = useState(false);
 
   const toggleFilter = () => {
     setShowFilter(!showFilter);
+    setIsClose(!isClose);
   };
 
   const toggleFriendList = () => {
     setShowFriendList(!showFriendList);
+    setIsIconClose(!isIconClose);
   };
 
   const flipCard = () => {
@@ -261,10 +265,10 @@ const MatchPage = () => {
   return (
     <Box>
       <IconButton onClick={toggleFilter} color="primary">
-        <FilterListRoundedIcon />
+        {isClose ? <CloseIcon /> : <FilterListRoundedIcon />}
       </IconButton>
       <IconButton onClick={toggleFriendList} color="secondary">
-        <Diversity1RoundedIcon />
+        {isIconClose ? <CloseIcon /> : <Diversity1RoundedIcon />}
       </IconButton>
       <Box className="dashboard" sx={CommonStyles.matchDashboard}>
         {showFilter && (
