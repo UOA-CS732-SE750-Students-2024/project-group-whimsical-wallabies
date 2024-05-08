@@ -312,14 +312,14 @@ const MatchPage = () => {
 
   // JSX rendering for MatchPage component
   return (
-    <Box>
+    <Box data-testid="match-page">
       {/* Button to toggle filter component */}
-      <IconButton onClick={toggleFilter} color="primary">
+      <IconButton onClick={toggleFilter} color="primary" data-testid="filter-toggle-button">
         {isClose ? <CloseIcon /> : <FilterListRoundedIcon />}
       </IconButton>
 
       {/* Button to toggle friend list component */}
-      <IconButton onClick={toggleFriendList} color="secondary">
+      <IconButton onClick={toggleFriendList} color="secondary" data-testid="friend-list-button">
         {isIconClose ? <CloseIcon /> : <Diversity1RoundedIcon />}
       </IconButton>
 
@@ -459,6 +459,7 @@ const MatchPage = () => {
         <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
           {/* Button for left swipe */}
           <Button
+            data-testid="swipe-left-button"
             variant="contained"
             onClick={handleSwipeLeft}
             sx={{
@@ -474,6 +475,7 @@ const MatchPage = () => {
 
           {/* Button for right swipe */}
           <Button
+            data-testid="swipe-right-button"
             variant="contained"
             onClick={handleSwipeRight}
             sx={{

@@ -167,7 +167,7 @@ const FriendList = () => {
       </Box>
 
       {/* Friends list */}
-      <List>
+      <List data-testid="friend-list">
         {filteredFriends.map((friend) => (
           <ListItem
             key={friend._id}
