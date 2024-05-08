@@ -44,14 +44,18 @@ This repository contains the code for a full-stack application, including a Reac
    - **Frontend:** [Environment Setup](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#environment-setup-1)
    - **Backend:** [Environment Setup](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#environment-setup)
 
-5. **Clone the Repository**
+5. **Initial Mock Data Setup**
+
+   - **Mock Data Setup**:
+
+7. **Build Docker**
 From the root of the project, run:
    ```sh
    docker-compose up --build
    ```
 This command builds the images for the backend and frontend services and starts the containers. The --build flag ensures that Docker Compose rebuilds the images if there have been changes since the last build.
 
-5. **Access the Application**
+6. **Access the Application**
 
    - **Frontend:** [http://localhost:3000](http://localhost:3000)
    - **Backend:** [http://localhost:3001](http://localhost:3001)
