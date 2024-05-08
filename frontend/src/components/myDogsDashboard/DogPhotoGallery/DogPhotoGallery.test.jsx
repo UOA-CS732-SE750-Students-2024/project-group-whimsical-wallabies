@@ -46,7 +46,7 @@ describe('DogPhotoGallery', () => {
 
   it('renders without crashing', () => {
     render(<DogPhotoGallery id="123" />);
-    expect(screen.getByText('Photo Gallery')).toBeInTheDocument();
+    expect(screen.getByText('Gallery')).toBeInTheDocument();
   });
 
   it('displays the correct number of photos', () => {
