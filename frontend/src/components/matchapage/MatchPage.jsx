@@ -84,12 +84,7 @@ const MatchPage = () => {
     },
     neutered: 'all'
   });
-  const {
-    data: potentialMates,
-    isLoading,
-    error,
-    refetch
-  } = useGetPotentialMates(filters.manualMatch); // Query hook for fetching potential mates
+  const { data: potentialMates, isLoading, error } = useGetPotentialMates(filters.manualMatch); // Query hook for fetching potential mates
   const [shuffledMates, setShuffledMates] = useState([]); // State for shuffled potential mates
   const [currentCardIndex, setCurrentCardIndex] = useState(0); // State for current card index
   const [showLastCardMessage, setShowLastCardMessage] = useState(false); // State for showing last card message
@@ -188,11 +183,6 @@ const MatchPage = () => {
     },
     [currentCardIndex, shuffledMates]
   );
-
-  // Handle refresh page
-  const handleTryAgain = () => {
-    refetch();
-  };
 
   // Handle close message
   const handleCloseMessage = () => {
@@ -441,9 +431,6 @@ const MatchPage = () => {
           // Render message if no potential mates found
           <Box sx={{ textAlign: 'center', mt: 4 }}>
             <Typography variant="h6">No potential mates found.</Typography>
-            <Button variant="contained" onClick={handleTryAgain} sx={{ mt: 4 }}>
-              Try Again
-            </Button>
           </Box>
         )}
 
