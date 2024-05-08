@@ -419,9 +419,9 @@ const MatchPage = () => {
 };
 
 MatchPage.propTypes = {
-  icon: PropTypes.elementType.isRequired,
-  label: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
+  icon: PropTypes.elementType,
+  label: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 export default MatchPage;
