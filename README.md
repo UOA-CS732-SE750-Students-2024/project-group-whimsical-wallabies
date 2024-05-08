@@ -134,14 +134,17 @@ This variable points to the URL of the backend server.
 
 ## Initial Mock Data Setup
 
-Navigate to the backend directory:
+### Step 1: Navigate to the Backend Directory
+To start, navigate to the backend directory by executing the following command in your terminal:
 ```sh
 cd backend
 ```
-Run the seeding data scripts to setup the initial mock data:
+### Step 2: Run the Data Seeding Script
+Next, initialize the mock data by running the data seeding script. This script populates your database with sample data essential for development:
 ```sh
 node .\src\seedingData.js
 ```
+These steps will ensure that your development environment is pre-populated with the necessary mock data to begin testing and development immediately.
 
 ## Code Style
 
