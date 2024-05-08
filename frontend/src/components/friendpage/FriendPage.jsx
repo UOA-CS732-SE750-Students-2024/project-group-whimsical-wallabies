@@ -1,3 +1,4 @@
+import CloseIcon from '@mui/icons-material/Close';
 import Diversity1RoundedIcon from '@mui/icons-material/Diversity1Rounded';
 import { Box, Typography, Grid, CircularProgress, IconButton } from '@mui/material';
 import React, { useState, useEffect } from 'react';
@@ -12,9 +13,11 @@ const FriendPage = () => {
   const [friendDogs, setFriendDogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showFriendList, setShowFriendList] = useState(false);
+  const [isIconClose, setIsIconClose] = useState(false);
 
   const toggleFriendList = () => {
     setShowFriendList(!showFriendList);
+    setIsIconClose(!isIconClose);
   };
 
   useEffect(() => {
@@ -58,7 +61,11 @@ const FriendPage = () => {
           }}
         >
           <IconButton onClick={toggleFriendList} color="secondary">
-            <Diversity1RoundedIcon fontSize="large" />
+            {isIconClose ? (
+              <CloseIcon fontSize="large" />
+            ) : (
+              <Diversity1RoundedIcon fontSize="large" />
+            )}
           </IconButton>
         </Box>
       </Grid>
@@ -67,8 +74,19 @@ const FriendPage = () => {
         {selectedFriend ? (
           <div>
             <Typography variant="h4" gutterBottom>
-              Dogs owned by {selectedFriend.username}:
+              {selectedFriend.username}
             </Typography>
+            <Box>
+              <Typography variant="body1" gutterBottom>
+                Email: {selectedFriend.email}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                Phone: {selectedFriend.phone}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                Address: {selectedFriend.address}
+              </Typography>
+            </Box>
             <Grid container spacing={2} justifyContent="center">
               {friendDogs.map((dog) => (
                 <Grid item key={dog._id} xs={12} sm={6} md={4} lg={3}>

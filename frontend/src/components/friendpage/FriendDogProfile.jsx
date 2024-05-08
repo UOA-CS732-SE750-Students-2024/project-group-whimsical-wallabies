@@ -4,9 +4,17 @@ import FemaleIcon from '@mui/icons-material/Female';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import MaleIcon from '@mui/icons-material/Male';
 import PetsIcon from '@mui/icons-material/Pets';
-import { Typography, Card, CardContent, CardMedia, CircularProgress, Grid } from '@mui/material';
+import {
+  Button,
+  Typography,
+  Card,
+  CardContent,
+  CardMedia,
+  CircularProgress,
+  Grid
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axiosApiInstance from '../../utils/axiosApiInstance';
 import FlipCardPhoto from '../matchapage/FlipCardPhoto';
 
@@ -14,6 +22,7 @@ const FriendDogProfile = () => {
   const { userId, dogId } = useParams();
   const [dog, setDog] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const getNeuteredStatus = (neutered) => {
     return neutered ? 'Yes' : 'No';
@@ -113,6 +122,9 @@ const FriendDogProfile = () => {
             <Typography variant="body1" gutterBottom>
               About Me: {dog.bio}
             </Typography>
+            <Button onClick={() => navigate(-1)} variant="outlined" sx={{ mt: 2 }}>
+              Back to Previous Page
+            </Button>
           </CardContent>
         </Card>
       </Grid>
