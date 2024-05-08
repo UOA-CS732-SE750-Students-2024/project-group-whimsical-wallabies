@@ -99,6 +99,7 @@ Create a `.env` file in the root of the backend directory and add the following 
    OPEN_WEATHER_API_KEY=your_open_weather_api_key
    OPEN_WEATHER_URL=http://api.openweathermap.org/data/2.5/weather
    OPENAI_API_KEY=your_openai_api_key
+   APP_GOOGLE_MAPS_API_KEY=your_google_map_api_key
    ```
 
 ### Frontend
@@ -127,9 +128,20 @@ Install the dependencies:
 Create a `.env` file in the root of the frontend directory and add the following line:
 ```sh
 REACT_APP_API_URL=http://localhost:3001
-REACT_APP_GOOGLE_MAPS_API_KEY='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+REACT_APP_GOOGLE_MAPS_API_KEY=your_google_map_api_key
 ```
 This variable points to the URL of the backend server.
+
+## Initial Mock Data Setup
+
+Navigate to the backend directory:
+```sh
+cd backend
+```
+Run the seeding data scripts to setup the initial mock data:
+```sh
+node .\src\seedingData.js
+```
 
 ## Code Style
 
