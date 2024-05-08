@@ -33,6 +33,8 @@ app.use(
 const dogPathBase = buildPathWithBase(DOG_PATHS);
 
 app.use('/media', express.static(path.join(__dirname, 'media')));
+app.use('/images/dogs', express.static(path.join(__dirname, '/images/dogs')));
+
 app.use(express.json());
 app.use(authenticate);
 app.use(AUTH_PATHS.base, authRoutes);
