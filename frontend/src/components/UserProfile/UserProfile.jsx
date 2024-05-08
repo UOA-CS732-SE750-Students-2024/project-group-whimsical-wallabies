@@ -137,7 +137,7 @@ const UserProfile = () => {
     }, 500);
     debounced(value);
   }, []);
-  
+
   //The handleAddressChange function is called when the user types in the address input field.
   const handleAddressChange = (event) => {
     const newAddress = event.target.value;

@@ -319,11 +319,13 @@ export default function DogPhotoGallery({ id }) {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             width: '90vw',
             maxWidth: '1000px',
             maxHeight: '90vh',
-            bgcolor: 'background.paper',
-            boxShadow: 24,
+            bgcolor: 'transparent',
             p: 4
           }}
         >
@@ -333,7 +335,9 @@ export default function DogPhotoGallery({ id }) {
             style={{
               width: '100%',
               height: '100%',
-              objectFit: 'contain'
+              objectFit: 'contain',
+              maxWidth: '900px',
+              maxHeight: '750px'
             }}
           />
         </Box>
