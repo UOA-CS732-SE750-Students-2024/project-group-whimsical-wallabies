@@ -29,11 +29,15 @@ const FlipCardPhoto = ({ id }) => {
   const { data: photos, isLoading, error } = useGetPhotos(id);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
-  const handleOpenPhoto = (photo) => {
+  const handleOpenPhoto = (photo, event) => {
+    // Prevent parent click event (flipCard) from being triggered
+    event.stopPropagation();
     setSelectedPhoto(photo);
   };
 
-  const handleClosePhoto = () => {
+  const handleClosePhoto = (event) => {
+    // Prevent propagation of the click event to parent elements
+    event.stopPropagation();
     setSelectedPhoto(null);
   };
 
@@ -59,7 +63,7 @@ const FlipCardPhoto = ({ id }) => {
       {photos && photos.length > 0 ? (
         <ImageList gap={4} sx={{ width: '100%', height: 'auto' }}>
           {photos.map((photo) => (
-            <ImageListItem key={photo.url} onClick={() => handleOpenPhoto(photo)}>
+            <ImageListItem key={photo.url} onClick={(e) => handleOpenPhoto(photo, e)}>
               <img
                 src={`${process.env.REACT_APP_API_URL}/${photo.url}`}
                 alt="Dog"
@@ -87,7 +91,7 @@ const FlipCardPhoto = ({ id }) => {
         <DialogContent sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
           <IconButton
             aria-label="close"
-            onClick={handleClosePhoto}
+            onClick={(e) => handleClosePhoto(e)}
             sx={{ position: 'absolute', top: 5, right: 5, color: 'inherit' }}
           >
             <CloseIcon />
