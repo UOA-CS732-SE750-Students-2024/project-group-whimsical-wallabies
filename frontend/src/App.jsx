@@ -9,6 +9,7 @@ import Login from './components/auth/LogIn';
 import SignUp from './components/auth/SignUp';
 import FriendDogProfile from './components/friendpage/FriendDogProfile';
 import FriendPage from './components/friendpage/FriendPage';
+import Friends from './components/friendpage/Friends';
 import HomePage from './components/homepage/HomePage';
 import Header from './components/layout/Header';
 import FriendList from './components/matchapage/FriendList';
@@ -53,8 +54,6 @@ const App = () => {
                 <Route path={APPLICATION_PATH.auth.login} element={<Login />} />
                 <Route path={APPLICATION_PATH.auth.signup} element={<SignUp />} />
                 <Route path={APPLICATION_PATH.friendList} element={<FriendList />} />
-                {/* <Route path="/friends/:friendId" element={<FriendPage />} /> */}
-                {/* <Route path="/dog/:userId/:dogId" element={<FriendDogProfile />} /> */}
                 <Route
                   path={APPLICATION_PATH.matching}
                   element={
@@ -64,7 +63,15 @@ const App = () => {
                   }
                 />
                 <Route
-                  path="/friends/:friendId"
+                  path={APPLICATION_PATH.user.friends}
+                  element={
+                    <PrivateRoute>
+                      <Friends />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path={APPLICATION_PATH.friends.dogs}
                   element={
                     <PrivateRoute>
                       <FriendPage />
@@ -72,7 +79,7 @@ const App = () => {
                   }
                 />
                 <Route
-                  path="/dog/:userId/:dogId"
+                  path={APPLICATION_PATH.friends.dog}
                   element={
                     <PrivateRoute>
                       <FriendDogProfile />

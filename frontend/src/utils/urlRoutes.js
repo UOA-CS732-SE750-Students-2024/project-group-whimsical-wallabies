@@ -15,11 +15,15 @@ export const APPLICATION_PATH = {
   },
   user: {
     profile: '/profile',
-    friends: '/dashboard'
+    friends: '/friends'
   },
   dog: {
     dashboard: '/my-dogs',
     profile: '/dog/:id'
+  },
+  friends: {
+    dogs: '/friends/:friendId',
+    dog: '/dog/:userId/:dogId'
   },
   matching: '/matching',
   dashboard: '/dashboard',
