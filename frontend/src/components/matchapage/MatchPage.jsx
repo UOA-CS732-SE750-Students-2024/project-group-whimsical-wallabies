@@ -100,6 +100,11 @@ const MatchPage = () => {
     setIsIconClose(!isIconClose);
   };
 
+  const flipCard = () => {
+    setIsFlipped(!isFlipped);
+    console.log('flip');
+  };
+
   useEffect(() => {
     if (potentialMates && potentialMates.length > 0) {
       const shuffledArray = shuffleArray(filterDogs(potentialMates, filters));
@@ -133,12 +138,12 @@ const MatchPage = () => {
       if (shuffledMates && shuffledMates.length > 0) {
         const nextIndex = currentCardIndex + 1;
 
-        const frontCardId = `card-${currentCardIndex}`;
-        const backCardId = `card-${currentCardIndex}-back`;
-        const frontCardElement = document.getElementById(frontCardId);
-        const backCardElement = document.getElementById(backCardId);
-        const isFlipped = backCardElement && backCardElement.style.display !== 'none';
-        const swipeElement = isFlipped ? backCardElement : frontCardElement;
+        // Determine which side of the card is currently visible
+        const cardElement = document.getElementById(`card-${currentCardIndex}`);
+        const isFlipped = cardElement?.classList.contains('ReactCardFlip__cardBack');
+
+        // Define the card element to swipe based on its visibility
+        const swipeElement = isFlipped ? cardElement?.children[1] : cardElement?.children[0];
 
         if (swipeElement) {
           const rotation = direction === 'right' ? 10 : -10;
@@ -153,10 +158,6 @@ const MatchPage = () => {
               setShowLastCardMessage(true);
             } else {
               setCurrentCardIndex(nextIndex);
-              setIsFlipped(false);
-              swipeElement.style.transition = '';
-              swipeElement.style.transform = '';
-              swipeElement.style.opacity = '';
             }
           }, 300);
         }
@@ -318,7 +319,7 @@ const MatchPage = () => {
                   ...CommonStyles.matchCardFront,
                   backgroundImage: `url(${process.env.REACT_APP_API_URL}/${shuffledMates[currentCardIndex]?.profilePicture})`
                 }}
-                onClick={() => setIsFlipped(true)}
+                onClick={flipCard}
               >
                 <Typography variant="h4" sx={CommonStyles.matchName}>
                   {shuffledMates[currentCardIndex]?.name}
@@ -333,12 +334,12 @@ const MatchPage = () => {
                 </Typography>
               </Box>
               <Box
-                id={`card-${currentCardIndex}-back`}
+                id={`card-${currentCardIndex}`}
                 className="card"
                 sx={{
                   ...CommonStyles.matchCardBack
                 }}
-                onClick={() => setIsFlipped(false)}
+                onClick={flipCard}
               >
                 <MatchInfoLine
                   icon={AutoAwesomeIcon}
