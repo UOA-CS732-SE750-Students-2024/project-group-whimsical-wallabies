@@ -60,19 +60,19 @@ const dogWeight = [
 
 const dogBreeds = [
   'Maltease',
-  'Maltease',
-  'Maltease',
-  'Golden Retriever',
-  'Golden Retriever',
   'Golden Retriever',
   'Poodle',
-  'Poodle',
-  'Poodle',
-  'bichon',
-  'bichon',
-  'bichon',
+  'Bichon Frise',
   'Shiba Inu',
+  'Maltease',
+  'Golden Retriever',
+  'Poodle',
+  'Bichon Frise',
   'Shiba Inu',
+  'Maltease',
+  'Golden Retriever',
+  'Poodle',
+  'Bichon Frise',
   'Shiba Inu'
 ];
 
