@@ -55,12 +55,12 @@ const SignUp = () => {
       });
     }
   }, [signupErrors, setError]);
-
+  // Reset the form and close the dialog
   const handleDialogClose = () => {
     setIsSignup(false);
     reset();
   };
-
+  // Navigate to the login page
   const handleDialogButtonClick = () => {
     handleDialogClose();
     navigate(APPLICATION_PATH.auth.login);
@@ -112,7 +112,7 @@ const SignUp = () => {
         </DialogContent>
         <DialogActions sx={CommonStyles.dialogAction}>
           <Button
-            onClick={() => handleDialogButtonClick()}
+            onClick={() => handleDialogButtonClick()} // Navigate to the login page
             variant="contained"
             color="success"
             sx={CommonStyles.dialogButton}

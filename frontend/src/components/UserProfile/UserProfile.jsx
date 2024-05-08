@@ -29,7 +29,12 @@ import { APPLICATION_PATH } from '../../utils/urlRoutes';
 import { CommonStyles } from '../common/CommonStyles.jsx';
 import { userProfileSchema } from './UserProfile.validation.jsx';
 
+//Define an array with the name of the Google Maps libraries to be loaded.
 const libraries = ['places'];
+
+// Use of the useUpdateUserMutation hook which returns an object with a mutate function - updateUserProfile that we can use to execute the mutation.
+// When the mutation is successful, it receives the updated user profile as an argument.
+// The updated user profile data is then saved to local storage and the user state is updated with this new data.
 
 const UserProfile = () => {
   const { mutate: updateUserProfile } = useUpdateUserMutation((userProfile) => {
@@ -42,6 +47,7 @@ const UserProfile = () => {
   const [userData, setUserData] = useState(null);
   const { data: currentUserData, isLoading } = useGetUser(currentUser?.username);
 
+  //managing edit mode in the UserProfile component
   const [edit, setEdit] = useState(false);
 
   const {
@@ -76,6 +82,7 @@ const UserProfile = () => {
     autocompleteRef.current = autocomplete;
   };
 
+  //The onPlaceChanged function is called when the user selects a place from the dropdown list.
   const onPlaceChanged = () => {
     if (autocompleteRef.current) {
       const place = autocompleteRef.current.getPlace();
@@ -94,14 +101,16 @@ const UserProfile = () => {
     console.log(isAddressValid);
   };
 
+  //The handleSave function is called when the user clicks the Save button. It calls the updateUserProfile mutation function to update the user profile with the new data.
   const handleSave = () => {
     handleSubmit(updateUserProfile)();
     setEdit(false);
   };
+  //The handleCancel function is called when the user clicks the Cancel button. It navigates the user back to the homepage.
   const handleCancel = () => {
     navigate(APPLICATION_PATH.homepage);
   };
-
+  //The handleAddressBlur function is called when the user clicks outside the address input field. It checks if the address is valid and displays an error message if it is not.
   const handleAddressBlur = () => {
     if (!isAddressValid) {
       setAddressError('Please select a valid address from the dropdown.');
@@ -109,6 +118,7 @@ const UserProfile = () => {
       setValue('longitude', '', { shouldValidate: false });
     }
   };
+  //The debounce function is used to limit the number of times the autocompleteRef.current.set function is called when the user types in the address input field.
   const debounce = (func, wait) => {
     let timeout;
     return function executedFunction(...args) {
@@ -118,7 +128,7 @@ const UserProfile = () => {
       }, wait);
     };
   };
-
+  //The debouncedSearch function is called when the user types in the address input field. It debounces the search input to prevent the autocompleteRef.current.set function from being called too frequently.
   const debouncedSearch = useCallback((value) => {
     const debounced = debounce((value) => {
       if (autocompleteRef.current) {
@@ -127,7 +137,8 @@ const UserProfile = () => {
     }, 500);
     debounced(value);
   }, []);
-
+  
+  //The handleAddressChange function is called when the user types in the address input field.
   const handleAddressChange = (event) => {
     const newAddress = event.target.value;
     setAddress(newAddress);
