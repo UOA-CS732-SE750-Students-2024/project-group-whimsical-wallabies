@@ -36,29 +36,29 @@ This repository contains the code for a full-stack application, including a Reac
    ```
 2. **Install the Dependencies**
 
-   - **Frontend:** [Install Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#install-dependencies-1)
-   - **Backend:** [Install Dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies#install-dependencies)
+   - **Frontend:** [Follow these steps to install frontend dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#install-dependencies-1)
+   - **Backend:** [Follow these steps to install backend dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies#install-dependencies)
 
 4. **Environment Setup**
 
-   - **Frontend:** [Environment Setup](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#environment-setup-1)
-   - **Backend:** [Environment Setup](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#environment-setup)
+   - **Frontend:** [Configure the frontend environment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#environment-setup-1)
+   - **Backend:** [Configure the backend environment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#environment-setup)
 
 5. **Initial Mock Data Setup**
+Build the Docker images and start the services using Docker Compose from the root of the project:
+   - **Mock Data Setup**: [Initialize the mock data](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#initial-mock-data-setup)
 
-   - **Mock Data Setup**:
-
-7. **Build Docker**
-From the root of the project, run:
+7. **Build and Start Docker Containers**
+Build the Docker images and start the services using Docker Compose from the root of the project:
    ```sh
    docker-compose up --build
    ```
-This command builds the images for the backend and frontend services and starts the containers. The --build flag ensures that Docker Compose rebuilds the images if there have been changes since the last build.
+This command builds the Docker images for the backend and frontend services, and starts the containers. The --build flag forces a rebuild of the images to incorporate any new changes.
 
 6. **Access the Application**
 
-   - **Frontend:** [http://localhost:3000](http://localhost:3000)
-   - **Backend:** [http://localhost:3001](http://localhost:3001)
+   - **Frontend:** Access the frontend at [http://localhost:3000](http://localhost:3000)
+   - **Backend:** Access the backend at [http://localhost:3001](http://localhost:3001)
 
 ## Development Environment
 
