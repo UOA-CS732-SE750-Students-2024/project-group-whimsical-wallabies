@@ -150,12 +150,16 @@ node .\src\seedingData.js
 ```
 These steps will ensure that your development environment is pre-populated with the necessary mock data to begin testing and development immediately.
 
-## Code Style
+## Code Style and Guidelines
 
-This project adheres to the Airbnb style guide for Node and React, ensuring code quality and consistency across the codebase. We use ESLint to enforce these styles, with specific configurations for both the frontend and backend.
+We enforce a strict coding style to maintain the quality and consistency of our codebase. Using tools like **Husky**, **Lint-staged**, **ESLint**, and **Prettier**, we ensure that every piece of code is checked for style violations and formatted correctly before it is committed.
 
-### Ensuring Code Style Compliance
-To ensure that these code style guidelines are consistently applied, we use Husky alongside lint-staged. This setup automatically lints and formats code upon commit, aligning with our defined ESLint rules and Prettier configurations. This helps maintain code quality and consistency, preventing style violations from being committed to the repository.
+- **Husky** manages pre-commit hooks to run necessary scripts.
+- **Lint-staged** focuses on staged files to prevent errors before committing.
+- **ESLint** enforces a consistent coding style and detects code issues.
+- **Prettier** automatically formats our code for readability and consistency.
+
+For detailed guidelines, configurations, and more information, please refer to our [Project Wiki](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/07.-Code-Style-and-Guidelines).
 
 ## Contributing
 
