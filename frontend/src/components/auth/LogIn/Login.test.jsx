@@ -4,13 +4,13 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import Login from './Login';
-
+// Mock the 'useAuth' function from the 'AuthContext' module for testing purposes.
 jest.mock('../../../context/AuthContext', () => ({
   useAuth: jest.fn()
 }));
-
+// Create a mock function for navigation to simulate navigation events during testing.
 const mockNavigate = jest.fn();
-
+// Mock the 'useNavigate' function from 'react-router-dom' for testing, while keeping the rest of the module's exports intact.
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate
