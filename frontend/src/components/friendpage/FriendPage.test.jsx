@@ -8,7 +8,7 @@ import axiosApiInstance from '../../utils/axiosApiInstance';
 // mock axiosApiInstance
 jest.mock('../../utils/axiosApiInstance');
 
-// mock data
+// mock dataset
 const mockFriend = {
   _id: '123',
   username: 'JohnDoe',
