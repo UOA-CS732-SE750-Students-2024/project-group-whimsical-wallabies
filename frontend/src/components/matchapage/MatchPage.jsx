@@ -230,14 +230,16 @@ const MatchPage = () => {
           cardElement.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
         }, 300);
       }
+    } else {
+      setShowLastCardMessage(true); // Display last card message
     }
   };
 
   // Handle swipe right action
   // Logic to handle right swipe and like a dog
   const handleSwipeRight = () => {
-    likeDog(shuffledMates[currentCardIndex]?._id);
     if (currentCardIndex < shuffledMates.length - 1) {
+      likeDog(shuffledMates[currentCardIndex]?._id);
       const cardElement = document.getElementById(`card-${currentCardIndex}`);
       if (cardElement) {
         cardElement.style.transition = 'transform 0.3s ease';
@@ -248,6 +250,8 @@ const MatchPage = () => {
           cardElement.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
         }, 300);
       }
+    } else {
+      setShowLastCardMessage(true); // Display last card message
     }
   };
 
