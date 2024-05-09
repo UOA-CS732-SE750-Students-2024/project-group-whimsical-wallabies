@@ -1,3 +1,4 @@
+// This file contains the data for the dog groups that are used in the dog groups service
 export const dogGroups = {
   dogSizeGroups: {
     small: [

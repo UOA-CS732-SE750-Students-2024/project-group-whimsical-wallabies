@@ -1,3 +1,4 @@
+// dogController.js is responsible for handling requests related to dogs
 import Dog from '../models/Dog.js';
 import User from '../models/User.js';
 
@@ -5,6 +6,7 @@ import { createDog, getDogs, getDog, updateDog, deleteDog } from '../services/do
 import { getMatchingDogs } from '../services/matchService.js';
 import { calculateDistance } from '../utils/common.js';
 
+// Create a new dog
 export const create = async (req, res) => {
   try {
     const dog = await createDog(req.user._id, req.body);
@@ -14,6 +16,7 @@ export const create = async (req, res) => {
   }
 };
 
+// Get all dogs for the current user
 export const getAll = async (req, res) => {
   try {
     const dogs = await getDogs(req.user._id);
@@ -23,6 +26,7 @@ export const getAll = async (req, res) => {
   }
 };
 
+// Get a specific dog by ID
 export const getOne = async (req, res) => {
   try {
     const dog = await getDog(req.params.id, req.user._id);
@@ -32,6 +36,7 @@ export const getOne = async (req, res) => {
   }
 };
 
+// Update a dog by ID
 export const update = async (req, res) => {
   try {
     const dogData = (req?.file?.path && { ...req.body, profilePicture: req.file.path }) || req.body;
@@ -42,6 +47,7 @@ export const update = async (req, res) => {
   }
 };
 
+// Delete a dog by ID
 export const remove = async (req, res) => {
   try {
     await deleteDog(req.params.id, req.user._id);
@@ -51,6 +57,7 @@ export const remove = async (req, res) => {
   }
 };
 
+// Get all dogs for other users
 export const getAllOthers = async (req, res) => {
   try {
     const manualMatch = (req.query?.manualMatch?.toLowerCase() || 'false') === 'true' || false;
@@ -75,6 +82,7 @@ export const getAllOthers = async (req, res) => {
   }
 };
 
+// Get a specific dog by ID for other users
 export const getOthers = async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -90,6 +98,7 @@ export const getOthers = async (req, res) => {
   }
 };
 
+// Get a specific dog by ID for other users
 export const getOneOther = async (req, res) => {
   try {
     const userId = req.params.userId; // ID of the user who owns the dog

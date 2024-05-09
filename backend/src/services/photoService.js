@@ -1,6 +1,8 @@
+// photoService contains the logic for photo operations
 import Dog from '../models/Dog.js';
 import Photo from '../models/Photo.js';
 
+// Create a new photo
 export const createPhoto = async (dog, url) => {
   const dogExists = await Dog.findById(dog);
   if (!dogExists) throw new Error('Dog not found');
@@ -14,6 +16,7 @@ export const createPhoto = async (dog, url) => {
   return dogPhoto;
 };
 
+// Get all photos for a specific dog
 export const getPhotos = async (dog) => {
   const dogExists = await Dog.findById(dog);
   if (!dogExists) throw new Error('Dog not found');
@@ -21,6 +24,7 @@ export const getPhotos = async (dog) => {
   return await Photo.find({ dog });
 };
 
+// Delete a photo by ID
 export const deletePhoto = async (dog, _id) => {
   const dogExists = await Dog.findById(dog);
   if (!dogExists) throw new Error('Dog not found');

@@ -1,5 +1,7 @@
+// openAiService.js contains the logic for interacting with the OpenAI API.
 import OpenAI from 'openai';
 
+// Ask GPT-3.5 for the top 5 dog walking parks near a location
 export const askGptPlacesToWalkADog = async ({ lat, lon }) => {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
@@ -27,7 +29,10 @@ export const askGptPlacesToWalkADog = async ({ lat, lon }) => {
       }
     ];
   }
+
+  // Create a new OpenAI instance with the API key
   const openai = new OpenAI({ apiKey });
+  // Ask GPT-3.5 for the top 5 dog walking parks near a location
   const question = `Please provide an array of objects detailing popular top 5 dog walking parks near at lat ${lat} and lon ${lon}, including {name, distancesByWalk, distancesByCar, timeByWalk, and timeByCar} for an api response. Distances in km, and time in minutes`;
   try {
     const completionResponse = await openai.chat.completions.create({
@@ -42,6 +47,7 @@ export const askGptPlacesToWalkADog = async ({ lat, lon }) => {
       ]
     });
 
+    // Parse the response from GPT-3.5
     const response = completionResponse.choices[0].message.content.trim();
     console.log('CAME TO CALL CHAT GPT ::::::::::::::::::::::::::::::');
     return JSON.parse(response);

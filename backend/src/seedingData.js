@@ -1,3 +1,4 @@
+// seedingData.js is a script that seeds the database with initial data for testing purposes.
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import DogModel from './models/Dog.js';

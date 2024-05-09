@@ -1,7 +1,9 @@
+// openAiController.js contains the logic for the openAi routes
 import { askGptPlacesToWalkADog } from '../services/openAiService.js';
 
 let cache = {}; // This prevent calling continuesly the API
 
+// Ask GPT-3 for a place to walk a dog
 export const promptQuestion = async ({ query: { lat, lon } }, res) => {
   try {
     const key = `${parseFloat(lat).toFixed(4)},${parseFloat(lon).toFixed(4)}`;

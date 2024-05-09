@@ -1,5 +1,7 @@
+// weatherController.js contains the logic for the /weather endpoint.
 import { fetchWeatherByLocation } from '../services/weatherService.js';
 
+// Check if the weather is good for a dog walk
 function isGoodDayForDogWalk(weatherData) {
   const { main, weather, wind } = weatherData;
 
@@ -26,6 +28,7 @@ function isGoodDayForDogWalk(weatherData) {
   return isTempIdeal && isWeatherGood && isWindOk && isHumidityOk;
 }
 
+// Get the weather for a specific location
 export const getWeather = async (req, res) => {
   const { lat, lon } = req.query; // Expect latitude and longitude as query parameters
   if (!lat || !lon) {

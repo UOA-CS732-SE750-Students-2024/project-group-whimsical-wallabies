@@ -1,3 +1,4 @@
+// common.js contains the logic for common utility functions.
 export const calculateDistance = (lat1, lon1, lat2, lon2) => {
   // Radius of the Earth in kilometers
   const R = 6371;

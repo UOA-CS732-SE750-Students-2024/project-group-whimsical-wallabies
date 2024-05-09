@@ -1,5 +1,7 @@
+// weatherService.js contains the logic for fetching weather data.
 import rp from 'request-promise';
 
+// Fetch weather data by city name
 export const fetchWeatherByLocation = async (lat, lon) => {
   const options = {
     uri: process.env.OPEN_WEATHER_URL,

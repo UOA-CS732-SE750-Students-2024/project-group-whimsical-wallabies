@@ -1,3 +1,4 @@
+// dogRoutes.js contains all the routes related to dogs.
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
@@ -15,6 +16,7 @@ import { authenticate } from '../middlewares/authMiddleware.js';
 import schemaValidator from '../middlewares/schemaValidator.js';
 import { buildPathWithBase, DOG_PATHS } from './paths.js';
 
+// Multer storage configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const dir = 'media/dogs';
@@ -26,12 +28,16 @@ const storage = multer.diskStorage({
   }
 });
 
+// Multer upload configuration
 const upload = multer({ storage: storage });
 
+// Create a new router
 const router = express.Router();
 
+// Build the dog path base
 const dogPathBase = buildPathWithBase(DOG_PATHS);
 
+// Dog routes
 router.post(DOG_PATHS.create, authenticate, schemaValidator(dogPathBase.create), create);
 router.get(DOG_PATHS.getAll, authenticate, getAll);
 router.get(DOG_PATHS.getOne, authenticate, getOne);

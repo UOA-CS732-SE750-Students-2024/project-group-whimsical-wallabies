@@ -1,5 +1,7 @@
+// Initialize User model
 import mongoose from 'mongoose';
 
+// User schema
 const UserSchema = new mongoose.Schema({
   aboutMe: { type: String, required: true },
   username: { type: String, required: true, unique: true },
@@ -16,5 +18,6 @@ const UserSchema = new mongoose.Schema({
   photoProfile: { type: String, required: false }
 });
 
+// Initialize User model
 const UserModel = mongoose.model('User', UserSchema);
 export default UserModel;
