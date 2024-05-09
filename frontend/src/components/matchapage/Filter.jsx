@@ -90,15 +90,15 @@ const Filter = ({ setTinderFilters, toggleFilter }) => {
           <Typography variant="h5">
             {(filters.manualMatch && 'Manual Match') || 'Auto Match'}
           </Typography>
-          <Typography variant="body1" sx={{ mt: 2 }}>
+          <Typography variant="div" sx={{ mt: 2 }}>
             {filters.manualMatch ? (
-              <Typography variant="body1">
+              <Typography variant="span">
                 Prefer a more hands-on approach? Select Manual Match to personally filter and select
                 potential mates based on specific criteria that you value. This option gives you the
                 flexibility to fine-tune the search based on your preferences.
               </Typography>
             ) : (
-              <Typography variant="body1">
+              <Typography variant="span">
                 Our system automatically finds potential mates whose profiles closely align with
                 your dog’s characteristics. This option is designed for effortless matches, ensuring
                 compatibility based on our comprehensive profile analysis.
@@ -234,8 +234,8 @@ const Filter = ({ setTinderFilters, toggleFilter }) => {
 };
 
 Filter.propTypes = {
-  setTinderFilters: PropTypes.func.isRequired,
-  toggleFilter: PropTypes.func.isRequired // Validate toggleFilter as a function
+  setTinderFilters: PropTypes.func,
+  toggleFilter: PropTypes.func // Validate toggleFilter as a function
 };
 
 export default Filter;
