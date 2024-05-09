@@ -39,23 +39,23 @@ This repository contains the code for a full-stack application, including a Reac
    - **Frontend:** [Follow these steps to install frontend dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#install-dependencies-1)
    - **Backend:** [Follow these steps to install backend dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies#install-dependencies)
 
-4. **Environment Setup**
+3. **Environment Setup**
 
    - **Frontend:** [Configure the frontend environment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#environment-setup-1)
    - **Backend:** [Configure the backend environment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#environment-setup)
 
-5. **Build and Start Docker Containers**
+4. **Build and Start Docker Containers**
 Build the Docker images and start the services using Docker Compose from the root of the project:
    ```sh
    docker-compose up --build
    ```
 This command builds the Docker images for the backend and frontend services, and starts the containers. The --build flag forces a rebuild of the images to incorporate any new changes.
 
-6. **Initial Mock Data Setup**
+5. **Initial Mock Data Setup**
 Build the Docker images and start the services using Docker Compose from the root of the project:
    - **Mock Data Setup**: [Initialize the mock data](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#initial-mock-data-setup)
 
-7. **Access the Application**
+6. **Access the Application**
 
    - **Frontend:** Access the frontend at [http://localhost:3000](http://localhost:3000)
    - **Backend:** Access the backend at [http://localhost:3001](http://localhost:3001)
