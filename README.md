@@ -150,6 +150,18 @@ node .\src\seedingData.js
 ```
 These steps will ensure that your development environment is pre-populated with the necessary mock data to begin testing and development immediately.
 
+The following predefined user accounts are available for testing purposes:
+
+| Username     | Password |
+|--------------|----------|
+| doglover1    | password1|
+| puppyfanatic | password2|
+| caninelover  | password3|
+| woofwoof     | password4|
+| barkbuddy    | password5|
+
+These steps will ensure that your development environment is pre-populated with the necessary mock data to begin testing and development immediately.
+
 ## Code Style and Guidelines
 
 We enforce a strict coding style to maintain the quality and consistency of our codebase. Using tools like **Husky**, **Lint-staged**, **ESLint**, and **Prettier**, we ensure that every piece of code is checked for style violations and formatted correctly before it is committed.
