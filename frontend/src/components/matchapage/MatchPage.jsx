@@ -13,6 +13,7 @@ import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
 import PetsIcon from '@mui/icons-material/Pets';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import { Box, Button, Typography, Snackbar, IconButton } from '@mui/material'; // Import necessary icons and components from Material-UI and other libraries
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Hammer from 'hammerjs'; // External library for touch gestures
 import PropTypes from 'prop-types'; // For defining prop types
 import React, { useState, useEffect, useCallback } from 'react'; // React hooks and components
@@ -63,13 +64,16 @@ const filterDogs = (dogs, { breeds, gender, age, neutered }) => {
       (breeds.length === 0 || breeds.includes(dog.breed)) &&
       ((gender === 'all' && true) || gender === dog.gender) &&
       ((neutered === 'all' && true) || neutered === dog.neutered.toString()) &&
-      (age.min <= ageInYears || age.max >= ageInYears)
+      age.min <= ageInYears &&
+      age.max >= ageInYears
     );
   });
 };
 
 // MatchPage component
 const MatchPage = () => {
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
+
   // Mutation hook for liking dogs
   const { mutate: likeDog } = useLikeDogMutation();
 
@@ -84,7 +88,12 @@ const MatchPage = () => {
     },
     neutered: 'all'
   });
-  const { data: potentialMates, isLoading, error } = useGetPotentialMates(filters.manualMatch); // Query hook for fetching potential mates
+  const {
+    data: potentialMates,
+    isLoading,
+    error,
+    refetch
+  } = useGetPotentialMates(filters.manualMatch); // Query hook for fetching potential mates
   const [shuffledMates, setShuffledMates] = useState([]); // State for shuffled potential mates
   const [currentCardIndex, setCurrentCardIndex] = useState(0); // State for current card index
   const [showLastCardMessage, setShowLastCardMessage] = useState(false); // State for showing last card message
@@ -109,7 +118,6 @@ const MatchPage = () => {
   // Handle card flip
   const flipCard = () => {
     setIsFlipped(!isFlipped);
-    console.log('flip');
   };
 
   // Effect to handle changes in potential mates or filters
@@ -126,8 +134,8 @@ const MatchPage = () => {
     } else {
       setShuffledMates([]);
       setCurrentCardIndex(0);
-    }
-  }, [filters, potentialMates, shuffledMates]);
+    } // eslint-disable-next-line
+  }, [filters, potentialMates]);
 
   // Utility function to compare arrays
   function arraysEqual(arr1, arr2) {
@@ -184,6 +192,11 @@ const MatchPage = () => {
     [currentCardIndex, shuffledMates]
   );
 
+  // Handle refresh page
+  const handleTryAgain = () => {
+    refetch();
+  };
+
   // Handle close message
   const handleCloseMessage = () => {
     setShowLastCardMessage(false);
@@ -230,16 +243,14 @@ const MatchPage = () => {
           cardElement.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
         }, 300);
       }
-    } else {
-      setShowLastCardMessage(true); // Display last card message
     }
   };
 
   // Handle swipe right action
   // Logic to handle right swipe and like a dog
   const handleSwipeRight = () => {
+    likeDog(shuffledMates[currentCardIndex]?._id);
     if (currentCardIndex < shuffledMates.length - 1) {
-      likeDog(shuffledMates[currentCardIndex]?._id);
       const cardElement = document.getElementById(`card-${currentCardIndex}`);
       if (cardElement) {
         cardElement.style.transition = 'transform 0.3s ease';
@@ -250,8 +261,6 @@ const MatchPage = () => {
           cardElement.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
         }, 300);
       }
-    } else {
-      setShowLastCardMessage(true); // Display last card message
     }
   };
 
@@ -308,23 +317,51 @@ const MatchPage = () => {
   return (
     <Box data-testid="match-page">
       {/* Button to toggle filter component */}
-      <IconButton onClick={toggleFilter} color="primary" data-testid="filter-toggle-button">
-        {isClose ? <CloseIcon /> : <FilterListRoundedIcon />}
-      </IconButton>
+      {!showFilter && !(isSmallScreen && showFriendList) && (
+        <IconButton
+          onClick={toggleFilter}
+          color="primary"
+          data-testid="filter-toggle-button"
+          sx={{
+            position: 'fixed',
+            top: '70px',
+            left: '8px',
+            zIndex: 1100
+          }}
+        >
+          <FilterListRoundedIcon />
+        </IconButton>
+      )}
 
       {/* Button to toggle friend list component */}
-      <IconButton onClick={toggleFriendList} color="secondary" data-testid="friend-list-button">
-        {isIconClose ? <CloseIcon /> : <Diversity1RoundedIcon />}
-      </IconButton>
+      {!showFriendList && !(isSmallScreen && showFilter) && (
+        <IconButton
+          onClick={toggleFriendList}
+          color="secondary"
+          data-testid="friend-list-button"
+          sx={{
+            position: 'fixed',
+            top: 70,
+            right: 8,
+            zIndex: 1100
+          }}
+        >
+          <Diversity1RoundedIcon />
+        </IconButton>
+      )}
 
       {/* Main content of MatchPage */}
       <Box className="dashboard" sx={CommonStyles.matchDashboard}>
         {/* Render filter component if showFilter is true */}
         {showFilter && (
-          <Filter setIsManualMatch={filters.manualMatch} setTinderFilters={setFilters} />
+          <Filter
+            setIsManualMatch={filters.manualMatch}
+            setTinderFilters={setFilters}
+            toggleFilter={toggleFilter}
+          />
         )}
         {/* Render friend list component if showFriendList is true */}
-        {showFriendList && <FriendList />}
+        {showFriendList && <FriendList toggleFriendList={toggleFriendList} />}
 
         {/* Conditionally render loading state, error state, or potential mates */}
         {isLoading ? (
@@ -435,6 +472,9 @@ const MatchPage = () => {
           // Render message if no potential mates found
           <Box sx={{ textAlign: 'center', mt: 4 }}>
             <Typography variant="h6">No potential mates found.</Typography>
+            <Button variant="contained" onClick={handleTryAgain} sx={{ mt: 4 }}>
+              Try Again
+            </Button>
           </Box>
         )}
 

@@ -1,3 +1,4 @@
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import ManageSearchRoundedIcon from '@mui/icons-material/ManageSearchRounded';
 import {
@@ -18,6 +19,7 @@ import {
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -26,7 +28,7 @@ import { useGetDogs } from '../../queries/dogs';
 import { useGetFriends, useUnfriendMutation } from '../../queries/friends';
 import { useGetUser } from '../../queries/user';
 
-const FriendList = () => {
+const FriendList = ({ toggleFriendList }) => {
   // Authentication and data fetching hooks
   const { currentUser } = useAuth();
   const { data: currentUserData, isLoading: isLoadingUser } = useGetUser(currentUser?.username);
@@ -111,19 +113,45 @@ const FriendList = () => {
   // Boolean to check if popover is open
   const open = Boolean(anchorEl);
 
+  // Initial Avatar
+  function getInitials(name = '') {
+    if (!name) return ''; // Return an empty string if the name is falsy
+
+    let initials = name
+      .split(' ')
+      .map((word) => word[0])
+      .join('')
+      .toUpperCase(); // Convert to uppercase if necessary
+    return initials.slice(0, 2);
+  }
+
   return (
     <Box
       sx={{
-        width: '25%',
+        width: '100%',
         height: '100vh',
         overflowY: 'auto',
         position: 'fixed',
         top: 0,
         right: 0,
         borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        '@media (min-width: 600px)': {
+          width: '25%' // On larger screens, set the width to 25%
+        },
+        zIndex: 1000
       }}
     >
+      <IconButton
+        onClick={toggleFriendList}
+        color="secondary"
+        data-testid="filter-toggle-button"
+        sx={{
+          zIndex: 1100
+        }}
+      >
+        <CancelRoundedIcon />
+      </IconButton>
       {/* User profile card */}
       <Card>
         <CardActionArea component={Link} to="/profile">
@@ -175,7 +203,7 @@ const FriendList = () => {
             onClick={() => handleFriendClick(friend)}
           >
             <ListItemAvatar>
-              <Avatar src={friend.photoProfile || 'default_friend.jpg'} />
+              <Avatar>{getInitials(friend.username)}</Avatar>
             </ListItemAvatar>
             <ListItemText primary={friend.username} secondary={friend.aboutMe} />
             <ListItemSecondaryAction>
@@ -220,5 +248,7 @@ const FriendList = () => {
     </Box>
   );
 };
-
+FriendList.propTypes = {
+  toggleFriendList: PropTypes.func.isRequired
+};
 export default FriendList;

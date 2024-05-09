@@ -76,7 +76,7 @@ const FriendPage = () => {
         </Box>
       </Grid>
       {/* Render FriendList component if showFriendList is true */}
-      {showFriendList && <FriendList />}
+      {showFriendList && <FriendList toggleFriendList={toggleFriendList} />}
       <Grid item xs={12}>
         {selectedFriend ? ( // Conditional rendering of friend profile details
           <Box>

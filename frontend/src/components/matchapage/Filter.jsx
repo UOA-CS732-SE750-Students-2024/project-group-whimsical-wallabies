@@ -1,3 +1,4 @@
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import {
   Box,
   FormControlLabel,
@@ -10,7 +11,8 @@ import {
   RadioGroup,
   Radio,
   Typography,
-  Divider
+  Divider,
+  IconButton
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -27,7 +29,7 @@ const filterInitialState = {
   neutered: 'all'
 };
 
-const Filter = ({ setTinderFilters }) => {
+const Filter = ({ setTinderFilters, toggleFilter }) => {
   const [filters, setFilters] = useState(filterInitialState);
   const handleChange = (prop) => (event) => {
     setFilters({ ...filters, age: { ...filters.age, [prop]: event.target.value } });
@@ -37,12 +39,18 @@ const Filter = ({ setTinderFilters }) => {
     setTinderFilters(filters, { manualMatch: true });
   }; // Define the functions to handle the auto and manual match buttons
   const handleAutoMatch = () => {
-    setFilters({ ...filterInitialState, manualMatch: false });
-    setTinderFilters(filters);
+    setFilters(() => {
+      const newFilters = { ...filterInitialState, manualMatch: false };
+      setTinderFilters(newFilters);
+      return newFilters;
+    });
   }; // Define the functions to handle the manual match button
   const handleManualMatch = () => {
-    setFilters({ ...filterInitialState, manualMatch: true });
-    setTinderFilters(filters);
+    setFilters(() => {
+      const newFilters = { ...filterInitialState, manualMatch: true };
+      setTinderFilters(newFilters);
+      return newFilters;
+    });
   }; // Define the function to handle the radio button changes
 
   const handleRadioChange = (key, value) => {
@@ -54,7 +62,7 @@ const Filter = ({ setTinderFilters }) => {
       {open && (
         <Box
           sx={{
-            width: '25%',
+            width: '100%',
             height: '100vh',
             overflowY: 'auto',
             position: 'fixed',
@@ -62,9 +70,23 @@ const Filter = ({ setTinderFilters }) => {
             left: 0,
             borderRight: '1px solid rgba(0, 0, 0, 0.12)',
             backgroundColor: 'white',
-            padding: '16px'
+            padding: '16px',
+            '@media (min-width: 600px)': {
+              width: '25%' // On larger screens, set the width to 25%
+            },
+            zIndex: 1000
           }}
         >
+          <IconButton
+            onClick={toggleFilter}
+            color="primary"
+            data-testid="filter-toggle-button"
+            sx={{
+              zIndex: 1100
+            }}
+          >
+            <CancelRoundedIcon />
+          </IconButton>
           <Typography variant="h5">
             {(filters.manualMatch && 'Manual Match') || 'Auto Match'}
           </Typography>
@@ -212,7 +234,8 @@ const Filter = ({ setTinderFilters }) => {
 };
 
 Filter.propTypes = {
-  setTinderFilters: PropTypes.func.isRequired
+  setTinderFilters: PropTypes.func.isRequired,
+  toggleFilter: PropTypes.func.isRequired // Validate toggleFilter as a function
 };
 
 export default Filter;
