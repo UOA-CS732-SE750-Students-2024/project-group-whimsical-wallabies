@@ -170,7 +170,7 @@ async function setupData() {
           weight: dogWeight[i * 3 + j],
           bio: dogBios[i * 3 + j],
           neutered: j % 2 === 0 ? true : false,
-          profilePicture: `images/dogs/dog${j + 1}_photo1.jpg`
+          profilePicture: `images/dogs/dog${i * 3 + (j + 1)}_photo1.jpg`
         });
         dogs.push(dog);
       }
