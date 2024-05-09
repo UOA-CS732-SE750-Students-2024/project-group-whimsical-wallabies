@@ -70,21 +70,22 @@ const DogWalkingPlaces = () => {
         </Typography>
       ) : (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {placesData.answer.map(
-            ({ name, distancesByWalk, timeByWalk, distancesByCar, timeByCar }) => (
-              <Box key={name} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Typography variant="h6">{name}</Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <DirectionsWalkIcon color="primary" />
-                  <Typography variant="body2">{`Walk: ${distancesByWalk} km, ${timeByWalk} mins`}</Typography>
+          {placesData.answer &&
+            placesData.answer.map(
+              ({ name, distancesByWalk, timeByWalk, distancesByCar, timeByCar }) => (
+                <Box key={name} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <Typography variant="h6">{name}</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <DirectionsWalkIcon color="primary" />
+                    <Typography variant="body2">{`Walk: ${distancesByWalk} km, ${timeByWalk} mins`}</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <DirectionsCarIcon color="secondary" />
+                    <Typography variant="body2">{`Car: ${distancesByCar} km, ${timeByCar} mins`}</Typography>
+                  </Box>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <DirectionsCarIcon color="secondary" />
-                  <Typography variant="body2">{`Car: ${distancesByCar} km, ${timeByCar} mins`}</Typography>
-                </Box>
-              </Box>
-            )
-          )}
+              )
+            )}
           <Divider />
         </Box>
       )}
