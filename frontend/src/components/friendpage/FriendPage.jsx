@@ -79,7 +79,7 @@ const FriendPage = () => {
       {showFriendList && <FriendList />}
       <Grid item xs={12}>
         {selectedFriend ? ( // Conditional rendering of friend profile details
-          <div>
+          <Box>
             <Typography variant="h4" gutterBottom>
               {selectedFriend.username} {/* Display friend's username */}
             </Typography>
@@ -111,7 +111,7 @@ const FriendPage = () => {
                 </Grid>
               ))}
             </Grid>
-          </div>
+          </Box>
         ) : (
           <Typography variant="body1">Loading friend data...</Typography> // Render while loading friend data
         )}
