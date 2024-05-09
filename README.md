@@ -177,17 +177,18 @@ For a detailed step-by-step guide on how to contribute, please refer to our [pro
 
 Welcome to the PawMate App, a MERN stack application for connecting dog owners. Below is a summary of the resources available in our project wiki:
 
-1. **Introduction**: Overview of the project and its objectives.
-2. **Getting Started**: Steps to get up and running with the application.
-3. **System Requirements**: Hardware and software needed to use and develop the app.
-4. **Installation Guide**: Detailed instructions for setting up the application.
-5. **Feature Documentation**: In-depth coverage of the application's features.
-6. **API Documentation**: Information on the application's APIs and how to use them.
-7. **Code Style and Guidelines**: Coding standards and practices to follow.
-8. **Testing**: Testing strategies and frameworks used.
-9. **Deployment**: Guidelines for deploying the application.
-10. **User Manual**: Instructions for end-users on how to use the application.
-11. **Contribution Guidelines**: Information on how to contribute to the project.
-12. **Credits and Acknowledgements**: Recognition of those who have contributed to the project.
+01. [Introduction](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/01.-Introduction): Overview of the project and its objectives.
+02. [Getting Started](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/02.-Getting-Started): Steps to get up and running with the application.
+03. [System Requirements](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/03.-System-Requirements): Hardware and software needed to use and develop the app.
+04. [Installation Guide](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/04.-Installation-Guide): Detailed instructions for setting up the application.
+05. [Feature Documentation](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/05.-Feature-Documentation): In-depth coverage of the application's features.
+06. [User Manual](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/06.-User-Manual): Instructions for end-users on how to use the application.
+07. [API Documentation](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/07.-API-Documentation): Information on the application's APIs and how to use them.
+08. [Code Style and Guidelines](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/08.-Code-Style-and-Guidelines): Coding standards and practices to follow.
+09. [Testing](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/09.-Testing): Testing strategies and frameworks used.
+10. [Deployment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/10.-Deployment): Guidelines for deploying the application.
+11. [Contribution Guidelines](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/11.-Contribution-Guidlines): Information on how to contribute to the project.
+12. [Credits and Acknowledgements](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/12.-Credits-and-Acknowledgements): Recognition of those who have contributed to the project.
+13. [Project Management](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/13.-Project-Manageemnt): Oversight of the project, including meeting minutes and decision-making.
 
 For detailed documentation, visit our [Project Wiki Link](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki)
