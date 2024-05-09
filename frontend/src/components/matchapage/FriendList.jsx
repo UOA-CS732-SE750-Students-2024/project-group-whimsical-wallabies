@@ -249,6 +249,6 @@ const FriendList = ({ toggleFriendList }) => {
   );
 };
 FriendList.propTypes = {
-  toggleFriendList: PropTypes.func.isRequired
+  toggleFriendList: PropTypes.func
 };
 export default FriendList;
