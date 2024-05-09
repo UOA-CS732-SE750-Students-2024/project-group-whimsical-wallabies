@@ -1,3 +1,4 @@
+// Filter component to handle the filter options for the Tinder page
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import {
   Box,

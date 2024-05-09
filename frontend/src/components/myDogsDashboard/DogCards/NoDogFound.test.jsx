@@ -1,3 +1,4 @@
+// Test: check if the NoDogFound component renders without crashing
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import NoDogFound from './NoDogFound';

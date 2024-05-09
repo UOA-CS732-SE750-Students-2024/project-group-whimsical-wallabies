@@ -1,6 +1,8 @@
+// This file contains all the queries related to dogs.
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axiosApiInstance from '../utils/axiosApiInstance';
 
+// Custom hook to get all the dogs
 export function useGetDogs() {
   return useQuery({
     queryKey: ['me', 'dogs'],
@@ -11,6 +13,7 @@ export function useGetDogs() {
   });
 }
 
+// Custom hook to get a dog by ID
 export function useGetDogById(dogId, options = {}) {
   return useQuery({
     queryKey: ['dogs', dogId],
@@ -22,6 +25,7 @@ export function useGetDogById(dogId, options = {}) {
   });
 }
 
+// Custom hook to update a dog
 export function useGetDog(id) {
   return useQuery({
     queryKey: ['dog'],
@@ -32,6 +36,7 @@ export function useGetDog(id) {
   });
 }
 
+// Custom hook to update a dog
 export function useUpdateDogMutation(dogId, options) {
   return useMutation({
     mutationFn: async (updatedDog) => {
@@ -42,6 +47,7 @@ export function useUpdateDogMutation(dogId, options) {
   });
 }
 
+// Custom hook to create a dog
 export function useCreateDogMutation(options) {
   return useMutation({
     mutationFn: async (newDog) => {
@@ -51,6 +57,8 @@ export function useCreateDogMutation(options) {
     ...options
   });
 }
+
+// Custom hook to upload a dog profile picture
 export function useUploadDogProfilePictureMutation(options) {
   return useMutation({
     mutationFn: async ({ dogId, profilePicture }) => {
@@ -67,6 +75,7 @@ export function useUploadDogProfilePictureMutation(options) {
   });
 }
 
+// Custom hook to delete a dog
 export function useDeleteDogMutation(dogId, options) {
   return useMutation({
     mutationFn: async () => {

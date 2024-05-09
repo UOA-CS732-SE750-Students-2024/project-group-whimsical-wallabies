@@ -1,6 +1,8 @@
+// AuthContext.queries for frontend. This file contains custom hooks for login and signup mutations.
 import { useMutation } from '@tanstack/react-query';
 import { login, signup } from '../services/authService';
 
+// Mutation to login a user
 export const useLoginMutation = (onSuccess = {}) => {
   return useMutation({
     mutationFn: (loginData) => login(loginData),

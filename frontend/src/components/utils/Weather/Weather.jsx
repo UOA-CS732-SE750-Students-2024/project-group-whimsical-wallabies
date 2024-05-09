@@ -1,3 +1,4 @@
+// Weather component to display the weather in Auckland
 import AirIcon from '@mui/icons-material/Air';
 import CloudIcon from '@mui/icons-material/Cloud'; // Import icons relevant to the weather
 import ThermostatIcon from '@mui/icons-material/Thermostat';
@@ -10,10 +11,12 @@ import React, { useEffect, useState } from 'react';
 
 import { useGetWeather } from '../../../queries/thridParties';
 
+// Weather component to display the weather in Auckland, powered by OpenWeatherMap.org
 const Weather = () => {
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
-  const [geoLocalizationError, setGeoLocalizationError] = useState(false);
+  const [location, setLocation] = useState({ latitude: null, longitude: null }); // State for storing user's location
+  const [geoLocalizationError, setGeoLocalizationError] = useState(false); // State for geolocation error
 
+  // Get weather data for the user's location
   const { data: weatherData } = useGetWeather(
     {
       lat: location.latitude,
@@ -24,6 +27,7 @@ const Weather = () => {
     }
   );
 
+  // Get user's location
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -38,6 +42,7 @@ const Weather = () => {
     );
   }, []);
 
+  // Render loading spinner while data is being fetched
   if (!weatherData && !geoLocalizationError) return <CircularProgress />;
 
   return (

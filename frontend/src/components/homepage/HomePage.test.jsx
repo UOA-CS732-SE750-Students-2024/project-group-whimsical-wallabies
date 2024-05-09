@@ -1,3 +1,4 @@
+// Jest test for HomePage component
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';

@@ -1,5 +1,7 @@
+// Code to customize the theme of the Material-UI components
 import { createTheme } from '@mui/material/styles';
 
+// Create a custom theme for the Material-UI components
 const theme = createTheme({
   palette: {
     primary: {

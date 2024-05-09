@@ -1,6 +1,8 @@
+// Axios instance with interceptors for handling token expiry
 import axios from 'axios';
 import { tokenStorage, userDataStorage } from './localStorageNames';
 
+// Create an Axios instance
 const axiosApiInstance = axios.create({
   // eslint-disable-next-line no-undef
   baseURL: process.env.REACT_APP_API_URL
@@ -20,6 +22,7 @@ axiosApiInstance.interceptors.request.use(
   }
 );
 
+// Response interceptor
 axiosApiInstance.interceptors.response.use(
   (response) => response,
   (error) => {

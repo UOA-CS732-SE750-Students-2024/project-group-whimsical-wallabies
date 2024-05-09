@@ -1,3 +1,4 @@
+// Friends' dog profile component, displaying dog details
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents'; // Icon for displaying events
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'; // Icon for favorites
 import FemaleIcon from '@mui/icons-material/Female'; // Female gender icon

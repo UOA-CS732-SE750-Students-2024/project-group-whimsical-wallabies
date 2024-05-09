@@ -1,3 +1,4 @@
+// MatchPage component, which displays potential mates for the user to swipe through
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import BadgeIcon from '@mui/icons-material/Badge';
 import CakeIcon from '@mui/icons-material/Cake';

@@ -1,3 +1,4 @@
+// Test: DogPhotoGallery Component
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import {
@@ -23,11 +24,13 @@ jest.mock('../../../queries/photos', () => ({
   }))
 }));
 
+// Mock the photos data
 const mockPhotos = [
   { _id: '1', url: 'photo1.jpg' },
   { _id: '2', url: 'photo2.jpg' }
 ];
 
+// Test suite for the DogPhotoGallery component
 describe('DogPhotoGallery', () => {
   beforeEach(() => {
     // Set up default returns for hooks

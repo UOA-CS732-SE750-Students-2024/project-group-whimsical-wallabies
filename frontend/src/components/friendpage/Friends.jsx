@@ -1,3 +1,4 @@
+// Friends component for displaying user's friends and managing friend interactions
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded'; // Delete icon from Material-UI
 import {
   Box,

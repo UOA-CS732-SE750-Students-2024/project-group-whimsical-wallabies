@@ -1,3 +1,4 @@
+// Fake data for dog breeds
 export const dogBreeds = [
   'Labrador Retriever',
   'German Shepherd',

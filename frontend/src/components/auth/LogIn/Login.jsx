@@ -1,3 +1,4 @@
+// Login component for the application
 import { joiResolver } from '@hookform/resolvers/joi';
 import PasswordIcon from '@mui/icons-material/Password';
 import PersonIcon from '@mui/icons-material/Person';
@@ -21,16 +22,21 @@ import { APPLICATION_PATH } from '../../../utils/urlRoutes';
 import { CommonStyles } from '../../common/CommonStyles';
 import { loginSchema } from './Login.validation';
 
+// Login component for the application
 const Login = () => {
+  // Get the login function, login errors, isAuthenticated and isPendingLogin from the AuthContext
   const { login, loginErrors, isAuthenticated, isPendingLogin } = useAuth();
+
   let navigate = useNavigate();
 
+  // Redirect to the dashboard if the user is authenticated
   useEffect(() => {
     if (isAuthenticated) {
       navigate(APPLICATION_PATH.dashboard);
     }
   }, [isAuthenticated, navigate]);
 
+  // Form validation using react-hook-form and joi
   const {
     register,
     handleSubmit,
@@ -39,7 +45,7 @@ const Login = () => {
   } = useForm({
     resolver: joiResolver(loginSchema)
   });
-
+  // Set server errors to the form fields
   useEffect(() => {
     const serverErrors = loginErrors?.response?.data?.fields;
     if (serverErrors) {
@@ -52,6 +58,7 @@ const Login = () => {
     }
   }, [loginErrors, setError]);
 
+  // Handle the SignUp button click
   const handleSignUpClick = () => {
     navigate(APPLICATION_PATH.auth.signup); // Navigate to the SignUp route
   };

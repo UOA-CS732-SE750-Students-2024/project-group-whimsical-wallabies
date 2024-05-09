@@ -1,3 +1,4 @@
+// Test: DogFormBase Component
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PropTypes from 'prop-types';
@@ -21,10 +22,12 @@ function DogFormBaseWrapper({ isLoading }) {
   );
 }
 
+// Prop types validation
 DogFormBaseWrapper.propTypes = {
   isLoading: PropTypes.bool.isRequired
 };
 
+// Test suite for the DogFormBase component
 describe('DogFormBase', () => {
   it('renders all fields correctly and can interact with the file input', () => {
     render(<DogFormBaseWrapper isLoading={false} />);

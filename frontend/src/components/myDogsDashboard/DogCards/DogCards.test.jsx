@@ -1,3 +1,4 @@
+// Test: DogCards Component
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { useGetDogs } from '../../../queries/dogs';
@@ -15,12 +16,14 @@ jest.mock('../DogCardItem', () => {
   return DogCardItem;
 });
 
+// Mock components
 jest.mock('./NoDogFound', () => {
   const NoDogFound = () => <div>NoDogsFound</div>;
   NoDogFound.displayName = 'NoDogFound';
   return NoDogFound;
 });
 
+// Test the DogCards component, which displays a list of dogs
 describe('DogCards', () => {
   it('displays loading state correctly', () => {
     useGetDogs.mockReturnValue({ isLoading: true, error: null, data: null });

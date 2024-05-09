@@ -1,3 +1,4 @@
+// Test: UserProfile.test.jsx
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';

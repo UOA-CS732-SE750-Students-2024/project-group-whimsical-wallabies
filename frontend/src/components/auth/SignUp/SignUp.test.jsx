@@ -1,3 +1,4 @@
+// Jest test for the SignUp component
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -15,6 +16,7 @@ jest.mock('../../../context/AuthContext', () => ({
   useNavigate: () => jest.fn()
 }));
 
+// Test suite for the SignUp component
 describe('SignUp Component', () => {
   const setup = () =>
     render(
@@ -22,7 +24,7 @@ describe('SignUp Component', () => {
         <SignUp />
       </Router>
     );
-
+  // Test case to check if the SignUp form is rendered with required fields
   test('renders the SignUp form with all fields', () => {
     setup();
     expect(screen.getByLabelText('Username')).toBeInTheDocument();
@@ -33,6 +35,7 @@ describe('SignUp Component', () => {
     expect(screen.getByLabelText('About Me')).toBeInTheDocument();
   });
 
+  // Test case to check if the SignUp function is called with the form data when the form is submitted
   test('shows error messages for invalid input', async () => {
     const { getByLabelText } = setup();
     fireEvent.submit(getByLabelText('Username'));

@@ -1,9 +1,11 @@
+// DogWalingPlaces component to show the best places to walk your dog near you.
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
 import { Box, Typography, CircularProgress, Paper, Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useGetPlacesToWalkMyDog } from '../../../queries/thridParties';
 
+// DogWalkingPlaces component to show the best places to walk your dog near you
 const DogWalkingPlaces = () => {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [geoLocalizationError, setGeoLocalizationError] = useState(false);
@@ -17,6 +19,8 @@ const DogWalkingPlaces = () => {
       enabled: (location.latitude && location.longitude) !== null
     }
   );
+
+  // Get user's location
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -30,7 +34,10 @@ const DogWalkingPlaces = () => {
       }
     );
   }, []);
+
+  // Render loading spinner while data is being fetched
   if (!placesData && !geoLocalizationError) return <CircularProgress />;
+
   return (
     <Paper
       elevation={3}

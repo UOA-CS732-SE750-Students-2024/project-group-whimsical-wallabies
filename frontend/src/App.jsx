@@ -1,3 +1,4 @@
+// Main entry point for the frontend application
 import Box from '@mui/material/Box';
 import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -25,8 +26,10 @@ import theme from './theme';
 
 import { APPLICATION_PATH } from './utils/urlRoutes';
 
+// Create a new instance of the React Query client
 const queryClient = new QueryClient();
 
+// PrivateRoute component to protect routes that require authentication
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? (
@@ -39,10 +42,12 @@ const PrivateRoute = ({ children }) => {
   );
 };
 
+// Prop types for the PrivateRoute component
 PrivateRoute.propTypes = {
   children: PropTypes.node.isRequired
 };
 
+// Main App component
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
