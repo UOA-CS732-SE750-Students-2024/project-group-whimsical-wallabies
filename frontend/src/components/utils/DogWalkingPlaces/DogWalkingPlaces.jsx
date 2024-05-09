@@ -6,6 +6,7 @@ import { useGetPlacesToWalkMyDog } from '../../../queries/thridParties';
 
 const DogWalkingPlaces = () => {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
+  const [geoLocalizationError, setGeoLocalizationError] = useState(false);
 
   const { data: placesData } = useGetPlacesToWalkMyDog(
     {
@@ -24,12 +25,12 @@ const DogWalkingPlaces = () => {
           longitude: position.coords.longitude
         });
       },
-      (error) => {
-        console.error('Error occurred while getting location: ', error);
+      () => {
+        setGeoLocalizationError(true);
       }
     );
   }, []);
-  if (!placesData) return <CircularProgress />;
+  if (!placesData && !geoLocalizationError) return <CircularProgress />;
   return (
     <Paper
       elevation={3}
@@ -63,24 +64,30 @@ const DogWalkingPlaces = () => {
         Powered by ChatGPT
       </Typography>
       <Divider sx={{ my: 1 }} />
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {placesData.answer.map(
-          ({ name, distancesByWalk, timeByWalk, distancesByCar, timeByCar }) => (
-            <Box key={name} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Typography variant="h6">{name}</Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <DirectionsWalkIcon color="primary" />
-                <Typography variant="body2">{`Walk: ${distancesByWalk} km, ${timeByWalk} mins`}</Typography>
+      {geoLocalizationError ? (
+        <Typography>
+          Please enable location services to get the best places to walk your dog.
+        </Typography>
+      ) : (
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {placesData.answer.map(
+            ({ name, distancesByWalk, timeByWalk, distancesByCar, timeByCar }) => (
+              <Box key={name} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                <Typography variant="h6">{name}</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <DirectionsWalkIcon color="primary" />
+                  <Typography variant="body2">{`Walk: ${distancesByWalk} km, ${timeByWalk} mins`}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <DirectionsCarIcon color="secondary" />
+                  <Typography variant="body2">{`Car: ${distancesByCar} km, ${timeByCar} mins`}</Typography>
+                </Box>
               </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <DirectionsCarIcon color="secondary" />
-                <Typography variant="body2">{`Car: ${distancesByCar} km, ${timeByCar} mins`}</Typography>
-              </Box>
-            </Box>
-          )
-        )}
-        <Divider />
-      </Box>
+            )
+          )}
+          <Divider />
+        </Box>
+      )}
     </Paper>
   );
 };

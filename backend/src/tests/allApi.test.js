@@ -9,7 +9,7 @@ describe('API Tests', () => {
   let mongoServer;
   let token; // Token to be used for authenticated requests
   let createdDogId; // To store a created dog's ID for retrieval and deletion
-  let username = 'testuser';// Username to be used for user profile tests
+  let username = 'testuser'; // Username to be used for user profile tests
 
   before(async function () {
     process.env.JWT_SECRET = process.env.JWT_SECRET || 'w4ll4b13s732c0mpsc12024';
@@ -88,7 +88,6 @@ describe('API Tests', () => {
         done();
       });
   });
-
 
   // Update a user profile
   it('should update a user', (done) => {

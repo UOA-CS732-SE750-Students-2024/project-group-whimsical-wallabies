@@ -12,6 +12,7 @@ import { useGetWeather } from '../../../queries/thridParties';
 
 const Weather = () => {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
+  const [geoLocalizationError, setGeoLocalizationError] = useState(false);
 
   const { data: weatherData } = useGetWeather(
     {
@@ -31,15 +32,13 @@ const Weather = () => {
           longitude: position.coords.longitude
         });
       },
-      (error) => {
-        console.error('Error occurred while getting location: ', error);
+      () => {
+        setGeoLocalizationError(true);
       }
     );
   }, []);
 
-  if (!weatherData) return <CircularProgress />;
-
-  const { main, weather, wind, isGoodDayForWalk } = weatherData;
+  if (!weatherData && !geoLocalizationError) return <CircularProgress />;
 
   return (
     <Paper
@@ -73,42 +72,52 @@ const Weather = () => {
         Powered by OpenWeatherMap.org
       </Typography>
       <Divider sx={{ my: 1 }} />
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <Box display="flex" alignItems="center">
-            <ThermostatIcon color="primary" sx={{ mr: 1 }} />
-            <Typography>Temp: {main.temp}°C</Typography>
-          </Box>
-          <Box display="flex" alignItems="center">
-            <WaterIcon color="primary" sx={{ mr: 1 }} />
-            <Typography>Humidity: {main.humidity}%</Typography>
-          </Box>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Box display="flex" alignItems="center">
-            <AirIcon color="primary" sx={{ mr: 1 }} />
-            <Typography>Wind: {wind.speed} m/s</Typography>
-          </Box>
-          <Box display="flex" alignItems="center">
-            <CloudIcon color="primary" sx={{ mr: 1 }} />
-            <Typography>{weather[0].description}</Typography>
-          </Box>
-        </Grid>
-      </Grid>
-      <Divider sx={{ my: 1 }} />
-      <Typography variant="caption" align="center" color={isGoodDayForWalk ? 'green' : 'red'}>
-        {isGoodDayForWalk ? (
-          <Box color="green" display="flex" alignItems="center" justifyContent="center">
-            <ThumbUpIcon sx={{ mr: 1 }} />
-            Good day for walking your dog!
-          </Box>
-        ) : (
-          <Box color="red" display="flex" alignItems="center" justifyContent="center">
-            <ThumbDownIcon sx={{ mr: 1 }} />
-            Not a good day for walking your dog.
-          </Box>
-        )}
-      </Typography>
+      {geoLocalizationError ? (
+        <Typography>Please enable location services to get the weather data.</Typography>
+      ) : (
+        <>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <Box display="flex" alignItems="center">
+                <ThermostatIcon color="primary" sx={{ mr: 1 }} />
+                <Typography>Temp: {weatherData.main.temp}°C</Typography>
+              </Box>
+              <Box display="flex" alignItems="center">
+                <WaterIcon color="primary" sx={{ mr: 1 }} />
+                <Typography>Humidity: {weatherData.main.humidity}%</Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box display="flex" alignItems="center">
+                <AirIcon color="primary" sx={{ mr: 1 }} />
+                <Typography>Wind: {weatherData.wind.speed} m/s</Typography>
+              </Box>
+              <Box display="flex" alignItems="center">
+                <CloudIcon color="primary" sx={{ mr: 1 }} />
+                <Typography>{weatherData.weather[0].description}</Typography>
+              </Box>
+            </Grid>
+          </Grid>
+          <Divider sx={{ my: 1 }} />
+          <Typography
+            variant="caption"
+            align="center"
+            color={weatherData.isGoodDayForWalk ? 'green' : 'red'}
+          >
+            {weatherData.isGoodDayForWalk ? (
+              <Box color="green" display="flex" alignItems="center" justifyContent="center">
+                <ThumbUpIcon sx={{ mr: 1 }} />
+                Good day for walking your dog!
+              </Box>
+            ) : (
+              <Box color="red" display="flex" alignItems="center" justifyContent="center">
+                <ThumbDownIcon sx={{ mr: 1 }} />
+                Not a good day for walking your dog.
+              </Box>
+            )}
+          </Typography>
+        </>
+      )}
     </Paper>
   );
 };

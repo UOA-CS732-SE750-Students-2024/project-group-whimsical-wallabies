@@ -7,13 +7,14 @@ function isGoodDayForDogWalk(weatherData) {
   const isTempIdeal = main.temp >= 15 && main.temp <= 24;
 
   // Check weather conditions: avoid rain, snow, or any extreme weather
+  // https://openweathermap.org/weather-conditions
   const weatherIds = weather.map((item) => item.id);
   const isWeatherGood = !weatherIds.some(
     (id) =>
       (id >= 200 && id <= 232) || // Thunderstorm
       (id >= 300 && id <= 531) || // Drizzle & Rain
       (id >= 600 && id <= 622) || // Snow
-      id >= 781 // Tornado
+      (id >= 781 && id !== 801 && id !== 802) // Tornado
   );
 
   // Check wind speed (convert m/s to km/h by multiplying by 3.6)

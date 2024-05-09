@@ -127,7 +127,7 @@ const MatchPage = () => {
       setShuffledMates([]);
       setCurrentCardIndex(0);
     }
-  }, [filters, potentialMates]);
+  }, [filters, potentialMates, shuffledMates]);
 
   // Utility function to compare arrays
   function arraysEqual(arr1, arr2) {
