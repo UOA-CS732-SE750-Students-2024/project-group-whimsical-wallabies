@@ -34,6 +34,7 @@ This repository contains the code for a full-stack application, including a Reac
    git clone UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies.git
    cd project-group-whimsical-wallabies
    ```
+
 2. **Install the Dependencies**
 
    - **Frontend:** [Follow these steps to install frontend dependencies](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#install-dependencies-1)
@@ -45,14 +46,17 @@ This repository contains the code for a full-stack application, including a Reac
    - **Backend:** [Configure the backend environment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#environment-setup)
 
 4. **Build and Start Docker Containers**
-Build the Docker images and start the services using Docker Compose from the root of the project:
+   Build the Docker images and start the services using Docker Compose from the root of the project:
+
    ```sh
    docker-compose up --build
    ```
-This command builds the Docker images for the backend and frontend services, and starts the containers. The --build flag forces a rebuild of the images to incorporate any new changes.
+
+   This command builds the Docker images for the backend and frontend services, and starts the containers. The --build flag forces a rebuild of the images to incorporate any new changes.
 
 5. **Initial Mock Data Setup**
-Build the Docker images and start the services using Docker Compose from the root of the project:
+   Build the Docker images and start the services using Docker Compose from the root of the project:
+
    - **Mock Data Setup**: [Initialize the mock data](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies?tab=readme-ov-file#initial-mock-data-setup)
 
 6. **Access the Application**
@@ -77,15 +81,18 @@ The Docker Compose file is configured with development in mind, featuring hot re
 - **dotenv:** Loads environment variables from a `.env` file.
 
 #### Install Dependencies:
+
 Navigate to the frontend directory:
-   ```sh
-   cd backend
-   ```
+
+```sh
+cd backend
+```
 
 Install the dependencies:
-   ```sh
-   npm install
-   ```
+
+```sh
+npm install
+```
 
 #### Development Dependencies:
 
@@ -96,15 +103,16 @@ Install the dependencies:
 #### Environment Setup:
 
 Create a `.env` file in the root of the backend directory and add the following lines:
-   ```sh
-   PORT=3001
-   MONGO_URI=mongodb://mongo:27017/732-project
-   JWT_SECRET=your_jwt_secret
-   OPEN_WEATHER_API_KEY=your_open_weather_api_key
-   OPEN_WEATHER_URL=http://api.openweathermap.org/data/2.5/weather
-   OPENAI_API_KEY=your_openai_api_key
-   APP_GOOGLE_MAPS_API_KEY=your_google_map_api_key
-   ```
+
+```sh
+PORT=3001
+MONGO_URI=mongodb://mongo:27017/732-project
+JWT_SECRET=your_jwt_secret
+OPEN_WEATHER_API_KEY=your_open_weather_api_key
+OPEN_WEATHER_URL=http://api.openweathermap.org/data/2.5/weather
+OPENAI_API_KEY=your_openai_api_key
+APP_GOOGLE_MAPS_API_KEY=your_google_map_api_key
+```
 
 ### Frontend
 
@@ -112,15 +120,18 @@ Create a `.env` file in the root of the backend directory and add the following 
 - **react-scripts:** Includes scripts and configuration used by Create React App.
 
 #### Install Dependencies:
+
 Navigate to the frontend directory:
-   ```sh
-   cd frontend
-   ```
+
+```sh
+cd frontend
+```
 
 Install the dependencies:
-   ```sh
-   npm install
-   ```
+
+```sh
+npm install
+```
 
 #### Development Dependencies:
 
@@ -130,24 +141,44 @@ Install the dependencies:
 #### Environment Setup:
 
 Create a `.env` file in the root of the frontend directory and add the following line:
+
 ```sh
 REACT_APP_API_URL=http://localhost:3001
 REACT_APP_GOOGLE_MAPS_API_KEY=your_google_map_api_key
 ```
+
 This variable points to the URL of the backend server.
 
 ## Initial Mock Data Setup
 
 ### Step 1: Navigate to the Backend Directory
+
 To start, navigate to the backend directory by executing the following command in your terminal:
+
 ```sh
 cd backend
 ```
+
 ### Step 2: Run the Data Seeding Script
+
 Next, initialize the mock data by running the data seeding script. This script populates your database with sample data essential for development:
+
 ```sh
 node .\src\seedingData.js
 ```
+
+These steps will ensure that your development environment is pre-populated with the necessary mock data to begin testing and development immediately.
+
+The following predefined user accounts are available for testing purposes:
+
+| Username     | Password  |
+| ------------ | --------- |
+| doglover1    | password1 |
+| puppyfanatic | password2 |
+| caninelover  | password3 |
+| woofwoof     | password4 |
+| barkbuddy    | password5 |
+
 These steps will ensure that your development environment is pre-populated with the necessary mock data to begin testing and development immediately.
 
 ## Code Style and Guidelines
@@ -172,20 +203,19 @@ Contributing to our project is straightforward. Here's a brief overview of the p
 
 For a detailed step-by-step guide on how to contribute, please refer to our [project wiki](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/11.-Contribution-Guidlines)
 
-
 ## Project Documentation
 
 Welcome to the PawMate App, a MERN stack application for connecting dog owners. Below is a summary of the resources available in our project wiki:
 
-01. [Introduction](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/01.-Introduction): Overview of the project and its objectives.
-02. [Getting Started](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/02.-Getting-Started): Steps to get up and running with the application.
-03. [System Requirements](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/03.-System-Requirements): Hardware and software needed to use and develop the app.
-04. [Installation Guide](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/04.-Installation-Guide): Detailed instructions for setting up the application.
-05. [Feature Documentation](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/05.-Feature-Documentation): In-depth coverage of the application's features.
-06. [User Manual](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/06.-User-Manual): Instructions for end-users on how to use the application.
-07. [API Documentation](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/07.-API-Documentation): Information on the application's APIs and how to use them.
-08. [Code Style and Guidelines](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/08.-Code-Style-and-Guidelines): Coding standards and practices to follow.
-09. [Testing](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/09.-Testing): Testing strategies and frameworks used.
+1.  [Introduction](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/01.-Introduction): Overview of the project and its objectives.
+2.  [Getting Started](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/02.-Getting-Started): Steps to get up and running with the application.
+3.  [System Requirements](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/03.-System-Requirements): Hardware and software needed to use and develop the app.
+4.  [Installation Guide](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/04.-Installation-Guide): Detailed instructions for setting up the application.
+5.  [Feature Documentation](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/05.-Feature-Documentation): In-depth coverage of the application's features.
+6.  [User Manual](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/06.-User-Manual): Instructions for end-users on how to use the application.
+7.  [API Documentation](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/07.-API-Documentation): Information on the application's APIs and how to use them.
+8.  [Code Style and Guidelines](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/08.-Code-Style-and-Guidelines): Coding standards and practices to follow.
+9.  [Testing](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/09.-Testing): Testing strategies and frameworks used.
 10. [Deployment](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/10.-Deployment): Guidelines for deploying the application.
 11. [Contribution Guidelines](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/11.-Contribution-Guidlines): Information on how to contribute to the project.
 12. [Credits and Acknowledgements](https://github.com/UOA-CS732-SE750-Students-2024/project-group-whimsical-wallabies/wiki/12.-Credits-and-Acknowledgements): Recognition of those who have contributed to the project.
