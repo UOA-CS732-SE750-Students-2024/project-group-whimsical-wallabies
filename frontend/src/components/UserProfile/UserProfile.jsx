@@ -164,7 +164,7 @@ const UserProfile = () => {
       setValue('latitude', currentUserData.latitude, { shouldValidate: false });
       setValue('longitude', currentUserData.longitude, { shouldValidate: false });
     }
-  }, [isLoading, currentUserData, setValue]);
+  }, [isLoading]);
 
   if (!userData) {
     return <Typography variant="h6">Loading...</Typography>;
