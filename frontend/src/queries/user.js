@@ -1,6 +1,8 @@
+// This file contains queries for the user profile page.
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axiosApiInstance from '../utils/axiosApiInstance';
 
+// Custom hook to get a user
 export function useGetUser(username) {
   return useQuery({
     queryKey: ['user', 'profile'],
@@ -11,6 +13,7 @@ export function useGetUser(username) {
   });
 }
 
+// Custom hook to update a user
 export const useUpdateUserMutation = (onSuccess = {}) => {
   return useMutation({
     mutationFn: (profileData) => {

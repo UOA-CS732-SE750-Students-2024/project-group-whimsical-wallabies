@@ -1,3 +1,4 @@
+// Header component for the application, displays the navigation links and user menu
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from '@mui/icons-material/Menu';

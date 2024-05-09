@@ -1,3 +1,4 @@
+// FriendPage component to display a friend's profile page
 import CloseIcon from '@mui/icons-material/Close'; // Close icon from Material-UI
 import Diversity1RoundedIcon from '@mui/icons-material/Diversity1Rounded'; // Diversity icon from Material-UI
 import { Box, Typography, Grid, CircularProgress, IconButton } from '@mui/material'; // Material-UI components

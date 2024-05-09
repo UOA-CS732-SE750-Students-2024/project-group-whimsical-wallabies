@@ -1,3 +1,4 @@
+// UserProfile component is a form that allows the user to view and edit their profile details
 import { joiResolver } from '@hookform/resolvers/joi';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import CancelIcon from '@mui/icons-material/Cancel';

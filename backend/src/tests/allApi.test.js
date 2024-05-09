@@ -1,3 +1,4 @@
+// Test suite for the API tests
 /* eslint-disable */
 import request from 'supertest';
 import { expect } from 'chai';
@@ -5,6 +6,7 @@ import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import app from '../app.js';
 
+// API tests
 describe('API Tests', () => {
   let mongoServer;
   let token; // Token to be used for authenticated requests

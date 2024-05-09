@@ -1,3 +1,4 @@
+// Define the names of the items stored in the localStorage
 const getFromLocalStorage = (itemName) => localStorage.getItem(itemName);
 const saveInLocalStorage = (itemName, value) => localStorage.setItem(itemName, value);
 const removeFromLocalStorage = (itemName) => localStorage.removeItem(itemName);
@@ -20,6 +21,7 @@ export const tokenStorage = {
   remove: () => removeFromLocalStorage(TOKEN)
 };
 
+// Unified approach for handling localStorage operations
 export const userDataStorage = {
   get: () => getJSONFromLocalStorage(USER_DATA),
   save: (value) => saveJSONInLocalStorage(USER_DATA, value),

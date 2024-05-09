@@ -1,3 +1,4 @@
+// Test: Welcome Component
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import Welcome from './Welcome';
@@ -7,26 +8,32 @@ const ExpandMoreIcon = () => <div>ExpandMoreIcon</div>;
 ExpandMoreIcon.displayName = 'ExpandMoreIcon';
 jest.mock('@mui/icons-material/ExpandMore', () => ExpandMoreIcon);
 
+// Mocking MUI icons and other components might be necessary if they do complex DOM manipulations or have side effects
 const PeopleIcon = () => <div>PeopleIcon</div>;
 PeopleIcon.displayName = 'PeopleIcon';
 jest.mock('@mui/icons-material/People', () => PeopleIcon);
 
+// Mocking MUI icons and other components might be necessary if they do complex DOM manipulations or have side effects
 const PetsIcon = () => <div>PetsIcon</div>;
 PetsIcon.displayName = 'PetsIcon';
 jest.mock('@mui/icons-material/Pets', () => PetsIcon);
 
+// Mocking MUI icons and other components might be necessary if they do complex DOM manipulations or have side effects
 const SearchIcon = () => <div>SearchIcon</div>;
 SearchIcon.displayName = 'SearchIcon';
 jest.mock('@mui/icons-material/Search', () => SearchIcon);
 
+// Mocking MUI components might be necessary if they do complex DOM manipulations or have side effects
 const WeatherComponent = () => <div>Weather Component</div>;
 WeatherComponent.displayName = 'WeatherComponent';
 jest.mock('../utils/Weather', () => WeatherComponent);
 
+// Mocking MUI components might be necessary if they do complex DOM manipulations or have side effects
 const DogWalkingPlacesComponent = () => <div>Dog Walking Places Component</div>;
 DogWalkingPlacesComponent.displayName = 'DogWalkingPlacesComponent';
 jest.mock('../utils/DogWalkingPlaces', () => DogWalkingPlacesComponent);
 
+// Test suite for the Welcome component
 describe('Welcome Component', () => {
   it('renders the welcome message and key features', () => {
     render(<Welcome />);

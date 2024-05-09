@@ -1,3 +1,4 @@
+// FriendsDogCardItem component is a child component used in FriendsDogList component
 import FemaleIcon from '@mui/icons-material/Female'; // Female icon from Material-UI
 import MaleIcon from '@mui/icons-material/Male'; // Male icon from Material-UI
 import {

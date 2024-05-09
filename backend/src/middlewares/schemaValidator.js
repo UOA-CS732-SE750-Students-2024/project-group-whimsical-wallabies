@@ -1,27 +1,35 @@
+// schemaValidator middleware for validating request body against Joi schema
 import schemas from '../validations/schemaValidations.js';
 
+// Supported HTTP methods for validation
 const supportedMethods = ['post', 'put', 'patch', 'delete'];
 
+// Joi validation options
 const validationOptions = {
   abortEarly: false,
   allowUnknown: false,
   stripUnknown: false
 };
 
+// Middleware to validate request body against Joi schema
 const schemaValidator = (path, useJoiError = true) => {
-  const schema = schemas[path];
+  const schema = schemas[path]; // Get schema for the path
 
+  // Check if schema exists for the path
   if (!schema) {
     throw new Error(`Schema not found for path: ${path}`);
   }
 
+  // Return middleware function
   return (req, res, next) => {
     const method = req.method.toLowerCase();
 
+    // Check if method is supported
     if (!supportedMethods.includes(method)) {
       return next();
     }
 
+    // Validate request body against schema
     const { error, value } = schema.validate(req.body, validationOptions);
 
     if (error) {

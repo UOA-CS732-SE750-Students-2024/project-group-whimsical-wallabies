@@ -1,7 +1,9 @@
+// Code for fetching friends and managing friend requests
 import { useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import axiosApiInstance from '../utils/axiosApiInstance';
 
+// Custom hook to get all friends
 export function useGetFriends() {
   return useQuery({
     queryKey: ['friends'],
@@ -12,6 +14,7 @@ export function useGetFriends() {
   });
 }
 
+// Custom hook to get all friend requests
 export function useUnfriendMutation() {
   return useMutation({
     mutationKey: ['unfriend'],
@@ -28,6 +31,7 @@ export function useUnfriendMutation() {
   });
 }
 
+// Custom hook to get all friend requests
 export function useLikeDogMutation() {
   return useMutation({
     mutationKey: ['likeDog'],
@@ -44,6 +48,7 @@ export function useLikeDogMutation() {
   });
 }
 
+// Custom hook to get all friend requests
 export function useUnlikeDogMutation() {
   return useMutation({
     mutationKey: ['unlikeDog'],

@@ -1,5 +1,7 @@
+// Connect to MongoDB database using mongoose.
 import mongoose from 'mongoose';
 
+// Connect to MongoDB database using mongoose, and log the status of the connection
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);

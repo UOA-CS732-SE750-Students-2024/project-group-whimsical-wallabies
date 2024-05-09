@@ -1,8 +1,10 @@
+// schemaValidations.js is a file that contains all the schema validations for the different routes in the application.
 import Joi from 'joi';
 import { AUTH_PATHS, buildPathWithBase, DOG_PATHS } from '../routes/paths.js';
 const authPathBase = buildPathWithBase(AUTH_PATHS);
 const dogPathBase = buildPathWithBase(DOG_PATHS);
 
+// Define Joi schema validations for different routes
 const registerSchema = Joi.object({
   aboutMe: Joi.string().required(),
   username: Joi.string().alphanum().min(3).max(30).required(),
@@ -15,11 +17,13 @@ const registerSchema = Joi.object({
   phone: Joi.string().allow('', null).optional()
 });
 
+// Define Joi schema validations for different routes
 const loginSchema = Joi.object({
   username: Joi.string().alphanum().min(3).max(30).required(),
   password: Joi.string().min(6).required()
 });
 
+// Define Joi schema validations for different routes
 const createDogSchema = Joi.object({
   name: Joi.string().required(),
   breed: Joi.string().required(),
@@ -31,6 +35,7 @@ const createDogSchema = Joi.object({
   profilePicture: Joi.string().uri().optional()
 });
 
+// Define Joi schema validations for different routes
 const updateDogSchema = Joi.object({
   name: Joi.string().optional(),
   breed: Joi.string().optional(),
@@ -42,6 +47,7 @@ const updateDogSchema = Joi.object({
   profilePicture: Joi.string().uri().optional()
 });
 
+// Export the schema validations
 export default {
   [authPathBase.login]: loginSchema,
   [authPathBase.register]: registerSchema,

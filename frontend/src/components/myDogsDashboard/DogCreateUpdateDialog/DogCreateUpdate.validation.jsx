@@ -1,5 +1,7 @@
+// Definition: Validation schema for dog create and update forms
 import * as yup from 'yup';
 
+// Yup validation schema for dog create form
 export const dogCreateSchema = yup.object().shape({
   name: yup.string().required(),
   breed: yup.string().required(),
@@ -10,6 +12,7 @@ export const dogCreateSchema = yup.object().shape({
   neutered: yup.boolean().required()
 });
 
+// Yup validation schema for dog update form
 export const dogUpdateSchema = yup.object().shape({
   name: yup.string(),
   breed: yup.string(),

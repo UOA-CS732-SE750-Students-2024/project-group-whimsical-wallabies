@@ -1,3 +1,4 @@
+// Validating the user profile form
 import Joi from 'joi';
 
 export const userProfileSchema = Joi.object({

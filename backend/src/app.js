@@ -1,3 +1,4 @@
+// app.js is the entry point for the backend server. It sets up the Express app and defines the routes for the API endpoints. The app uses the cors middleware to allow requests from the React app running on localhost:3000. It also uses the authenticate middleware to authenticate requests using JWT tokens.
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
@@ -23,6 +24,7 @@ import userRoutes from './routes/userRoutes.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(dirname(__filename));
 
+// Create an Express app
 const app = express();
 app.use(
   cors({
@@ -30,8 +32,10 @@ app.use(
   })
 );
 
+// Define base paths for different routes
 const dogPathBase = buildPathWithBase(DOG_PATHS);
 
+// Serve static files from the 'media' and 'images/dogs' directories
 app.use('/media', express.static(path.join(__dirname, 'media')));
 app.use('/images/dogs', express.static(path.join(__dirname, '/images/dogs')));
 

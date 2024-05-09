@@ -1,6 +1,8 @@
+// Initialize express router
 import jwt from 'jsonwebtoken';
 import { register as registerService, login as loginService } from '../services/authService.js';
 
+// Register a new user
 export const register = async ({ body }, res) => {
   try {
     const user = await registerService(body);
@@ -11,6 +13,7 @@ export const register = async ({ body }, res) => {
   }
 };
 
+// Login an existing user
 export const login = async ({ body }, res) => {
   try {
     const user = await loginService(body);

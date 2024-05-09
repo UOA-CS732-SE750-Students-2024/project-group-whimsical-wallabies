@@ -1,3 +1,4 @@
+// SignUp component to register a new user
 import { joiResolver } from '@hookform/resolvers/joi';
 import {
   Alert,
@@ -20,6 +21,7 @@ import { CommonStyles } from '../../common/CommonStyles';
 import UserFormBase from '../../UserFormBase';
 import { signupSchema } from './SignUp.validation';
 
+// Default values for the form fields
 const defaultValues = {
   aboutMe: '',
   username: '',
@@ -32,6 +34,7 @@ const defaultValues = {
   longitude: ''
 };
 
+// SignUp component to register a new user
 const SignUp = () => {
   const { signup, signupErrors, isPendingSignup, isSignup, setIsSignup } = useAuth();
   let navigate = useNavigate();
@@ -44,6 +47,7 @@ const SignUp = () => {
     })
   });
 
+  // Redirect to the dashboard if the user is authenticated after signup
   useEffect(() => {
     const serverErrors = signupErrors?.response?.data?.fields;
     if (serverErrors) {
@@ -60,6 +64,7 @@ const SignUp = () => {
     setIsSignup(false);
     reset();
   };
+
   // Navigate to the login page
   const handleDialogButtonClick = () => {
     handleDialogClose();

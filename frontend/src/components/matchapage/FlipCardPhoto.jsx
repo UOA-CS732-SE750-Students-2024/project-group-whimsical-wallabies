@@ -1,3 +1,4 @@
+// FlipCardPhoto component to display dog photos in a flip card
 import CloseIcon from '@mui/icons-material/Close';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import {

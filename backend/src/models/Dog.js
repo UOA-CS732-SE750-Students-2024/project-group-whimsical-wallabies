@@ -1,5 +1,7 @@
+// Initialize Dog model
 import mongoose from 'mongoose';
 
+// Dog schema
 const DogSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -19,11 +21,13 @@ const DogSchema = new mongoose.Schema(
   }
 );
 
+// Virtual property to calculate the age of the dog
 DogSchema.virtual('age').get(function () {
   const diff = Date.now() - this.dob.getTime();
   const ageInMilliseconds = new Date(diff);
   return Math.abs(ageInMilliseconds.getUTCFullYear() - 1970);
 });
 
+// Initialize Dog model
 const DogModel = mongoose.model('Dog', DogSchema);
 export default DogModel;

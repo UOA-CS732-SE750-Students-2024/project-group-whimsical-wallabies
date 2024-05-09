@@ -1,3 +1,4 @@
+// Auth service to handle login and signup
 import axiosApiInstance from '../utils/axiosApiInstance';
 import { API_PATH } from '../utils/urlRoutes';
 

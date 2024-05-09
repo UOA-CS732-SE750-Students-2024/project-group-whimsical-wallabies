@@ -1,3 +1,4 @@
+// FriendList component, which displays a list of friends and allows the user to unfriend them
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import ManageSearchRoundedIcon from '@mui/icons-material/ManageSearchRounded';

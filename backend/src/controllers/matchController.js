@@ -1,5 +1,7 @@
+// matchController.js contains the logic for the match routes
 import { createMatch, getFriendsWithDogs, unfriendUser } from '../services/matchService.js';
 
+// Create a match between the current user and a dog
 export const match = async (req, res) => {
   try {
     const matchResult = await createMatch(req.user._id, req.params.dogId);
@@ -9,6 +11,7 @@ export const match = async (req, res) => {
   }
 };
 
+// Get all friends with dogs for the current user
 export const friends = async (req, res) => {
   try {
     const friends = await getFriendsWithDogs(req.user._id);
@@ -18,6 +21,7 @@ export const friends = async (req, res) => {
   }
 };
 
+// Unfriend a user
 export const unfriend = async (req, res) => {
   console.log('Unfriend controller hit');
   try {

@@ -1,3 +1,4 @@
+// UserFormBase component to render the user registration form
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';

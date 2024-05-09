@@ -1,3 +1,4 @@
+// Welcome component for the home page
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PeopleIcon from '@mui/icons-material/People';
 import PetsIcon from '@mui/icons-material/Pets';

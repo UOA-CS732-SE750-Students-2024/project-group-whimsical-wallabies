@@ -1,19 +1,24 @@
+// AuthContext component for the application, which provides the authentication state and functions to the application
 import PropTypes from 'prop-types';
 import React, { createContext, useContext, useState } from 'react';
 import { tokenStorage, userDataStorage } from '../utils/localStorageNames';
 import { useLoginMutation, useSignupMutation } from './AuthContext.queries';
 
+// Create a context for the authentication state and functions
 export const AuthContext = createContext();
 
+// AuthProvider component to provide authentication state and functions to the application
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(!!tokenStorage.get());
-  const [isSignup, setIsSignup] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!tokenStorage.get()); // Check if the user is authenticated
+  const [isSignup, setIsSignup] = useState(false); // Check if the user is signing up
+  // Get the current user from the local storage
   const [currentUser, setUser] = useState(() => {
     if (userDataStorage.get()) {
       return userDataStorage.get();
     }
   });
 
+  // Login, signup and logout functions
   const {
     mutate: login,
     error: loginErrors,
@@ -24,6 +29,8 @@ export const AuthProvider = ({ children }) => {
     setUser(user);
     setIsAuthenticated(true);
   });
+
+  // Signup mutation
   const {
     mutate: signup,
     error: signupErrors,
@@ -31,6 +38,8 @@ export const AuthProvider = ({ children }) => {
   } = useSignupMutation(() => {
     setIsSignup(true);
   });
+
+  // Logout function
   const logout = () => {
     tokenStorage.remove();
     userDataStorage.remove();

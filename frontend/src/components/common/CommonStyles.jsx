@@ -1,3 +1,4 @@
+// common styles for the application
 export const CommonStyles = {
   loginHeaderContainer: {
     display: 'flex',

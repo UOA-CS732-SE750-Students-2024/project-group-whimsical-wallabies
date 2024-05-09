@@ -3,6 +3,7 @@ import PetsIcon from '@mui/icons-material/Pets';
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 
+// Displays a message when no dogs are found
 const NoDogsFound = () => {
   return (
     <Box

@@ -1,5 +1,7 @@
+// Sign up form validation schema
 import Joi from 'joi';
 
+// Joi validation schema for the sign up form
 export const signupSchema = Joi.object({
   aboutMe: Joi.string().required(),
   username: Joi.string().alphanum().min(3).max(30).required(),

@@ -1,6 +1,8 @@
+//dogService.js contains the functions for creating, getting, updating, and deleting dogs. These functions are used in the dog controller to handle the dog-related requests from the frontend.
 import Dog from '../models/Dog.js';
 import User from '../models/User.js';
 
+// Create a new dog
 export const createDog = async (owner, { name, breed, dob, gender, weight, bio, neutered }) => {
   const user = await User.findById(owner);
   if (!user) throw new Error('User not found');
@@ -14,6 +16,7 @@ export const createDog = async (owner, { name, breed, dob, gender, weight, bio, 
   return dog;
 };
 
+// Get all dogs for a specific user
 export const getDogs = async (owner) => {
   const user = await User.findById(owner);
   if (!user) throw new Error('User not found');
@@ -21,6 +24,7 @@ export const getDogs = async (owner) => {
   return await Dog.find({ owner });
 };
 
+// Get a specific dog by ID
 export const getDog = async (id, owner) => {
   const user = await User.findById(owner);
   if (!user) throw new Error('User not found');
@@ -31,6 +35,7 @@ export const getDog = async (id, owner) => {
   return dog;
 };
 
+// Update a dog by ID
 export const updateDog = async (id, owner, data) => {
   const user = await User.findById(owner);
   if (!user) throw new Error('User not found');
@@ -46,6 +51,7 @@ export const updateDog = async (id, owner, data) => {
   return dog;
 };
 
+// Delete a dog by ID
 export const deleteDog = async (id, owner) => {
   const user = await User.findById(owner);
   if (!user) throw new Error('User not found');
