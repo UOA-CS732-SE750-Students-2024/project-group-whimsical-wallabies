@@ -57,7 +57,7 @@ const FriendPage = () => {
 
   // Render friend profile and dogs list
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={3} data-testid="friend-page">
       <Grid item xs={12}>
         <Box
           sx={{
