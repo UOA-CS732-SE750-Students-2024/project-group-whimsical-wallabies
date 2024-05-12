@@ -21,7 +21,14 @@ This repository contains the code for a full-stack application, including a Reac
 
 ## Getting Started
 
+### Live Demo URL
+We have deployed the application on a live server for testing purposes. You can access the application at the following URL:
+
+[pawmate.zapto.org](https://pawmate.zapto.org/)
+
 ### Prerequisites
+
+In case you want to run the application locally, you will need the following tools:
 
 - Docker and Docker Compose installed on your machine.
 - Node.js and npm installed if you plan to run or test locally without Docker.
